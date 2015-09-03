@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+	  <meta name="Resistance finder" content="DIY heaven resistance finder"/>
+	  <meta charset="utf-8" />
+	  <title>Resistance finder</title>
+	  <style>
+	    footer {
+		font-size: small;
+		color: #7F7F7F;
+	    }
+	    #legende {
+		font-size: small;
+	    }
+	    body{
+	      text-align: center;
+	      }
+	    .cadre{
+		border: 1px solid #ccc;
+		background-color:#E6E6FA;
+		display:inline-block;
+		width:46em;
+	    }
+	    .stock{
+		width: 90%;
+	    }
+	    
+	    .formule{
+		width: 40%;
+	    }
+	    
+	    .valeur{
+		width: 10%;
+	    }
+	  </style>
+	 </head>
+<!--
+      <aside>
+	  <p> <a href="ginger.jpg" ><img src="ginger_thumbnail.jpg"
+	  alt="Une poule avec un foulard, l'oeil déterminé.."></a></p>
+	  <p id="aside-click">Cliquez sur la photo !</p>
+      </aside>
+-->
+    <body>
+<!--Javascript-->
+    <script>
+	//ça mérite une classe...
+	function union_stock(a,b){
+	  var res={};
+	  for (v_k in a){
+	    res[v_k]=a[v_k];
+	  }
+	  for (v_k in b){
+	    if (v_k in res){
+		res[v_k]=res[v_k]+b[v_k];
+	    } else {
+		res[v_k]=b[v_k];
+	    }
+	  }
+	  return res;
+	}
+
+	function test_a_in_stock_b(a,b){
+	  //~ console.log(a,b);
+	  for (v_k in a){
+	    if ((!(v_k in b)) || (a[v_k] > b[v_k][1][v_k])) {
+	      return false;
+	    } 
+	  }
+	  return true
+	}
+	function test_qte(a,max_qte){
+	  var nb=0;
+	  for (v_k in a){
+	    nb=nb+a[v_k];
+	  }
+	  return (nb <= max_qte);
+	}
+	function resistances_en_serie(a,b){
+	  return parseInt(a)+parseInt(b);
+	}
+	function resistances_en_parallele(a,b){
+	  return 1/((1/parseInt(a))+(1/parseInt(b)));
+	}
+	
+	function populate_combine_stock(t_stock,orig_stock,func_combi,symb_combi,max_qte){
+	    var v;
+	    var res={};
+	    var formula;
+	    var formula_stock={};
+	    for (var k in t_stock) {
+	      res[k]=[t_stock[k][0],union_stock(t_stock[k][1],{})];
+	      for (var j in t_stock) {
+		v=func_combi(j,k);
+		formula='('+t_stock[j][0]+' '+symb_combi+' '+t_stock[k][0]+')';
+		formula_stock=union_stock(t_stock[j][1],t_stock[k][1]);
+		if (test_a_in_stock_b(formula_stock,orig_stock) && test_qte(formula_stock,max_qte)){
+		  res[v]=[formula,formula_stock];
+		}
+	      }
+	    }
+	    return res;
+	}
+	
+	function search_group(v_resistance,v_ecart,stock){
+	  var res=[];
+	  var i=0;
+	  var diff;
+	  for (k in stock) {
+	      if (i>3){break;}
+	      //~ console.log(k+":"+stock[k][0]);
+	      var diff=Math.abs(k - v_resistance );
+	      
+	      if ( diff <= v_ecart ){
+		res[i]=[k,stock[k][0],diff];
+		i++;
+	      }
+	  }
+	  res.sort(function(a, b){return a[2]-b[2]})
+	  return res;
+	}
+
+	function format_input(r_val){
+	  return r_val.replace(/k/gi,"000").replace(/m/gi,"000000").replace(/g/gi,"000000000");
+	}
+	
+	function calcul_combinaisons(){
+	  //~ var nombre=parseInt(document.getElementById('resistance').value);
+	  var stock={};
+	  var init_set={};
+	  var stock_parse_tab=mon_stock.value.split(" ");
+	  //~ console.log(stock_parse_tab);
+	  var i;
+	  var v_nb;
+	  var v_k;
+	  var k;
+	  grp_resistance1.value="";
+	  grp_resistance_val1.value="";
+	  grp_resistance2.value="";
+	  grp_resistance_val2.value="";
+	  grp_resistance3.value="";
+	  grp_resistance_val3.value="";
+	  for (i=0; i <stock_parse_tab.length; i++){
+	      //~ console.log(i);
+	      //~ console.log(stock_parse_tab[i]);
+	      k=stock_parse_tab[i];
+	      v_k=parseInt(format_input(k));
+	      if (v_k in stock){
+		v_nb=stock[v_k][1][v_k]+1;
+	      } else {
+		v_nb=1;
+	      }
+	      // format { valeur : [ "formule" : {"composant_1":"qte",... }] }
+	      init_set[v_k]=[k,{}];
+	      init_set[v_k][1][v_k]=1;
+	      stock[v_k]=[k,{}];
+	      stock[v_k][1][v_k]=v_nb;
+	  }
+	  var max_qte=parseInt(nbresistances.value);
+	  var comb_serial_set=populate_combine_stock(init_set,stock,resistances_en_serie,'+',max_qte);
+	  var comb_parallel_set=populate_combine_stock(comb_serial_set,stock,resistances_en_parallele,'//',max_qte);
+	  var comb_final_set=populate_combine_stock(comb_parallel_set,stock,resistances_en_serie,'+',max_qte);
+	  
+	  var v_resistance=parseInt(resistance.value);
+	  var v_solution=search_group(v_resistance,
+				      ((parseFloat(ecart.value)*v_resistance)/100),
+				      comb_final_set);
+
+	  if (v_solution.length>0){
+	    grp_resistance1.value=v_solution[0][1];
+	    grp_resistance_val1.value=v_solution[0][0];
+	    if (v_solution.length>1){
+	      grp_resistance2.value=v_solution[1][1];
+	      grp_resistance_val2.value=v_solution[1][0];
+	      if (v_solution.length>2){
+		grp_resistance3.value=v_solution[2][1];
+		grp_resistance_val3.value=v_solution[2][0];
+	      }
+	    }
+	  }
+	}
+	function prendre(formule){
+	  var grp_parse_tab=formule.replace(/(\(|\)|\+|\/\/)+/g," ").replace(/(\s)+/g," ").replace(/(^\s|\s$)/g,"").split(" ");
+	  var i=0;
+	  for (i;i<grp_parse_tab.length;i++){
+	      mon_stock.value=mon_stock.value.replace(new RegExp(grp_parse_tab[i]),"").replace(/(^\s|\s$)/g,"");
+	  }
+	}
+	function prendre_grp2(){
+	  mon_stock_pris.value=mon_stock_pris.value+' '+grp_resistance2.value;
+	  prendre(grp_resistance1.value);
+	  grp_resistance2.value="";
+	  grp_resistance_val2.value="";
+	}
+	function prendre_grp3(){
+	  mon_stock_pris.value=mon_stock_pris.value+' '+grp_resistance3.value;
+	  prendre(grp_resistance1.value);
+	  grp_resistance3.value="";
+	  grp_resistance_val.value="";
+	}
+	function prendre_grp1(){
+	  mon_stock_pris.value=mon_stock_pris.value+' '+grp_resistance1.value;
+	  prendre(grp_resistance1.value);
+	  grp_resistance1.value="";
+	  grp_resistance_val1.value="";
+	}
+    </script>
+<!---->
+      <div id="corps">
+       <div id="titre">
+	   <h1>Explorateur de stock électronique</h1>
+	   <p>Fouille de l'association de résistances avec la valeur la plus proche</p>
+       </div>
+
+        <section class="cadre" id="calcul_resistance"><h2 ></h2>
+	    <label for="mon_stock">Stock de resistances (en ohm, séparé par des espaces)<br>
+	    </label><input type="string" value="21k 21k 1k 10k 20k 7k 9k" class="stock" name="mon_stock" id="mon_stock" title="les notations k=*1000 m=*1000000 g=*1000000000 sont authorisées"></input>
+	    <br>
+	    <label for="resistance">Résistance souhaitée (en ohm)</label><input type="number" value="10500" name="resistance" id="resistance"></input>
+	    <br>
+            <label for="ecart">Écart maximum (en %)</label><input type="float" value="0.2" name="ecart" id="ecart"></input>
+	    <br>
+	    <label for="nbresistances">Nombre maximum de resistances utilisées </label><input type="number" value="5" min=1 max=10 name="nbresistances" id="nbresistances"></input>
+	    <br>
+	    <button OnClick="calcul_combinaisons()">Calculer</button>
+	    <br>
+	    <label for="grp_resistance1">Solution 1 : </label><input class="formule" type="text" name="grp_resistance1" id="grp_resistance1" disabled></input>
+	    <label for="grp_resistance_val1"> vaut </label><input class="valeur" type="text" name="grp_resistance_val1" id="grp_resistance_val1" disabled></input>
+	    <button OnClick="prendre_grp1()">Prendre</button>
+	    <br>
+	    <label for="grp_resistance2">Solution 2 : </label><input class="formule" type="text" name="grp_resistance2" id="grp_resistance2" disabled></input>
+	    <label for="grp_resistance_val2"> vaut </label><input class="valeur" type="text" name="grp_resistance_val2" id="grp_resistance_val2" disabled></input>
+	    <button OnClick="prendre_grp2()">Prendre</button>
+	    
+	    <br>
+	    <label for="grp_resistance3">Solution 3 : </label><input class="formule" type="text" name="grp_resistance3" id="grp_resistance3" disabled></input>
+	    <label for="grp_resistance_val3"> vaut </label><input class="valeur" type="text" name="grp_resistance_val3" id="grp_resistance_val3" disabled></input>
+	    <button OnClick="prendre_grp3()">Prendre</button>
+	    <br>
+	    <label for="mon_stock_pris">Resistances mises de coté :<br>
+	    </label><input type="string" value="" class="stock" name="mon_stock_pris" id="mon_stock_pris"></input>
+	    <br>
+	    <p id="legende">Légende :  ( R1 <strong>+</strong> R2 ) &rarr; résistances en série; ( R1 <strong>//</strong> R2 ) &rarr; résistances en parallèle.  </p>
+	        
+	</section>
+
+      </section>
+
+      <footer>
+            DIY. 2015 Copyleft : Sébastien Gillot.
+      </footer>
+    </body>
+
+</html>

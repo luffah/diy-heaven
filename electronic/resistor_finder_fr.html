@@ -5,21 +5,28 @@
 	  <meta charset="utf-8" />
 	  <title>Resistance finder</title>
 	  <style>
-	    footer {
-		font-size: small;
-		color: #7F7F7F;
-	    }
-	    #legende {
-		font-size: small;
-	    }
 	    body{
-	      text-align: center;
-	      }
+	      
+	    }
+	    #corps{
+		display:inline-block;
+		text-align:center;
+		width:100%;
+	    }
 	    .cadre{
-		border: 1px solid #ccc;
+		border: 3px solid black;
 		background-color:#E6E6FA;
 		display:inline-block;
 		width:46em;
+		border-radius:0.1em;
+		box-shadow: 10px 10px 5px #888888;
+	    }
+	    header{
+	      text-align:center;
+	      background-color:rgba(173,173,173,0.25);
+	    }
+	    .cadre h2{
+	      border: 1.5px solid black;
 	    }
 	    .stock{
 		width: 90%;
@@ -32,10 +39,106 @@
 	    .valeur{
 		width: 10%;
 	    }
+	    footer {
+		position:fixed;
+		bottom:0;
+		font-size: small;
+		color: #7F7F7F;
+		background-color:black;
+		width:100%;
+		text-align:center;
+	    }
+	    #legende {
+		font-size: small;
+	    }
+	    #ecart,#resistance,#nbresistances{
+	      position:absolute;
+	      left:60%;
+	      width:10em;
+	    }
+	    .block_stock {
+	      position:relative;
+	      left:10%;
+	      text-align:left;
+	    }
+	    #block_form1 {
+	      position:relative;
+	      left:10%;
+	      text-align:left;
+	    }
+	    #block_form2 {
+	      position:relative;
+	      left:10%;
+	      text-align:left;
+	      color:#2D2D2D;
+	    }
+	    #block_form1 button{
+	      position:absolute;
+	      left:60%;
+	    }
+	    button{
+	      border: 1.5px solid black;
+	      background-color:white;
+	    }
+	    button:hover{
+	      background-color:#40FF40;
+	    }
 	  </style>
 	 </head>
     <body>
-<!--Javascript-->
+       <header id="titre">
+	   <h1>Explorateur de stock électronique</h1>
+       </header>
+       <section id='corps'>
+	<article class="cadre" id="calcul_resistance">
+	    <header><h2>Recherche de combinaisons de résistances</h2></header>
+	    <div class='block_stock'>
+	      <label for="mon_stock">Stock de resistances <small>(en ohm, séparé par des espaces)</small>:<br></label>
+	    </div>
+	    <input type="string" value="21k 21k 1k 10k 20k 7k 9k" class="stock" name="mon_stock" id="mon_stock" title="Aide : les notations k=*1000 m=*1000000 sont authorisées"></input>
+	    
+	    <br>
+	    <br>
+	    <div id='block_form1'>
+	      <label for="resistance">Résistance souhaitée <small>(en ohm)</small></label><input type="number" value="10500" name="resistance" id="resistance"></input>
+	      <br>
+	      <label for="ecart">Écart maximum <small>(en %)</small></label><input type="float" value="0.2" name="ecart" id="ecart"></input>
+	      <br>
+	      <label for="nbresistances">Nombre maximum de resistances utilisées </label><input type="number" value="5" min=1 max=10 name="nbresistances" id="nbresistances"></input>
+	      <br>
+	      <button OnClick="calcul_combinaisons()">Calculer</button>
+	      <br>
+	    </div>
+	    <div id='block_form2'>
+	      <label for="grp_resistance1">Solution 1 : </label><input class="formule" type="text" name="grp_resistance1" id="grp_resistance1" disabled></input>
+	      <label for="grp_resistance_val1"> vaut </label><input class="valeur" type="text" name="grp_resistance_val1" id="grp_resistance_val1" disabled></input>
+	      <button OnClick="prendre_grp1()">Prendre</button>
+	      <br>
+	      <label for="grp_resistance2">Solution 2 : </label><input class="formule" type="text" name="grp_resistance2" id="grp_resistance2" disabled></input>
+	      <label for="grp_resistance_val2"> vaut </label><input class="valeur" type="text" name="grp_resistance_val2" id="grp_resistance_val2" disabled></input>
+	      <button OnClick="prendre_grp2()">Prendre</button>
+	      
+	      <br>
+	      <label for="grp_resistance3">Solution 3 : </label><input class="formule" type="text" name="grp_resistance3" id="grp_resistance3" disabled></input>
+	      <label for="grp_resistance_val3"> vaut </label><input class="valeur" type="text" name="grp_resistance_val3" id="grp_resistance_val3" disabled></input>
+	      <button OnClick="prendre_grp3()">Prendre</button>
+	      <br>
+	    </div>
+	    <div class='block_stock'>
+	      <label for="mon_stock_pris">Resistances mises de coté :<br></label>
+	    </div>
+	    <input type="string" value="" class="stock" name="mon_stock_pris" id="mon_stock_pris" title="Copier-Coller pour remettre les résistances dans le stock"></input>
+	    <br>
+	    
+	    <p id="legende">Légende :  ( R1 <strong>+</strong> R2 ) &rarr; résistances en série; ( R1 <strong>//</strong> R2 ) &rarr; résistances en parallèle.  </p>
+	        
+      </article>
+      </section>
+      <footer>
+            DIY. 2015 Copyleft : Sébastien Gillot.<br>
+	    Tests navigateurs : Chromium Ok; Mozilla Ok.
+      </footer>
+      <!--Javascript-->
     <script>
 	<!-- Important note : this program use the concept of stock, 2 type of stock are used:
 	<!-- 	- simple stock represents the reserves
@@ -112,7 +215,7 @@
 	      //~ console.log(k+":"+stock[k][0]);
 	      var diff=Math.abs(k - v_resistance );
 	      if ( diff <= v_ecart ){
-		res[i]=[k,stock[k][0],diff];
+		res[i]=[Math.round(k),stock[k][0],diff];
 		i++;
 	      }
 	  }
@@ -126,11 +229,10 @@
 	function resistances_en_parallele(a,b){
 	  var v_a=parseInt(a);
 	  var v_b=parseInt(b);
-	  if (v_b==v_b){
+	  if (v_a==v_b){
 	    return v_a/2;
 	  } else {
-	    
-	    return (v_a*v_b)/(v_a+v_b);
+	    return ((v_a*v_b)/(v_a+v_b));
 	  }
 	}
 	<!-- functions for gui -->
@@ -237,50 +339,5 @@
 	}
     </script>
 <!---->
-      <div id="corps">
-       <div id="titre">
-	   <h1>Explorateur de stock électronique</h1>
-	   <p>Fouille de l'association de résistances avec la valeur la plus proche</p>
-       </div>
-
-        <section class="cadre" id="calcul_resistance"><h2 ></h2>
-	    <label for="mon_stock">Stock de resistances (en ohm, séparé par des espaces)<br>
-	    </label><input type="string" value="21k 21k 1k 10k 20k 7k 9k" class="stock" name="mon_stock" id="mon_stock" title="les notations k=*1000 m=*1000000 sont authorisées"></input>
-	    <br>
-	    <label for="resistance">Résistance souhaitée (en ohm)</label><input type="number" value="10500" name="resistance" id="resistance"></input>
-	    <br>
-            <label for="ecart">Écart maximum (en %)</label><input type="float" value="0.2" name="ecart" id="ecart"></input>
-	    <br>
-	    <label for="nbresistances">Nombre maximum de resistances utilisées </label><input type="number" value="5" min=1 max=10 name="nbresistances" id="nbresistances"></input>
-	    <br>
-	    <button OnClick="calcul_combinaisons()">Calculer</button>
-	    <br>
-	    <label for="grp_resistance1">Solution 1 : </label><input class="formule" type="text" name="grp_resistance1" id="grp_resistance1" disabled></input>
-	    <label for="grp_resistance_val1"> vaut </label><input class="valeur" type="text" name="grp_resistance_val1" id="grp_resistance_val1" disabled></input>
-	    <button OnClick="prendre_grp1()">Prendre</button>
-	    <br>
-	    <label for="grp_resistance2">Solution 2 : </label><input class="formule" type="text" name="grp_resistance2" id="grp_resistance2" disabled></input>
-	    <label for="grp_resistance_val2"> vaut </label><input class="valeur" type="text" name="grp_resistance_val2" id="grp_resistance_val2" disabled></input>
-	    <button OnClick="prendre_grp2()">Prendre</button>
-	    
-	    <br>
-	    <label for="grp_resistance3">Solution 3 : </label><input class="formule" type="text" name="grp_resistance3" id="grp_resistance3" disabled></input>
-	    <label for="grp_resistance_val3"> vaut </label><input class="valeur" type="text" name="grp_resistance_val3" id="grp_resistance_val3" disabled></input>
-	    <button OnClick="prendre_grp3()">Prendre</button>
-	    <br>
-	    <label for="mon_stock_pris">Resistances mises de coté :<br>
-	    </label><input type="string" value="" class="stock" name="mon_stock_pris" id="mon_stock_pris"></input>
-	    <br>
-	    <p id="legende">Légende :  ( R1 <strong>+</strong> R2 ) &rarr; résistances en série; ( R1 <strong>//</strong> R2 ) &rarr; résistances en parallèle.  </p>
-	        
-	</section>
-
-      </section>
-
-      <footer>
-            DIY. 2015 Copyleft : Sébastien Gillot.<br>
-	    Tests navigateurs : Chromium Ok; Mozilla Ok.
-      </footer>
     </body>
-
 </html>

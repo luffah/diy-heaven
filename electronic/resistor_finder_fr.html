@@ -126,11 +126,15 @@
 	  return parseInt(a)+parseInt(b);
 	}
 	function resistances_en_parallele(a,b){
-	  return 1/((1/parseInt(a))+(1/parseInt(b)));
+	  if (a==b){
+	    return parseInt(a)/2;
+	  } else {
+	    return 1/((1/parseInt(a))+(1/parseInt(b)));
+	  }
 	}
 	<!-- functions for gui -->
 	function format_input(r_val){
-	  return r_val.replace(/k/gi,"000").replace(/m/gi,"000000").replace(/g/gi,"000000000");
+	  return r_val.replace(/k/gi,"000").replace(/m/gi,"000000");
 	}
 	
 	function prendre(formule){
@@ -240,7 +244,7 @@
 
         <section class="cadre" id="calcul_resistance"><h2 ></h2>
 	    <label for="mon_stock">Stock de resistances (en ohm, séparé par des espaces)<br>
-	    </label><input type="string" value="21k 21k 1k 10k 20k 7k 9k" class="stock" name="mon_stock" id="mon_stock" title="les notations k=*1000 m=*1000000 g=*1000000000 sont authorisées"></input>
+	    </label><input type="string" value="21k 21k 1k 10k 20k 7k 9k" class="stock" name="mon_stock" id="mon_stock" title="les notations k=*1000 m=*1000000 sont authorisées"></input>
 	    <br>
 	    <label for="resistance">Résistance souhaitée (en ohm)</label><input type="number" value="10500" name="resistance" id="resistance"></input>
 	    <br>

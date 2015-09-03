@@ -132,12 +132,20 @@
 	function format_input(r_val){
 	  return r_val.replace(/k/gi,"000").replace(/m/gi,"000000").replace(/g/gi,"000000000");
 	}
+	
 	function prendre(formule){
 	  var grp_parse_tab=formule.replace(/(\(|\)|\+|\/\/)+/g," ").replace(/(\s)+/g," ").replace(/(^\s|\s$)/g,"").split(" ");
-	  var i=0;
-	  for (i;i<grp_parse_tab.length;i++){
+	  var i;
+	  for (i=0;i<grp_parse_tab.length;i++){
+	    //~ console.log(i,grp_parse_tab[i],mon_stock.value.search(grp_parse_tab[i]));
+	    if (mon_stock.value.search(grp_parse_tab[i])<0){//check if stock still avaible
+	      return false;
+	    }
+	  }
+	  for (i=0;i<grp_parse_tab.length;i++){
 	      mon_stock.value=mon_stock.value.replace(new RegExp(grp_parse_tab[i]),"").replace(/(^\s|\s$)/g,"");
 	  }
+	  return true;
 	}
 	<!-- functions in gui -->
 	function calcul_combinaisons(){
@@ -157,6 +165,7 @@
 	  grp_resistance_val2.value="";
 	  grp_resistance3.value="";
 	  grp_resistance_val3.value="";
+	  mon_stock.value=mon_stock.value.replace(/(\(|\)|\+|\/\/)+/g," ").replace(/(\s)+/g," ").replace(/(^\s|\s$)/g,"");
 	  // build stocks
 	  for (i=0; i <stock_parse_tab.length; i++){
 	      //~ console.log(stock_parse_tab[i]);
@@ -201,20 +210,23 @@
 	  }
 	}
 	function prendre_grp1(){
-	  mon_stock_pris.value=mon_stock_pris.value+' '+grp_resistance1.value;
-	  prendre(grp_resistance1.value);
+	  if(prendre(grp_resistance1.value)){
+	    mon_stock_pris.value=mon_stock_pris.value+' '+grp_resistance1.value;
+	  }
 	  grp_resistance1.value="";
 	  grp_resistance_val1.value="";
 	}
 	function prendre_grp2(){
-	  mon_stock_pris.value=mon_stock_pris.value+' '+grp_resistance2.value;
-	  prendre(grp_resistance1.value);
+	  if(prendre(grp_resistance2.value)){
+	    mon_stock_pris.value=mon_stock_pris.value+' '+grp_resistance2.value;
+	  }
 	  grp_resistance2.value="";
 	  grp_resistance_val2.value="";
 	}
 	function prendre_grp3(){
-	  mon_stock_pris.value=mon_stock_pris.value+' '+grp_resistance3.value;
-	  prendre(grp_resistance1.value);
+	  if(prendre(grp_resistance3.value)){
+	    mon_stock_pris.value=mon_stock_pris.value+' '+grp_resistance3.value;
+	  }
 	  grp_resistance3.value="";
 	  grp_resistance_val.value="";
 	}

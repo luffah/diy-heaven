@@ -1,2 +1,2 @@
 # diy-heaven
-A set of little program usefull for DIY and for avoiding waste
+A set of little programs usefull for DIY and for avoiding waste

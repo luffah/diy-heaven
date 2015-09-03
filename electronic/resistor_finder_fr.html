@@ -51,6 +51,7 @@
 	<!--stock related functions-->
 	function union_stock(a,b){
 	  var res={};
+	  var v_k;
 	  for (v_k in a){
 	    res[v_k]=a[v_k];
 	  }
@@ -66,7 +67,7 @@
 
 	function test_a_in_stock_b(a,b){
 	  //~ console.log(a,b);
-	  for (v_k in a){
+	  for (var v_k in a){
 	    if ((!(v_k in b)) || (a[v_k] > b[v_k][1][v_k])) {
 	      return false;
 	    } 
@@ -75,7 +76,7 @@
 	}
 	function test_qte(a,max_qte){
 	  var nb=0;
-	  for (v_k in a){
+	  for (var v_k in a){
 	    nb=nb+a[v_k];
 	  }
 	  return (nb <= max_qte);
@@ -90,10 +91,13 @@
 	      res[k]=[t_stock[k][0],union_stock(t_stock[k][1],{})];
 	      for (var j in t_stock) {
 		v=func_combi(j,k);
+		
 		formula='('+t_stock[j][0]+' '+symb_combi+' '+t_stock[k][0]+')';
-		formula_stock=union_stock(t_stock[j][1],t_stock[k][1]);
-		if (test_a_in_stock_b(formula_stock,orig_stock) && test_qte(formula_stock,max_qte)){
-		  res[v]=[formula,formula_stock];
+		if (!(v in t_stock)){
+		  formula_stock=union_stock(t_stock[j][1],t_stock[k][1]);
+		  if (test_a_in_stock_b(formula_stock,orig_stock) && test_qte(formula_stock,max_qte)){
+		    res[v]=[formula,formula_stock];
+		  }
 		}
 	      }
 	    }
@@ -104,7 +108,7 @@
 	  var res=[];
 	  var i=0;
 	  var diff;
-	  for (k in stock) {
+	  for (var k in stock) {
 	      if (i>3){break;}
 	      //~ console.log(k+":"+stock[k][0]);
 	      var diff=Math.abs(k - v_resistance );
@@ -140,7 +144,6 @@
 	  // stocks representation
 	  var stock={};//all components avaible with their quantity
 	  var init_set={};//representation all components avaible without their quantity
-
 	  //values to iterate
 	  var i;
 	  var v_nb;
@@ -156,7 +159,6 @@
 	  grp_resistance_val3.value="";
 	  // build stocks
 	  for (i=0; i <stock_parse_tab.length; i++){
-	      //~ console.log(i);
 	      //~ console.log(stock_parse_tab[i]);
 	      k=stock_parse_tab[i];
 	      v_k=parseInt(format_input(k));
@@ -170,12 +172,14 @@
 	      stock[v_k]=[k,{}];
 	      stock[v_k][1][v_k]=v_nb;
 	  }
+
+	  //~ console.log(stock);
 	  // build combinations
 	  var max_qte=parseInt(nbresistances.value);
 	  var comb_serial_set=populate_combine_stock(init_set,stock,resistances_en_serie,'+',max_qte);
 	  var comb_parallel_set=populate_combine_stock(comb_serial_set,stock,resistances_en_parallele,'//',max_qte);
+	  //~ console.log(comb_parallel_set);
 	  var comb_final_set=populate_combine_stock(comb_parallel_set,stock,resistances_en_serie,'+',max_qte);
-
 	  // search the nearests
 	  var v_resistance=parseInt(resistance.value);
 	  var v_solution=search_group(v_resistance,
@@ -196,6 +200,12 @@
 	    }
 	  }
 	}
+	function prendre_grp1(){
+	  mon_stock_pris.value=mon_stock_pris.value+' '+grp_resistance1.value;
+	  prendre(grp_resistance1.value);
+	  grp_resistance1.value="";
+	  grp_resistance_val1.value="";
+	}
 	function prendre_grp2(){
 	  mon_stock_pris.value=mon_stock_pris.value+' '+grp_resistance2.value;
 	  prendre(grp_resistance1.value);
@@ -207,12 +217,6 @@
 	  prendre(grp_resistance1.value);
 	  grp_resistance3.value="";
 	  grp_resistance_val.value="";
-	}
-	function prendre_grp1(){
-	  mon_stock_pris.value=mon_stock_pris.value+' '+grp_resistance1.value;
-	  prendre(grp_resistance1.value);
-	  grp_resistance1.value="";
-	  grp_resistance_val1.value="";
 	}
     </script>
 <!---->
@@ -257,7 +261,8 @@
       </section>
 
       <footer>
-            DIY. 2015 Copyleft : Sébastien Gillot.
+            DIY. 2015 Copyleft : Sébastien Gillot.<br>
+	    Tests navigateurs : Chromium Ok; Mozilla Ok.
       </footer>
     </body>
 

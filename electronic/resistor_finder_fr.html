@@ -34,17 +34,21 @@
 	    }
 	  </style>
 	 </head>
-<!--
-      <aside>
-	  <p> <a href="ginger.jpg" ><img src="ginger_thumbnail.jpg"
-	  alt="Une poule avec un foulard, l'oeil déterminé.."></a></p>
-	  <p id="aside-click">Cliquez sur la photo !</p>
-      </aside>
--->
     <body>
 <!--Javascript-->
     <script>
-	//ça mérite une classe...
+	<!-- Important note : this program use the concept of stock, 2 type of stock are used:
+	<!-- 	- simple stock represents the reserves
+	<!-- 	- computed stock represents all combinations possibles
+	<!-- 
+	<!-- Here the structure of the stock concept.
+	<!--   simple stock = { value1 : [ "componant1" : {"componant1":qte}],
+	<!--             	value2 : [ "componant2" : {"componant2":qte}],... }
+	<!--   computed stock = { value1 : [ "formula1" : {"componant1":qte,"componant2":qte}],
+	<!--             value2 : [ "formula2" : {"componant1":qte,... }],... }
+	-->
+	
+	<!--stock related functions-->
 	function union_stock(a,b){
 	  var res={};
 	  for (v_k in a){
@@ -75,12 +79,6 @@
 	    nb=nb+a[v_k];
 	  }
 	  return (nb <= max_qte);
-	}
-	function resistances_en_serie(a,b){
-	  return parseInt(a)+parseInt(b);
-	}
-	function resistances_en_parallele(a,b){
-	  return 1/((1/parseInt(a))+(1/parseInt(b)));
 	}
 	
 	function populate_combine_stock(t_stock,orig_stock,func_combi,symb_combi,max_qte){
@@ -119,27 +117,44 @@
 	  res.sort(function(a, b){return a[2]-b[2]})
 	  return res;
 	}
-
+	<!-- functions for computing combinations -->
+	function resistances_en_serie(a,b){
+	  return parseInt(a)+parseInt(b);
+	}
+	function resistances_en_parallele(a,b){
+	  return 1/((1/parseInt(a))+(1/parseInt(b)));
+	}
+	<!-- functions for gui -->
 	function format_input(r_val){
 	  return r_val.replace(/k/gi,"000").replace(/m/gi,"000000").replace(/g/gi,"000000000");
 	}
-	
+	function prendre(formule){
+	  var grp_parse_tab=formule.replace(/(\(|\)|\+|\/\/)+/g," ").replace(/(\s)+/g," ").replace(/(^\s|\s$)/g,"").split(" ");
+	  var i=0;
+	  for (i;i<grp_parse_tab.length;i++){
+	      mon_stock.value=mon_stock.value.replace(new RegExp(grp_parse_tab[i]),"").replace(/(^\s|\s$)/g,"");
+	  }
+	}
+	<!-- functions in gui -->
 	function calcul_combinaisons(){
-	  //~ var nombre=parseInt(document.getElementById('resistance').value);
-	  var stock={};
-	  var init_set={};
-	  var stock_parse_tab=mon_stock.value.split(" ");
-	  //~ console.log(stock_parse_tab);
+	  // stocks representation
+	  var stock={};//all components avaible with their quantity
+	  var init_set={};//representation all components avaible without their quantity
+
+	  //values to iterate
 	  var i;
 	  var v_nb;
 	  var v_k;
 	  var k;
+	  var stock_parse_tab=mon_stock.value.split(" ");
+	  // reinitialization of the output
 	  grp_resistance1.value="";
 	  grp_resistance_val1.value="";
 	  grp_resistance2.value="";
 	  grp_resistance_val2.value="";
 	  grp_resistance3.value="";
 	  grp_resistance_val3.value="";
+	  // build stocks
 	  for (i=0; i <stock_parse_tab.length; i++){
 	      //~ console.log(i);
 	      //~ console.log(stock_parse_tab[i]);
@@ -150,22 +165,24 @@
 	      } else {
 		v_nb=1;
 	      }
-	      // format { valeur : [ "formule" : {"composant_1":"qte",... }] }
 	      init_set[v_k]=[k,{}];
 	      init_set[v_k][1][v_k]=1;
 	      stock[v_k]=[k,{}];
 	      stock[v_k][1][v_k]=v_nb;
 	  }
+	  // build combinations
 	  var max_qte=parseInt(nbresistances.value);
 	  var comb_serial_set=populate_combine_stock(init_set,stock,resistances_en_serie,'+',max_qte);
 	  var comb_parallel_set=populate_combine_stock(comb_serial_set,stock,resistances_en_parallele,'//',max_qte);
 	  var comb_final_set=populate_combine_stock(comb_parallel_set,stock,resistances_en_serie,'+',max_qte);
-	  
+
+	  // search the nearests
 	  var v_resistance=parseInt(resistance.value);
 	  var v_solution=search_group(v_resistance,
 				      ((parseFloat(ecart.value)*v_resistance)/100),
 				      comb_final_set);
 
+	  // displaying results
 	  if (v_solution.length>0){
 	    grp_resistance1.value=v_solution[0][1];
 	    grp_resistance_val1.value=v_solution[0][0];
@@ -177,13 +194,6 @@
 		grp_resistance_val3.value=v_solution[2][0];
 	      }
 	    }
-	  }
-	}
-	function prendre(formule){
-	  var grp_parse_tab=formule.replace(/(\(|\)|\+|\/\/)+/g," ").replace(/(\s)+/g," ").replace(/(^\s|\s$)/g,"").split(" ");
-	  var i=0;
-	  for (i;i<grp_parse_tab.length;i++){
-	      mon_stock.value=mon_stock.value.replace(new RegExp(grp_parse_tab[i]),"").replace(/(^\s|\s$)/g,"");
 	  }
 	}
 	function prendre_grp2(){

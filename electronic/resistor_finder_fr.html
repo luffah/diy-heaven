@@ -109,10 +109,8 @@
 	  var i=0;
 	  var diff;
 	  for (var k in stock) {
-	      if (i>3){break;}
 	      //~ console.log(k+":"+stock[k][0]);
 	      var diff=Math.abs(k - v_resistance );
-	      
 	      if ( diff <= v_ecart ){
 		res[i]=[k,stock[k][0],diff];
 		i++;
@@ -126,10 +124,13 @@
 	  return parseInt(a)+parseInt(b);
 	}
 	function resistances_en_parallele(a,b){
-	  if (a==b){
-	    return parseInt(a)/2;
+	  var v_a=parseInt(a);
+	  var v_b=parseInt(b);
+	  if (v_b==v_b){
+	    return v_a/2;
 	  } else {
-	    return 1/((1/parseInt(a))+(1/parseInt(b)));
+	    
+	    return (v_a*v_b)/(v_a+v_b);
 	  }
 	}
 	<!-- functions for gui -->

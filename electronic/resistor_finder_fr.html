@@ -143,70 +143,143 @@
 	<!-- Important note : this program use the concept of stock, 2 type of stock are used:
 	<!-- 	- simple stock represents the reserves
 	<!-- 	- computed stock represents all combinations possibles
-	<!-- 
+	<!--
+	<!-- Moreover the stock contains the value of the componants represented by the different formula (or set of componants) avaible :
+	<!--     { "formula1" : {"componant1":qte,"componant2":qte}, "formula2" : {"componant3":qte,"componant2":qte} }
+	<!-- So we have set of value associated to a set of set of componants.
+	<!--	
 	<!-- Here the structure of the stock concept.
-	<!--   simple stock = { value1 : [ "componant1" : {"componant1":qte}],
-	<!--             	value2 : [ "componant2" : {"componant2":qte}],... }
-	<!--   computed stock = { value1 : [ "formula1" : {"componant1":qte,"componant2":qte}],
-	<!--             value2 : [ "formula2" : {"componant1":qte,... }],... }
+	<!--   simple stock = { value1 : { "componant1" : {"componant1":qte}},
+	<!--             	value2 : { "componant2" : {"componant2":qte}},... }
+	<!--   computed stock = { value1 : { "formula1" : {"componant1":qte,"componant2":qte}},
+	<!--             value2 : { "formula2" : {"componant1":qte,... }},"formula3" : {"componant1":qte,... }},... }
 	-->
 	
 	<!--stock related functions-->
-	function union_stock(a,b){
-	  var res={};
+	function formula_copy(a){
+	  var res={'_nb_':0};
 	  var v_k;
 	  for (v_k in a){
-	    res[v_k]=a[v_k];
-	  }
-	  for (v_k in b){
-	    if (v_k in res){
-		res[v_k]=res[v_k]+b[v_k];
-	    } else {
-		res[v_k]=b[v_k];
+	    if (v_k!='_nb_'){
+	      res[v_k]=a[v_k];
+	      res['_nb_']=res['_nb_']+a[v_k];
 	    }
 	  }
 	  return res;
 	}
 
-	function test_a_in_stock_b(a,b){
-	  //~ console.log(a,b);
-	  for (var v_k in a){
-	    if ((!(v_k in b)) || (a[v_k] > b[v_k][1][v_k])) {
+	function formula_set_copy(a){// input : 1 set of formulas 
+	  var res={};
+	  var v_k;
+	  for (v_k in a){
+	    res[v_k]=formula_copy(a[v_k]);
+	  }
+	  return res;
+	}
+
+	function formula_union(a,b){// input : 2 formulas
+	  var res=formula_copy(a);
+	  var v_k;
+	  for (v_k in b){
+	    if (v_k!='_nb_'){
+	      if (v_k in res){
+		  res[v_k]=res[v_k]+b[v_k];
+	      } else {
+		  res[v_k]=b[v_k];
+	      }
+	      res['_nb_']=res['_nb_']+b[v_k];
+	    }
+	  }
+	  return res;
+	}
+
+	function formula_equal(a,b){// input : 2 formulas
+	  if (a['_nb_']!=b['_nb_']){
+	    return false;
+	  }
+	  var v_k;
+	  for (v_k in a){
+	    if ((!v_k in b) || (a[v_k]!=b[v_k])){
+	      return false;
+	    }
+	  }
+	  return true;
+	}
+	
+	function exist_equal_formula(a,b){//input : b is a set of formulas,  "a" is a formula {"componant1":qte,"componant2":qte}
+	  for (var f in b){
+	      if (formula_equal(a,b[f])){
+		return true;
+	      }
+	  }
+	  return false;
+	}
+	
+	function test_a_in_stock_b(a,b){//input : "b" is a stock, "a" is a formula {"componant1":qte,"componant2":qte}
+	  var v;
+	  for (var k in a){
+	    v=parseInt(format_input(k));
+	    if ((k!='_nb_') && ((!(v in b)) || (a[k] > b[v][k][k]))) {
 	      return false;
 	    } 
 	  }
 	  return true
 	}
-	function test_qte(a,max_qte){
-	  var nb=0;
-	  for (var v_k in a){
-	    nb=nb+a[v_k];
+	function need_better_solution(a,max_qte){// input : { "formula1" : {"componant1":qte,"componant2":qte,'_nb_':x}, "formula2" : ...}
+	  var i=0;
+	  for (var k in a){
+	      if ( a[k]['_nb_'] < (max_qte/2) + 1 ) {//minimum number of components wished is under half of the max quantity
+		i++;
+	      }
+	      i++;
+	      if (i==3){
+		return false;
+	      }
 	  }
-	  return (nb <= max_qte);
+	  return true;
 	}
-	
+	<!-- functions to prepare all possible results of combinations -->
 	function populate_combine_stock(t_stock,orig_stock,func_combi,symb_combi,max_qte){
+	    //~ console.log(t_stock,orig_stock,func_combi,symb_combi,max_qte);
 	    var v;
 	    var res={};
 	    var formula;
 	    var formula_stock={};
+	    var insert_new_formula=false;
 	    for (var k in t_stock) {
-	      res[k]=[t_stock[k][0],union_stock(t_stock[k][1],{})];
-	      for (var j in t_stock) {
-		v=func_combi(j,k);
-		
-		formula='('+t_stock[j][0]+' '+symb_combi+' '+t_stock[k][0]+')';
-		if (!(v in t_stock)){
-		  formula_stock=union_stock(t_stock[j][1],t_stock[k][1]);
-		  if (test_a_in_stock_b(formula_stock,orig_stock) && test_qte(formula_stock,max_qte)){
-		    res[v]=[formula,formula_stock];
+	      res[k]=formula_set_copy(t_stock[k]);
+	    }
+	    for (var h in t_stock) {
+	      for (var k in t_stock[h]) {
+		for (var i in t_stock) {
+		  for (var j in t_stock[i]){
+		    v=func_combi(h,i);
+		    if(!(v in res)){
+		      res[v]={};
+		      insert_new_formula=true;
+		    } else {
+		      if(need_better_solution(res[v],max_qte)){
+			insert_new_formula=true;
+		      }
+		    }
+		    if (insert_new_formula) {
+		      formula_stock=formula_union(t_stock[h][k],t_stock[i][j]);
+		      if ( (formula_stock['_nb_']<=max_qte) &&
+			test_a_in_stock_b(formula_stock,orig_stock) ){
+			    formula='('+k+' '+symb_combi+' '+j+')';
+			    if (!exist_equal_formula(formula_stock,res[v])){
+			      res[v][formula]=formula_stock;
+			    }
+		      }
+		      insert_new_formula=false;
+		    }
 		  }
 		}
 	      }
 	    }
 	    return res;
 	}
-	
+	<!-- functions to find bests results of combinations -->
 	function search_group(v_resistance,v_ecart,stock){
 	  var res=[];
 	  var i=0;
@@ -215,8 +288,10 @@
 	      //~ console.log(k+":"+stock[k][0]);
 	      var diff=Math.abs(k - v_resistance );
 	      if ( diff <= v_ecart ){
-		res[i]=[Math.round(k),stock[k][0],diff];
-		i++;
+		for (var l in stock[k]){
+		  res[i]=[Math.round(k),l,diff];
+		  i++;
+		}
 	      }
 	  }
 	  res.sort(function(a, b){return a[2]-b[2]})
@@ -243,50 +318,58 @@
 	function prendre(formule){
 	  var grp_parse_tab=formule.replace(/(\(|\)|\+|\/\/)+/g," ").replace(/(\s)+/g," ").replace(/(^\s|\s$)/g,"").split(" ");
 	  var i;
+	  var new_stock=mon_stock.value.replace(/(^|$)/g," ");
+	  var pos;
 	  for (i=0;i<grp_parse_tab.length;i++){
-	    //~ console.log(i,grp_parse_tab[i],mon_stock.value.search(grp_parse_tab[i]));
-	    if (mon_stock.value.search(grp_parse_tab[i])<0){//check if stock still avaible
+	    pos=new_stock.search(new RegExp("( )"+grp_parse_tab[i]+"( )",''));
+	    //~ console.log(i,grp_parse_tab[i],pos,new_stock.substr(0,pos+1),new_stock.substr(pos+grp_parse_tab[i].length+2));
+	    if (pos<0){//check if stock still avaible
 	      return false;
 	    }
+	    new_stock=new_stock.substr(0,pos+1)+new_stock.substr(pos+grp_parse_tab[i].length+2);
 	  }
-	  for (i=0;i<grp_parse_tab.length;i++){
-	      mon_stock.value=mon_stock.value.replace(new RegExp(grp_parse_tab[i]),"").replace(/(^\s|\s$)/g,"");
-	  }
+	  mon_stock.value=new_stock.replace(/(^\s|\s$)/g,"");
+	  
 	  return true;
 	}
 	<!-- functions in gui -->
 	function calcul_combinaisons(){
 	  // stocks representation
-	  var stock={};//all components avaible with their quantity
+	  var stock={'_nb_':0};//all components avaible with their quantity
 	  var init_set={};//representation all components avaible without their quantity
 	  //values to iterate
 	  var i;
 	  var v_nb;
 	  var v_k;
 	  var k;
-	  var stock_parse_tab=mon_stock.value.split(" ");
 	  // reinitialization of the output
+	  mon_stock.value=mon_stock.value.replace(/(\(|\)|\+|\/\/)+/g," ").replace(/(\s)+/g," ").replace(/(^\s|\s$)/g,"");
 	  grp_resistance1.value="";
 	  grp_resistance_val1.value="";
 	  grp_resistance2.value="";
 	  grp_resistance_val2.value="";
 	  grp_resistance3.value="";
 	  grp_resistance_val3.value="";
-	  mon_stock.value=mon_stock.value.replace(/(\(|\)|\+|\/\/)+/g," ").replace(/(\s)+/g," ").replace(/(^\s|\s$)/g,"");
 	  // build stocks
+	  var stock_parse_tab=mon_stock.value.split(" ");
 	  for (i=0; i <stock_parse_tab.length; i++){
 	      //~ console.log(stock_parse_tab[i]);
 	      k=stock_parse_tab[i];
 	      v_k=parseInt(format_input(k));
 	      if (v_k in stock){
-		v_nb=stock[v_k][1][v_k]+1;
+		v_nb=stock[v_k][k][k]+1;
 	      } else {
 		v_nb=1;
 	      }
-	      init_set[v_k]=[k,{}];
-	      init_set[v_k][1][v_k]=1;
-	      stock[v_k]=[k,{}];
-	      stock[v_k][1][v_k]=v_nb;
+	      init_set[v_k]={};
+	      init_set[v_k][k]={};
+	      init_set[v_k][k]['_nb_']=1;
+	      init_set[v_k][k][k]=1;
+	      
+	      stock[v_k]={};
+	      stock[v_k][k]={};
+	      stock[v_k][k]['_nb_']=v_nb;
+	      stock[v_k][k][k]=v_nb;
 	  }
 
 	  //~ console.log(stock);
@@ -296,6 +379,7 @@
 	  var comb_parallel_set=populate_combine_stock(comb_serial_set,stock,resistances_en_parallele,'//',max_qte);
 	  //~ console.log(comb_parallel_set);
 	  var comb_final_set=populate_combine_stock(comb_parallel_set,stock,resistances_en_serie,'+',max_qte);
+	  //~ console.log(comb_final_set);
 	  // search the nearests
 	  var v_resistance=parseInt(resistance.value);
 	  var v_solution=search_group(v_resistance,
@@ -335,7 +419,7 @@
 	    mon_stock_pris.value=mon_stock_pris.value+' '+grp_resistance3.value;
 	  }
 	  grp_resistance3.value="";
-	  grp_resistance_val.value="";
+	  grp_resistance_val3.value="";
 	}
     </script>
 <!---->

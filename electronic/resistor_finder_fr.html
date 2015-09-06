@@ -8,6 +8,9 @@
 	    body{
 	      
 	    }
+	    article{
+	      display:inline-block;
+	    }
 	    #corps{
 		display:inline-block;
 		text-align:center;
@@ -17,14 +20,30 @@
 		border: 3px solid black;
 		background-color:#E6E6FA;
 		display:inline-block;
-		width:46em;
+		width:50%;
 		border-radius:0.1em;
 		box-shadow: 10px 10px 5px #888888;
+		float:center;
+	    }
+	    .cadre-left{
+		border: 2px solid black;
+		background-color:#E6E6FA;
+		display:inline-block;
+		width:40%;
+		border-radius:0.1em;
+		box-shadow: 10px 10px 5px #888888;
+		float:left;
+	    }
+	    
+	    .cadre-right{
+	      display:none;
 	    }
 	    header{
 	      text-align:center;
 	      background-color:rgba(173,173,173,0.25);
 	    }
+
+	    /* Block de calcul des combinaisons de resistance */
 	    .cadre h2{
 	      border: 1.5px solid black;
 	    }
@@ -40,7 +59,7 @@
 		width: 10%;
 	    }
 	    footer {
-		position:fixed;
+		position:relative;
 		bottom:0;
 		font-size: small;
 		color: #7F7F7F;
@@ -83,6 +102,91 @@
 	    button:hover{
 	      background-color:#40FF40;
 	    }
+
+	   /* Block de déchiffrage d'une résistance */
+	    .resistor {
+	      display:inline-block;
+	      border : 1px solid black;
+	      border-radius: 0.5em;
+	      padding:0.2em;
+	    } 
+	    .resistor_color_list {  
+	      border : 1px solid black;
+	      display: inline-block;
+	      margin: 0;
+	      padding: 0;
+	      border-radius: 0.2em;
+	      float:left;}
+	    .resistor_prop_list {  
+	      border : 1px solid black;
+	      margin: 0;
+	      padding: 0.2em;
+	      border-radius: 0.2em;
+	      display:inline-block;
+	      text-align:center;}
+	    .resistor_prop_list li{
+	      list-style-type: none; 
+	      border : 1px solid black;
+	      border-radius: 0.5em;
+	      display:inline-block;
+	      min-width:1em;
+	      }
+	    .resistor_color_list li {
+	      list-style-type: none;
+	      border : 1px solid black;
+	      margin: 2px;
+	      min-width:2em;
+	      text-align:center;
+	      font-size:small;
+	      border-radius: 0.2em
+	    }
+	    .font-small li{
+	      font-size:x-small;
+	      padding:0.1em;
+	    }
+	    .resistor_prop_title{
+	      padding-left:0.5em;
+	      padding-right:0.5em;
+	      border: none;
+	      font-weight:bold;
+	      font-size:small;
+	      text-align:center;
+	    }
+	    .resistor_color_Black{  background-color: black ; color: white; border:  1px solid black;}
+	    .resistor_color_Brown{  background-color: brown ; border:  1px solid black;}
+	    .resistor_color_Red{  background-color: red; border:  1px solid black;}
+	    .resistor_color_Orange{ background-color: orange; border:  1px solid black; }
+	    .resistor_color_Yellow{  background-color: yellow; border:  1px solid black;}
+	    .resistor_color_Green{ background-color: green; color: white;border:  1px solid black;}
+	    .resistor_color_Blue{ background-color: blue; color: white;border:  1px solid black;}
+	    .resistor_color_Violet{  background-color:  violet; border:  1px solid black;}
+	    .resistor_color_Gray{  background-color: gray; border:  1px solid black;}
+	    .resistor_color_White{  background-color: white; border:  1px solid black;}
+	    .resistor_color_Gold{  background-color: gold; border:  1px solid black;}
+	    .resistor_color_Silver{  background-color: silver; border:  1px solid black; }
+	    .resistor_color_None{  background-color: rgba(255,255,255,0.25); border:  1px solid rgba(255,255,255,0.1) ; }
+	    .resistor_color_Beige{  background-color:  #FFFFAD ;}
+	    .resistor_color_Cyan{  background-color:  #ADD8E6 ;}
+
+	    .resistor_value_title{
+	      padding:0.5em;
+
+	    }
+	    #resistor_view_canvas{
+	      display:inline-block;
+	      text-align:center;
+	    }
+	    #resistor_view{
+	      border:3px solid black;
+	    }
+	    
+	    #resistor_value{
+	      min-width:4em;
+	      max-width:10em;
+	    }
+	    #value2,#value3{
+	      display:block;
+	    }
 	  </style>
 	 </head>
     <body>
@@ -90,8 +194,142 @@
 	   <h1>Explorateur de stock électronique</h1>
        </header>
        <section id='corps'>
+	 <header><h2>Les résistances</h2></header>
+	  
+	<article class='cadre-left'>
+	  <header><h3>Déchiffrage</h3></header>
+	  <section >
+	    <ul class='resistor_prop_list'>
+	    <div class='resistor_prop_title'>Nombre <br> d'anneaux</div>
+	    <li onClick='set_mode(3)'>3</li>
+	    <li onClick='set_mode(4)'>4</li>
+	    <li onClick='set_mode(5)'>5</li>
+	    <li onClick='set_mode(6)'>6</li>
+	    </ul>
+	    <div id='resistor_view_canvas'>
+	      &mdash;<span id='resistor_view' class='resistor_color_Beige'>
+		<span class='resistor_color_None' id='view_val1'>&nbsp;&nbsp;</span>
+		<span class='resistor_color_None' id='view_val2'>&nbsp;&nbsp;</span>
+		<span class='resistor_color_None' id='view_val3'>&nbsp;&nbsp;</span>
+		<span class='resistor_color_None' id='view_mult'>&nbsp;&nbsp;</span>
+		<span class='resistor_color_None' id='view_tol'>&nbsp;&nbsp;</span>
+		<span class='resistor_color_None' id='view_ppm'>&nbsp;&nbsp;</span>
+		</span>&mdash;
+
+	    </div>
+	    <div class='resistor_value_title'>Valeur <small>(en Ohm) :</small>
+	      <input type='text' id='resistor_value' disabled></input>
+	      <button onClick='store_resistance()'>Ajouter au stock</button>
+	    </div>
+	    <div class='resistor_value_title'>Ref.[v,v,v,m,t]:
+	      <input type='text' id='resistor_desc' onKeyDown='run_get_resistance(event)'></input>
+	      <button onClick='get_resistance()'>></button>
+	    </div>
+	  </section>
+	  <section  class='resistor'>
+	    <div class='resistor_color_list'>
+	      <div class='resistor_prop_title'>Valeur</div>
+	      <div id='value1'>
+	      <ul class='resistor_color_list'>
+		<li class='resistor_color_Black'    onClick='val1_set(0)'>0</li>
+	      </ul>
+	      <ul class='resistor_color_list'>
+		<li class='resistor_color_Brown'    onClick='val1_set(1)'>1</li>
+		<li class='resistor_color_Yellow'   onClick='val1_set(4'>4</li>
+		<li class='resistor_color_Violet'   onClick='val1_set(7)'>7</li>
+	      </ul>
+	      <ul class='resistor_color_list'>
+		<li class='resistor_color_Red'      onClick='val1_set(2)'>2</li>
+		<li class='resistor_color_Green'    onClick='val1_set(5)'>5</li>
+		<li class='resistor_color_Gray'     onClick='val1_set(8)'>8</li>
+	      </ul>
+	      <ul class='resistor_color_list'>
+		<li class='resistor_color_Orange '  onClick='val1_set(3)'>3</li>
+		<li class='resistor_color_Blue'     onClick='val1_set(6)'>6</li>
+		<li class='resistor_color_White'    onClick='val1_set(9)'>9</li>
+	      </ul>
+	      </div>
+	      <br>
+	      <div id='value2'>
+	      <ul class='resistor_color_list' id='value2'>
+		<li class='resistor_color_Black'    onClick='val2_set(0)'>0</li>
+	      </ul>
+	      <ul class='resistor_color_list'>
+		<li class='resistor_color_Brown'    onClick='val2_set(1)'>1</li>
+		<li class='resistor_color_Yellow'   onClick='val2_set(4)'>4</li>
+		<li class='resistor_color_Violet'   onClick='val2_set(7)'>7</li>
+	      </ul>
+	      <ul class='resistor_color_list'>
+		<li class='resistor_color_Red'      onClick='val2_set(2)'>2</li>
+		<li class='resistor_color_Green'    onClick='val2_set(5)'>5</li>
+		<li class='resistor_color_Gray'     onClick='val2_set(8)'>8</li>
+		
+	      </ul>
+	      <ul class='resistor_color_list'>
+		<li class='resistor_color_Orange '  onClick='val2_set(3)'>3</li>
+		<li class='resistor_color_Blue'     onClick='val2_set(6)'>6</li>
+		<li class='resistor_color_White'    onClick='val2_set(9)'>9</li>
+	      </ul>
+	      </div>
+	      <br>
+	      <div id='value3'>
+	      <ul class='resistor_color_list' >
+		<li class='resistor_color_Black'    onClick='val3_set(0)'>0</li>
+	      </ul>
+	      <ul class='resistor_color_list'>
+		<li class='resistor_color_Brown'    onClick='val3_set(1)'>1</li>
+		<li class='resistor_color_Yellow'   onClick='val3_set(4)'>4</li>
+		<li class='resistor_color_Violet'   onClick='val3_set(7)'>7</li>
+	      </ul>
+	      <ul class='resistor_color_list'>
+		<li class='resistor_color_Red'      onClick='val3_set(2)'>2</li>
+		<li class='resistor_color_Green'    onClick='val3_set(5)'>5</li>
+		<li class='resistor_color_Gray'     onClick='val3_set(8)'>8</li>
+	      </ul>
+	      <ul class='resistor_color_list'>
+		<li class='resistor_color_Orange '  onClick='val3_set(3)'>3</li>
+		<li class='resistor_color_Blue'     onClick='val3_set(6)'>6</li>
+		<li class='resistor_color_White'    onClick='val3_set(9)'>9</li>
+	      </ul>
+	      </div>
+	    </div>
+	    <ul class='resistor_color_list'>
+	      <div class='resistor_prop_title'>Multiple</div>
+	      <li class='resistor_color_Gold'   onClick='mult_set(0.01)'>x0.01</li>
+	      <li class='resistor_color_Silver' onClick='mult_set(0.1)'>x0.1</li>
+	      <li class='resistor_color_Black'  onClick='mult_set(1)'>x1</li>
+	      <li class='resistor_color_Brown'  onClick='mult_set(10)'>x10</li>
+	      <li class='resistor_color_Red'    onClick='mult_set(100)'>x100</li>
+	      <li class='resistor_color_Orange' onClick='mult_set(1000)'>x1k</li>
+	      <li class='resistor_color_Yellow' onClick='mult_set(10000)'>x10k</li>
+	      <li class='resistor_color_Green'  onClick='mult_set(100000)'>x100k</li>
+	      <li class='resistor_color_Blue'   onClick='mult_set(1000000)'>x1m</li>
+	      <li class='resistor_color_Violet' onClick='mult_set(10000000)'>x10m</li>
+	    </ul>
+	    <ul class='resistor_color_list font-small'>
+	      <div class='resistor_prop_title'>Tolérance</div>
+	      <li class='resistor_color_None'  onClick='tolerance_set(0.20)'>~20%</li>
+	      <li class='resistor_color_Silver' onClick='tolerance_set(0.10)'>~10%</li>
+	      <li class='resistor_color_Gold' onClick='tolerance_set(0.05)'>~5%</li>
+	      <li class='resistor_color_Brown' onClick='tolerance_set(0.01)'>~1%</li>
+	      <li class='resistor_color_Red' onClick='tolerance_set(0.02)'>~2%</li>
+	      <li class='resistor_color_Green' onClick='tolerance_set(0.005)'>~0.5%</li>
+	      <li class='resistor_color_Blue' onClick='tolerance_set(0.0025)'>~0.25%</li>
+	      <li class='resistor_color_Violet' onClick='tolerance_set(0.001)'>~0.1%</li>
+	    </ul>
+	    <ul class='resistor_color_list font-small' id='coef-temp'>
+	      <div class='resistor_prop_title'>Coef.temp.</div>
+	      <li class='resistor_color_Black' onClick='ppm_set(200,"resistor_color_Black")'>200ppm</li>
+	      <li class='resistor_color_Brown' onClick='ppm_set(100,"resistor_color_Brown")'>100ppm</li>
+	      <li class='resistor_color_Red' onClick='ppm_set(50,"resistor_color_Red")'>50ppm</li>
+	      <li class='resistor_color_Orange' onClick='ppm_set(15,"resistor_color_Orange")'>15ppm</li>
+	      <li class='resistor_color_Yellow' onClick='ppm_set(25,"resistor_color_Yellow")'>25ppm</li>
+	    </ul>
+	  </section>
+	  <p id="legende">Note : si la tolérance est élevée ou si vous ne voyez pas clairement les couleurs, utilisez un multimètre.</p>
+	</article>
 	<article class="cadre" id="calcul_resistance">
-	    <header><h2>Recherche de combinaisons de résistances</h2></header>
+	    <header><h3>Recherche de combinaisons</h3></header>
 	    <div class='block_stock'>
 	      <label for="mon_stock">Stock de resistances <small>(en ohm, séparé par des espaces)</small>:<br></label>
 	    </div>
@@ -109,6 +347,7 @@
 	      <button OnClick="calcul_combinaisons()">Calculer</button>
 	      <br>
 	    </div>
+	    <br>
 	    <div id='block_form2'>
 	      <label for="grp_resistance1">Solution 1 : </label><input class="formule" type="text" name="grp_resistance1" id="grp_resistance1" disabled></input>
 	      <label for="grp_resistance_val1"> vaut </label><input class="valeur" type="text" name="grp_resistance_val1" id="grp_resistance_val1" disabled></input>
@@ -139,6 +378,7 @@
 	    Tests navigateurs : Chromium Ok; Mozilla Ok.
       </footer>
       <!--Javascript-->
+<!--Calcul des combinaisons-->
     <script>
 	<!-- Important note : this program use the concept of stock, 2 type of stock are used:
 	<!-- 	- simple stock represents the reserves
@@ -218,7 +458,7 @@
 	function test_a_in_stock_b(a,b){//input : "b" is a stock, "a" is a formula {"componant1":qte,"componant2":qte}
 	  var v;
 	  for (var k in a){
-	    v=parseInt(format_input(k));
+	    v=parseInt(parse_input(k));
 	    if ((k!='_nb_') && ((!(v in b)) || (a[k] > b[v][k][k]))) {
 	      return false;
 	    } 
@@ -311,27 +551,95 @@
 	  }
 	}
 	<!-- functions for gui -->
-	function format_input(r_val){
-	  return r_val.replace(/k/gi,"000").replace(/m/gi,"000000");
+	function parse_input(r_val){
+	  var res=r_val;
+	  if (res.search('.')>-1){
+	    if (res.search(/k/i)>-1){
+	      res=parseFloat(res)*1000;
+	    } else if (res.search(/m/i)>-1){
+	      res=parseFloat(res)*1000000;
+	    }
+	    
+	  } else {
+	    res=res.replace(/m/gi,"000000").replace(/k/gi,"000");
+	  }
+	  return res;
 	}
-	
+
+
 	function prendre(formule){
-	  var grp_parse_tab=formule.replace(/(\(|\)|\+|\/\/)+/g," ").replace(/(\s)+/g," ").replace(/(^\s|\s$)/g,"").split(" ");
+	  var grp_parse_tab=formule.replace(/[(+)]/g,function(x){return ' '+x+' '}).replace(/(\s)+/g," ").split(" ");
+	  //~ console.log(formule.replace(/[(+)]/g,function(x){return ' '+x+' '}).replace(/(\s)+/g," ").replace(/(^\s|\s$)/g,""));
 	  var i;
 	  var new_stock=mon_stock.value.replace(/(^|$)/g," ");
 	  var pos;
+	  var taken_stock="";
 	  for (i=0;i<grp_parse_tab.length;i++){
-	    pos=new_stock.search(new RegExp("( )"+grp_parse_tab[i]+"( )",''));
-	    //~ console.log(i,grp_parse_tab[i],pos,new_stock.substr(0,pos+1),new_stock.substr(pos+grp_parse_tab[i].length+2));
-	    if (pos<0){//check if stock still avaible
-	      return false;
+	    if ((grp_parse_tab[i]=='')||(grp_parse_tab[i]=='(')||(grp_parse_tab[i]==')')||(grp_parse_tab[i]=='+')||(grp_parse_tab[i]=='//')){
+	      taken_stock=taken_stock.concat(grp_parse_tab[i]);
+	    } else {
+	      //check if stock still avaible
+	      pos=new_stock.search(" "+grp_parse_tab[i]+" ");
+	      if (pos<0){//alternative checking
+		pos=new_stock.search(" "+grp_parse_tab[i]+"\\[");
+		if (pos<0){
+		  return "";
+		}
+		var pos2=new_stock.indexOf("] ",pos);
+		if (pos2<0){
+		  alert(new_stock.slice(pos,pos+grp_parse_tab[i].length+2), " est incomplet. Le format pour indiquer la référence est 'valeur[référence]'. ");
+		  return "";
+		}
+		var detailled_componant=new_stock.slice(pos+1,pos2+1);
+		taken_stock=taken_stock.concat(detailled_componant);
+		new_stock=new_stock.substr(0,pos+1)+new_stock.substr(pos2+2);
+	      
+	      } else {
+		taken_stock=taken_stock.concat(grp_parse_tab[i]);
+		new_stock=new_stock.substr(0,pos+1)+new_stock.substr(pos+grp_parse_tab[i].length+2);
+	      }
 	    }
-	    new_stock=new_stock.substr(0,pos+1)+new_stock.substr(pos+grp_parse_tab[i].length+2);
 	  }
 	  mon_stock.value=new_stock.replace(/(^\s|\s$)/g,"");
-	  
-	  return true;
+	  return taken_stock;
 	}
+	
+	//~ 
+	//~ function prendre(formule){
+	  //~ var grp_parse_tab=formule.replace(/(\(|\)|\+|\/\/)+/g," ").replace(/(\s)+/g," ").replace(/(^\s|\s$)/g,"").split(" ");
+	  //~ var i;
+	  //~ var new_stock=mon_stock.value.replace(/(^|$)/g," ");
+	  //~ var pos;
+	  //~ var taken_stock=formule;
+	  //~ var previous_part="";
+	  //~ var this_part=formule;
+	  //~ for (i=0;i<grp_parse_tab.length;i++){
+	    //~ //check if stock still avaible
+	    //~ pos=new_stock.search(" "+grp_parse_tab[i]+" ");
+	    //~ console.log(i,grp_parse_tab[i],pos,new_stock.substr(0,pos+1),new_stock.substr(pos+grp_parse_tab[i].length+2));
+	    //~ if (pos<0){//alternative checking
+	      //~ pos=new_stock.search(" "+grp_parse_tab[i]+"\\[");
+	      //~ if (pos<0){
+		//~ return "";
+	      //~ }
+	      //~ var pos2=new_stock.indexOf("] ",pos);
+	      //~ if (pos2<0){
+		//~ alert(new_stock.slice(pos,pos+grp_parse_tab[i].length+2), " est incomplet. Le format pour indiquer des propriétés est 'valeur[propierte]'. ");
+		//~ return "";
+	      //~ }
+	      //~ var detailled_componant=new_stock.slice(pos,pos2+1);
+	      //~ taken_stock=taken_stock.replace(grp_parse_tab[i],detailled_componant);
+	      //~ new_stock=new_stock.substr(0,pos+1)+new_stock.substr(pos2+2);
+	    //~ 
+	    //~ } else {
+	      //~ new_stock=new_stock.substr(0,pos+1)+new_stock.substr(pos+grp_parse_tab[i].length+2);
+	    //~ }
+	    //~ for
+	  //~ }
+	  //~ mon_stock.value=new_stock.replace(/(^\s|\s$)/g,"");
+	  //~ 
+	  //~ return taken_stock;
+	//~ }
 	<!-- functions in gui -->
 	function calcul_combinaisons(){
 	  // stocks representation
@@ -355,8 +663,9 @@
 	  for (i=0; i <stock_parse_tab.length; i++){
 	      //~ console.log(stock_parse_tab[i]);
 	      k=stock_parse_tab[i];
-	      v_k=parseInt(format_input(k));
-	      if (v_k in stock){
+	      k=k.replace(/(\[.*\])/,'');
+	      v_k=parse_input(k);
+	      if ((v_k in stock) && (k in stock[v_k])){
 		v_nb=stock[v_k][k][k]+1;
 	      } else {
 		v_nb=1;
@@ -401,27 +710,211 @@
 	  }
 	}
 	function prendre_grp1(){
-	  if(prendre(grp_resistance1.value)){
-	    mon_stock_pris.value=mon_stock_pris.value+' '+grp_resistance1.value;
-	  }
+	  mon_stock_pris.value=mon_stock_pris.value.concat(prendre(grp_resistance1.value)).replace(')(',') (');
 	  grp_resistance1.value="";
 	  grp_resistance_val1.value="";
 	}
 	function prendre_grp2(){
-	  if(prendre(grp_resistance2.value)){
-	    mon_stock_pris.value=mon_stock_pris.value+' '+grp_resistance2.value;
-	  }
+	  mon_stock_pris.value=mon_stock_pris.value.concat(prendre(grp_resistance2.value)).replace(')(',') (');
 	  grp_resistance2.value="";
 	  grp_resistance_val2.value="";
 	}
 	function prendre_grp3(){
-	  if(prendre(grp_resistance3.value)){
-	    mon_stock_pris.value=mon_stock_pris.value+' '+grp_resistance3.value;
-	  }
+	  mon_stock_pris.value=mon_stock_pris.value.concat(prendre(grp_resistance3.value)).replace(')(',') (');
 	  grp_resistance3.value="";
 	  grp_resistance_val3.value="";
 	}
     </script>
 <!---->
+
+<!--Déchiffrage d'une résistance-->
+<script>
+        var my_resistor={};
+        var my_resistor_mode;
+  
+	function use_abbrv(val){
+	  return (val+" ").replace(/(0){6} /g,'m ').replace(/(0){3} /g,'k ').replace(/ $/,'');
+	}
+
+	
+        function update_value(do_store){
+	  var desc;
+	  desc=("[").concat(('val1' in my_resistor) ? my_resistor['val1']:"");
+	  desc=desc.concat(",",('val2' in my_resistor) ? my_resistor['val2']:"");
+	  desc=desc.concat(",",('val3' in my_resistor) ? my_resistor['val3']:"");
+	  desc=desc.concat(",",('mult' in my_resistor) ? use_abbrv(my_resistor['mult']):"");
+	  desc=desc.concat(",",('tolerance' in my_resistor) ? my_resistor['tolerance']:"");
+	  desc=desc.concat("]");
+	  document.getElementById('resistor_desc').value=desc;
+	  if ( ('val1' in my_resistor) && ('mult' in my_resistor) &&
+                ((my_resistor_mode==3) || ('val2' in my_resistor)) &&
+                ((my_resistor_mode<5) || ('val3' in my_resistor))  ){
+            //~ console.log("update");
+            var val=my_resistor['val1'];
+
+            if (my_resistor_mode>3) {
+              val=val*10+my_resistor['val2'];
+            }
+            if (my_resistor_mode>4) {
+              val=val*10+my_resistor['val3'];
+            }
+	    val=val*my_resistor['mult'];
+            
+	    if (do_store){
+	       document.getElementById('mon_stock').value=document.getElementById('mon_stock').value.concat(" ",use_abbrv(val),desc);
+	    } else {
+	      if ('tolerance' in my_resistor){
+		var precision=val*my_resistor['tolerance'];
+		val=val+' (+/- '+precision+' )'
+	      }
+	      //~ console.log(val);
+	      document.getElementById('resistor_value').value=(val+" ").replace(/(0){6} /g,'m ').replace(/(0){3} /g,'k ');
+	    }
+          }
+        }
+        function set_mode(val){
+          my_resistor_mode=val;
+          document.getElementById('coef-temp').style.display = ((val>5) ? 'inline-block' :'none');
+          document.getElementById('value3').style.display = ((val>4) ? 'inline-block' :'none');
+          document.getElementById('value2').style.display = ((val>3) ? 'inline-block' :'none');
+         
+	  if (val<6){
+	    document.getElementById('view_ppm').className="resistor_color_None";
+	    if (val<5){
+	      document.getElementById('view_val3').className="resistor_color_None";
+	      if (val<4){
+		document.getElementById('view_val2').className="resistor_color_None";
+	      
+	      }
+	    }
+	  }
+          update_value();
+        }
+        function set_my_resistor(key,val){
+          //~ console.log("set my_resistor['"+key+"']="+val);
+          my_resistor[key]=val;
+          update_value();
+        }
+        function val1_set(val){
+          document.getElementById('view_val1').className=color_tab_val[val];
+          set_my_resistor('val1',val);
+        }
+        function val2_set(val){
+          document.getElementById('view_val2').className=color_tab_val[val];
+          set_my_resistor('val2',val);
+        }
+        function val3_set(val){
+          document.getElementById('view_val3').className=color_tab_val[val];
+          set_my_resistor('val3',val);
+        }
+        function mult_set(val){
+          document.getElementById('view_mult').className=color_tab_mult[val];
+          set_my_resistor('mult',val);
+        }
+        function tolerance_set(val,view_class){
+          document.getElementById('view_tol').className=color_tab_tolerance[val];
+          set_my_resistor('tolerance',val);
+        }
+        function ppm_set(val,view_class){
+          document.getElementById('view_ppm').className=view_class;
+        }
+
+	function store_resistance(){
+	  console.log('store');
+	  update_value(true);
+	}
+
+	var color_tab_val={0:"resistor_color_Black",
+			    1:"resistor_color_Brown",
+			    4:"resistor_color_Yellow",
+			    7:"resistor_color_Violet",
+			    2:"resistor_color_Red",
+			    5:"resistor_color_Green",
+			    8:"resistor_color_Gray",
+			    3:"resistor_color_Orange",
+			    6:"resistor_color_Blue",
+			    9:"resistor_color_White"};
+			    
+	var color_tab_mult={0.01:"resistor_color_Gold",
+			    0.1:"resistor_color_Silver",
+			    1:"resistor_color_Brown",
+			    10:"resistor_color_Black",
+			    100:"resistor_color_Brown",
+			    1000:"resistor_color_Red",
+			    10000:"resistor_color_Orange",
+			    100000:"resistor_color_Yellow",
+			    1000000:"resistor_color_Green",
+			    10000000:"resistor_color_Blue",
+			    100000000:"resistor_color_Violet"};
+	var color_tab_tolerance={0.20:"resistor_color_None",
+				  0.10:"resistor_color_Silver",
+				  0.05:"resistor_color_Gold",
+				  0.01:"resistor_color_Brown",
+				  0.02:"resistor_color_Red",
+				  0.005:"resistor_color_Green",
+				  0.0025:"resistor_color_Blue",
+				  0.001:"resistor_color_Violet"};
+
+	function get_resistance(){
+	  var desc=document.getElementById('resistor_desc').value;
+	  var pos1=desc.indexOf('[');
+	  var pos2=desc.indexOf(']');
+	  desc=desc.substring(pos1+1,pos2);
+	  var tab_desc=desc.split(',');
+	  if ((pos1>-1)&&(pos2>-1)&&(tab_desc.length==5)){
+	    if (tab_desc[0]=='') {
+	      delete my_resistor.val1;
+	    }else{
+	      my_resistor_mode=3;
+	    }
+	    if (tab_desc[1]=='') {
+	      delete my_resistor.val2;
+	    }else{
+	      my_resistor_mode=4;
+	    }
+	    if (tab_desc[2]=='') {
+	      delete my_resistor.val3;
+	    }else{
+	      my_resistor_mode=5;
+	    }
+	    if (tab_desc[3]=='') {
+	      delete my_resistor.mult;
+	    }
+	    if (tab_desc[4]=='') {
+	      delete my_resistor.tolerance;
+	    }
+	    set_mode(my_resistor_mode);//imply update value
+	  
+	    if (!tab_desc[0]=='') {
+	      val1_set(tab_desc[0]);
+	    }
+	    if (!tab_desc[1]=='') {
+	      val2_set(tab_desc[1]);
+	    }
+	    if (!tab_desc[2]=='') {
+	      val3_set(tab_desc[2]);
+	    }
+	    if (!tab_desc[3]=='') {
+	      mult_set(tab_desc[3].replace('k','000').replace('m','000000'));
+	    }
+	    if (!tab_desc[4]=='') {
+	      tolerance_set(tab_desc[4]);
+	    }
+	    
+	    
+	  } else {
+	    alert("Format de référence non reconnu");
+	  }
+	}
+	function run_get_resistance(event) {
+	  if (event.which == 13 || event.keyCode == 13) {
+	    get_resistance();
+	    return false;
+	  }
+	  return true;
+	}
+        set_mode(4);
+
+      </script>
     </body>
 </html>

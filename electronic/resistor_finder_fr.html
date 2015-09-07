@@ -6,7 +6,7 @@
 	  <title>Resistance finder</title>
 	  <style>
 	    body{
-	      
+		background-color:#E5E8D4;
 	    }
 	    article{
 	      display:inline-block;
@@ -17,21 +17,20 @@
 		width:100%;
 	    }
 	    .cadre{
-		border: 3px solid black;
-		background-color:#E6E6FA;
+		/*border: 3px solid black;
+		border-radius:0.1em;
+		box-shadow: 10px 10px 5px #888888;
+		background-color:#E6E6FA;*/
 		display:inline-block;
 		width:50%;
-		border-radius:0.1em;
-		box-shadow: 10px 10px 5px #888888;
-		float:center;
 	    }
 	    .cadre-left{
-		border: 2px solid black;
-		background-color:#E6E6FA;
-		display:inline-block;
-		width:40%;
+		/*border: 3px solid black;
 		border-radius:0.1em;
 		box-shadow: 10px 10px 5px #888888;
+		background-color:#E6E6FA;*/
+		display:inline-block;
+		width:40%;
 		float:left;
 	    }
 	    
@@ -41,8 +40,14 @@
 	    header{
 	      text-align:center;
 	      background-color:rgba(173,173,173,0.25);
+	      font-size:small;
 	    }
-
+	    #titre{
+	      position : relative;
+	      top:0;
+	      left:0;
+	      width:100%;
+	    }
 	    /* Block de calcul des combinaisons de resistance */
 	    .cadre h2{
 	      border: 1.5px solid black;
@@ -66,6 +71,9 @@
 		background-color:black;
 		width:100%;
 		text-align:center;
+	    }
+	    label {
+		
 	    }
 	    #legende {
 		font-size: small;
@@ -172,12 +180,15 @@
 	      padding:0.5em;
 
 	    }
-	    #resistor_view_canvas{
+	    .resistor_view_canvas{
 	      display:inline-block;
 	      text-align:center;
+	      min-height:3em;
 	    }
-	    #resistor_view{
+	    
+	    .resistor_view{
 	      border:3px solid black;
+	      box-shadow: 2px 2px 5px #888888;
 	    }
 	    
 	    #resistor_value{
@@ -187,15 +198,48 @@
 	    #value2,#value3{
 	      display:block;
 	    }
+	    /* Block de visualisation du stock*/
+	    .cadre-view{
+		border: 3px solid black;
+		background-color:#E6E6FA;
+		display:inline-block;
+		width:55%;
+		height:6%;
+		position:absolute;
+		top:0%;
+		left:23%;
+		border-radius:0.1em;
+		box-shadow: 10px 10px 5px #888888;
+		opacity:0.20;
+		overflow:auto;
+	    }
+	    .cadre-view:hover{
+		opacity:0.9;
+		height:80%;
+	    }
+	    
+	    #stock_view {
+	      padding-top:2em;
+	      padding-bottom:2em;
+	      background: linear-gradient(to bottom, #feffe8 0%,#d6dbbf 100%);
+	    }
+	    .rotate_item {
+	      transform: rotate(-20deg);
+	    }
+	    .draggable{
+	      cursor:move;
+	    }
+	    .droppable{
+	      cursor:cell;
+	    }
 	  </style>
 	 </head>
     <body>
        <header id="titre">
 	   <h1>Explorateur de stock électronique</h1>
+	   <h2>Les résistances</h2>
        </header>
        <section id='corps'>
-	 <header><h2>Les résistances</h2></header>
-	  
 	<article class='cadre-left'>
 	  <header><h3>Déchiffrage</h3></header>
 	  <section >
@@ -206,24 +250,27 @@
 	    <li onClick='set_mode(5)'>5</li>
 	    <li onClick='set_mode(6)'>6</li>
 	    </ul>
-	    <div id='resistor_view_canvas'>
-	      &mdash;<span id='resistor_view' class='resistor_color_Beige'>
+	    <figure id='resistor_view' class='resistor_view_canvas draggable' draggable='true' ondragstart="resitor_drag(event)">
+	      <figcaption>Résistance carbone 0,5W</figcaption>
+	      &mdash;<span class='resistor_view resistor_color_Beige'>
 		<span class='resistor_color_None' id='view_val1'>&nbsp;&nbsp;</span>
 		<span class='resistor_color_None' id='view_val2'>&nbsp;&nbsp;</span>
 		<span class='resistor_color_None' id='view_val3'>&nbsp;&nbsp;</span>
 		<span class='resistor_color_None' id='view_mult'>&nbsp;&nbsp;</span>
 		<span class='resistor_color_None' id='view_tol'>&nbsp;&nbsp;</span>
+<!--
 		<span class='resistor_color_None' id='view_ppm'>&nbsp;&nbsp;</span>
+-->
 		</span>&mdash;
-
-	    </div>
-	    <div class='resistor_value_title'>Valeur <small>(en Ohm) :</small>
+	    </figure>
+	    <div class='resistor_value_title'>
+	      <label for='resistor_value'>Valeur <small>(en Ohm) :</small></label>
 	      <input type='text' id='resistor_value' disabled></input>
 	      <button onClick='store_resistance()'>Ajouter au stock</button>
 	    </div>
-	    <div class='resistor_value_title'>Ref.[v,v,v,m,t]:
-	      <input type='text' id='resistor_desc' onKeyDown='run_get_resistance(event)'></input>
-	      <button onClick='get_resistance()'>></button>
+	    <div class='resistor_value_title'>
+	      <label for='resistor_desc'>Ref.[v,v,v,m,t]:</label>
+	      <input type='text' id='resistor_desc' onblur='get_resistance();' onKeyDown='run_get_resistance(event);'></input>
 	    </div>
 	  </section>
 	  <section  class='resistor'>
@@ -235,7 +282,7 @@
 	      </ul>
 	      <ul class='resistor_color_list'>
 		<li class='resistor_color_Brown'    onClick='val1_set(1)'>1</li>
-		<li class='resistor_color_Yellow'   onClick='val1_set(4'>4</li>
+		<li class='resistor_color_Yellow'   onClick='val1_set(4)'>4</li>
 		<li class='resistor_color_Violet'   onClick='val1_set(7)'>7</li>
 	      </ul>
 	      <ul class='resistor_color_list'>
@@ -328,12 +375,12 @@
 	  </section>
 	  <p id="legende">Note : si la tolérance est élevée ou si vous ne voyez pas clairement les couleurs, utilisez un multimètre.</p>
 	</article>
-	<article class="cadre" id="calcul_resistance">
+	<article class="cadre" id="calcul_resistance" >
 	    <header><h3>Recherche de combinaisons</h3></header>
 	    <div class='block_stock'>
 	      <label for="mon_stock">Stock de resistances <small>(en ohm, séparé par des espaces)</small>:<br></label>
 	    </div>
-	    <input type="string" value="21k 21k 1k 10k 20k 7k 9k" class="stock" name="mon_stock" id="mon_stock" title="Aide : les notations k=*1000 m=*1000000 sont authorisées"></input>
+	    <input onblur="update_stock();" ondrop="drop_on_stock(event);" ondragover="allowDrop(event);" type="string" value="21k 21k 1k 10k 20k 7k 9k" class="stock" name="mon_stock" id="mon_stock" title="Aide : les notations k=*1000 m=*1000000 sont authorisées"></input>
 	    
 	    <br>
 	    <br>
@@ -342,7 +389,7 @@
 	      <br>
 	      <label for="ecart">Écart maximum <small>(en %)</small></label><input type="float" value="0.2" name="ecart" id="ecart"></input>
 	      <br>
-	      <label for="nbresistances">Nombre maximum de resistances utilisées </label><input type="number" value="5" min=1 max=10 name="nbresistances" id="nbresistances"></input>
+	      <label for="nbresistances">Nombre maximum de resistances utilisées </label><input type="number" value="4" min=1 max=10 name="nbresistances" id="nbresistances"></input>
 	      <br>
 	      <button OnClick="calcul_combinaisons()">Calculer</button>
 	      <br>
@@ -372,6 +419,19 @@
 	    <p id="legende">Légende :  ( R1 <strong>+</strong> R2 ) &rarr; résistances en série; ( R1 <strong>//</strong> R2 ) &rarr; résistances en parallèle.  </p>
 	        
       </article>
+      <article class="cadre-right" id="diviseur_tension">
+	    <header><h3>Faire un pont diviseur de tension</h3></header>
+	     <div id='block_form1'>
+	      <label for="t_in">Tension d'entrée</label><input type="number" value="10500" name="t_in" id="resistance"></input>
+	      <br>
+	      <label for="t_out">Tension de sortie</label><input type="float" value="0.2" name="t_out" id="ecart"></input>
+	      <br>
+	      <p>A venir...</p>
+	      <br>
+	    </div>
+      </article>
+      <article class="cadre-view droppable" id='stock_view' ondrop="drop_on_stock(event)" ondragover="allowDrop(event)">
+	</article>
       </section>
       <footer>
             DIY. 2015 Copyleft : Sébastien Gillot.<br>
@@ -458,9 +518,11 @@
 	function test_a_in_stock_b(a,b){//input : "b" is a stock, "a" is a formula {"componant1":qte,"componant2":qte}
 	  var v;
 	  for (var k in a){
-	    v=parseInt(parse_input(k));
-	    if ((k!='_nb_') && ((!(v in b)) || (a[k] > b[v][k][k]))) {
-	      return false;
+	    if (k!='_nb_'){
+	      v=parseInt(parse_input(k));
+	      if (!(v in b)  || (a[k] > b[v][k][k])) {
+		return false;
+	      }
 	    } 
 	  }
 	  return true
@@ -470,10 +532,9 @@
 	  for (var k in a){
 	      if ( a[k]['_nb_'] < (max_qte/2) + 1 ) {//minimum number of components wished is under half of the max quantity
 		i++;
-	      }
-	      i++;
-	      if (i==3){
-		return false;
+		if (i==3){
+		  return false;
+		}
 	      }
 	  }
 	  return true;
@@ -525,7 +586,7 @@
 	  var i=0;
 	  var diff;
 	  for (var k in stock) {
-	      //~ console.log(k+":"+stock[k][0]);
+	      //~ console.log(k,stock[k],v_ecart);
 	      var diff=Math.abs(k - v_resistance );
 	      if ( diff <= v_ecart ){
 		for (var l in stock[k]){
@@ -534,6 +595,7 @@
 		}
 	      }
 	  }
+	  //~ console.log(res);
 	  res.sort(function(a, b){return a[2]-b[2]})
 	  return res;
 	}
@@ -565,115 +627,125 @@
 	  }
 	  return res;
 	}
-
-
-	function prendre(formule){
+	function stock_extraction_from_formatted_stock(formule){
 	  var grp_parse_tab=formule.replace(/[(+)]/g,function(x){return ' '+x+' '}).replace(/(\s)+/g," ").split(" ");
 	  //~ console.log(formule.replace(/[(+)]/g,function(x){return ' '+x+' '}).replace(/(\s)+/g," ").replace(/(^\s|\s$)/g,""));
 	  var i;
-	  var new_stock=mon_stock.value.replace(/(^|$)/g," ");
-	  var pos;
+	  var new_stock=document.getElementById('mon_stock').value.replace(/(^|$)/g," ");
+	  var pos, pos2, pos3;
+	  var qte;
+	  var detailled_componant;
 	  var taken_stock="";
 	  for (i=0;i<grp_parse_tab.length;i++){
 	    if ((grp_parse_tab[i]=='')||(grp_parse_tab[i]=='(')||(grp_parse_tab[i]==')')||(grp_parse_tab[i]=='+')||(grp_parse_tab[i]=='//')){
 	      taken_stock=taken_stock.concat(grp_parse_tab[i]);
 	    } else {
+	      //~ console.log(grp_parse_tab[i]);
 	      //check if stock still avaible
-	      pos=new_stock.search(" "+grp_parse_tab[i]+" ");
+	      pos=new_stock.search(" "+grp_parse_tab[i]+"{");
 	      if (pos<0){//alternative checking
 		pos=new_stock.search(" "+grp_parse_tab[i]+"\\[");
 		if (pos<0){
 		  return "";
 		}
-		var pos2=new_stock.indexOf("] ",pos);
+		pos2=new_stock.indexOf("]",pos);
 		if (pos2<0){
 		  alert(new_stock.slice(pos,pos+grp_parse_tab[i].length+2), " est incomplet. Le format pour indiquer la référence est 'valeur[référence]'. ");
 		  return "";
 		}
-		var detailled_componant=new_stock.slice(pos+1,pos2+1);
+
+		detailled_componant=new_stock.slice(pos+1,pos2+1);
 		taken_stock=taken_stock.concat(detailled_componant);
-		new_stock=new_stock.substr(0,pos+1)+new_stock.substr(pos2+2);
 	      
 	      } else {
 		taken_stock=taken_stock.concat(grp_parse_tab[i]);
-		new_stock=new_stock.substr(0,pos+1)+new_stock.substr(pos+grp_parse_tab[i].length+2);
 	      }
+	      pos2=new_stock.indexOf("{",pos);
+	      pos3=new_stock.indexOf("}",pos2);
+	      qte=new_stock.substring(pos2+1,pos3);
+	      //~ console.log(qte,new_stock,pos,pos2,pos3);
+	      if (qte=="1"){
+		new_stock=new_stock.substring(0,pos+1)+new_stock.substr(pos3+2);
+	      } else {
+		new_stock=new_stock.substring(0,pos2+1)+(parseInt(qte)-1)+new_stock.substr(pos3);
+	      }
+	      //~ console.log(taken_stock,"<",new_stock);
 	    }
 	  }
-	  mon_stock.value=new_stock.replace(/(^\s|\s$)/g,"");
+	  document.getElementById('mon_stock').value=new_stock.replace(/(^\s|\s$)/g,"");
+	  update_stock();
 	  return taken_stock;
 	}
-	
-	//~ 
-	//~ function prendre(formule){
-	  //~ var grp_parse_tab=formule.replace(/(\(|\)|\+|\/\/)+/g," ").replace(/(\s)+/g," ").replace(/(^\s|\s$)/g,"").split(" ");
-	  //~ var i;
-	  //~ var new_stock=mon_stock.value.replace(/(^|$)/g," ");
-	  //~ var pos;
-	  //~ var taken_stock=formule;
-	  //~ var previous_part="";
-	  //~ var this_part=formule;
-	  //~ for (i=0;i<grp_parse_tab.length;i++){
-	    //~ //check if stock still avaible
-	    //~ pos=new_stock.search(" "+grp_parse_tab[i]+" ");
-	    //~ console.log(i,grp_parse_tab[i],pos,new_stock.substr(0,pos+1),new_stock.substr(pos+grp_parse_tab[i].length+2));
-	    //~ if (pos<0){//alternative checking
-	      //~ pos=new_stock.search(" "+grp_parse_tab[i]+"\\[");
-	      //~ if (pos<0){
-		//~ return "";
-	      //~ }
-	      //~ var pos2=new_stock.indexOf("] ",pos);
-	      //~ if (pos2<0){
-		//~ alert(new_stock.slice(pos,pos+grp_parse_tab[i].length+2), " est incomplet. Le format pour indiquer des propriétés est 'valeur[propierte]'. ");
-		//~ return "";
-	      //~ }
-	      //~ var detailled_componant=new_stock.slice(pos,pos2+1);
-	      //~ taken_stock=taken_stock.replace(grp_parse_tab[i],detailled_componant);
-	      //~ new_stock=new_stock.substr(0,pos+1)+new_stock.substr(pos2+2);
-	    //~ 
-	    //~ } else {
-	      //~ new_stock=new_stock.substr(0,pos+1)+new_stock.substr(pos+grp_parse_tab[i].length+2);
-	    //~ }
-	    //~ for
-	  //~ }
-	  //~ mon_stock.value=new_stock.replace(/(^\s|\s$)/g,"");
-	  //~ 
-	  //~ return taken_stock;
-	//~ }
+	function reformat_input_stock(){
+	  var v_stock=document.getElementById('mon_stock').value;
+	  var stock_parse_tab=v_stock.replace(/(\(|\)|\+|\/\/)+/g," ").replace(/(\s)+/g," ").replace(/(^\s|\s$)/g,"").split(" ");
+	  var v_stock_hash={};
+	  var i;
+	  var k;
+	  var qte;
+	  for (i=0; (i <stock_parse_tab.length); i++){
+	      k=stock_parse_tab[i];
+	      if (k.search('{')>0){
+		qte=parseInt(k.replace(/(.*\{)/,'').replace(/(\})/,''));
+		k=k.replace(/(\{.*)/,'');
+	      } else {
+		qte=1;
+	      }
+	      if (k in v_stock_hash){
+		v_stock_hash[k]=v_stock_hash[k]+qte;
+	      } else {
+		v_stock_hash[k]=qte;
+	      }
+	  }
+	  v_stock="";
+	  for (k in v_stock_hash){
+	    v_stock=v_stock.concat(k,"{",v_stock_hash[k],"} ");
+	  }
+	  document.getElementById('mon_stock').value=v_stock.replace(/(^\s|\s$)/g,"");
+	}
 	<!-- functions in gui -->
 	function calcul_combinaisons(){
 	  // stocks representation
 	  var stock={'_nb_':0};//all components avaible with their quantity
-	  var init_set={};//representation all components avaible without their quantity
+	  var init_set={'_nb_':0};//representation all components avaible without their quantity
 	  //values to iterate
 	  var i;
 	  var v_nb;
 	  var v_k;
 	  var k;
+	  var k_nb;
+	  var qte;
+	  // get input
+	  var v_resistance=parseInt(document.getElementById('resistance').value);
+	  var max_qte=parseInt(document.getElementById('nbresistances').value);
+	  var v_tolerance=(parseFloat(document.getElementById('ecart').value)*v_resistance)/100;
 	  // reinitialization of the output
-	  mon_stock.value=mon_stock.value.replace(/(\(|\)|\+|\/\/)+/g," ").replace(/(\s)+/g," ").replace(/(^\s|\s$)/g,"");
-	  grp_resistance1.value="";
-	  grp_resistance_val1.value="";
-	  grp_resistance2.value="";
-	  grp_resistance_val2.value="";
-	  grp_resistance3.value="";
-	  grp_resistance_val3.value="";
+	  reformat_input_stock();// include quantification between { }
+	  document.getElementById('grp_resistance1').value="";
+	  document.getElementById('grp_resistance_val1').value="";
+	  document.getElementById('grp_resistance2').value="";
+	  document.getElementById('grp_resistance_val2').value="";
+	  document.getElementById('grp_resistance3').value="";
+	  document.getElementById('grp_resistance_val3').value="";
 	  // build stocks
-	  var stock_parse_tab=mon_stock.value.split(" ");
-	  for (i=0; i <stock_parse_tab.length; i++){
+	  var stock_parse_tab=document.getElementById('mon_stock').value.split(" ");
+	  for (i=0; (i <stock_parse_tab.length) && (init_set['_nb_'] < 10); i++){// for best perfomance
 	      //~ console.log(stock_parse_tab[i]);
 	      k=stock_parse_tab[i];
-	      k=k.replace(/(\[.*\])/,'');
+	      qte=parseInt(k.replace(/(.*\{)/,'').replace(/(\})/,''));
+	      k=k.replace(/(\{.*)/,'').replace(/(\[.*)/,'');
 	      v_k=parse_input(k);
 	      if ((v_k in stock) && (k in stock[v_k])){
-		v_nb=stock[v_k][k][k]+1;
+		v_nb=stock[v_k][k][k]+qte;
 	      } else {
-		v_nb=1;
+		v_nb=qte;
+		init_set['_nb_']=init_set['_nb_']+1;
+		init_set[v_k]={};
+		init_set[v_k][k]={};
+		init_set[v_k][k]['_nb_']=1;
+		init_set[v_k][k][k]=1;
 	      }
-	      init_set[v_k]={};
-	      init_set[v_k][k]={};
-	      init_set[v_k][k]['_nb_']=1;
-	      init_set[v_k][k][k]=1;
+	      stock['_nb_']=stock['_nb_']+qte;
 	      
 	      stock[v_k]={};
 	      stock[v_k][k]={};
@@ -681,96 +753,152 @@
 	      stock[v_k][k][k]=v_nb;
 	  }
 
+	  
 	  //~ console.log(stock);
+	  //~ console.log(init_set);
 	  // build combinations
-	  var max_qte=parseInt(nbresistances.value);
+
 	  var comb_serial_set=populate_combine_stock(init_set,stock,resistances_en_serie,'+',max_qte);
 	  var comb_parallel_set=populate_combine_stock(comb_serial_set,stock,resistances_en_parallele,'//',max_qte);
 	  //~ console.log(comb_parallel_set);
-	  var comb_final_set=populate_combine_stock(comb_parallel_set,stock,resistances_en_serie,'+',max_qte);
-	  //~ console.log(comb_final_set);
+	  var comb_final_set;
+	  
+	  if ( false && (v_resistance in comb_parallel_set) &&
+	      (!need_better_solution(comb_parallel_set[v_resistance],max_qte))){
+	    comb_final_set=comb_parallel_set;
+	  } else {
+	    comb_final_set=populate_combine_stock(comb_parallel_set,stock,resistances_en_serie,'+',max_qte);
+	  }
 	  // search the nearests
-	  var v_resistance=parseInt(resistance.value);
-	  var v_solution=search_group(v_resistance,
-				      ((parseFloat(ecart.value)*v_resistance)/100),
-				      comb_final_set);
+	  //~ console.log(comb_final_set);
+	  var v_solution=search_group(v_resistance,v_tolerance,comb_final_set);
 
 	  // displaying results
 	  if (v_solution.length>0){
-	    grp_resistance1.value=v_solution[0][1];
-	    grp_resistance_val1.value=v_solution[0][0];
+	    document.getElementById('grp_resistance1').value=v_solution[0][1];
+	    document.getElementById('grp_resistance_val1').value=v_solution[0][0];
 	    if (v_solution.length>1){
-	      grp_resistance2.value=v_solution[1][1];
-	      grp_resistance_val2.value=v_solution[1][0];
+	      document.getElementById('grp_resistance2').value=v_solution[1][1];
+	      document.getElementById('grp_resistance_val2').value=v_solution[1][0];
 	      if (v_solution.length>2){
-		grp_resistance3.value=v_solution[2][1];
-		grp_resistance_val3.value=v_solution[2][0];
+		document.getElementById('grp_resistance3').value=v_solution[2][1];
+		document.getElementById('grp_resistance_val3').value=v_solution[2][0];
 	      }
 	    }
 	  }
 	}
 	function prendre_grp1(){
-	  mon_stock_pris.value=mon_stock_pris.value.concat(prendre(grp_resistance1.value)).replace(')(',') (');
-	  grp_resistance1.value="";
-	  grp_resistance_val1.value="";
+	  document.getElementById('mon_stock_pris').value=document.getElementById('mon_stock_pris').value.concat(
+	    stock_extraction_from_formatted_stock(document.getElementById('grp_resistance1').value)).replace(')(',') (');
+	  document.getElementById('grp_resistance1').value="";
+	  document.getElementById('grp_resistance_val1').value="";
 	}
 	function prendre_grp2(){
-	  mon_stock_pris.value=mon_stock_pris.value.concat(prendre(grp_resistance2.value)).replace(')(',') (');
-	  grp_resistance2.value="";
-	  grp_resistance_val2.value="";
+	  document.getElementById('mon_stock_pris').value=document.getElementById('mon_stock_pris').value.concat(
+	    stock_extraction_from_formatted_stock(document.getElementById('grp_resistance2').value)).replace(')(',') (');
+	  document.getElementById('grp_resistance2').value="";
+	  document.getElementById('grp_resistance_val2').value="";
 	}
 	function prendre_grp3(){
-	  mon_stock_pris.value=mon_stock_pris.value.concat(prendre(grp_resistance3.value)).replace(')(',') (');
-	  grp_resistance3.value="";
-	  grp_resistance_val3.value="";
+	  document.getElementById('mon_stock_pris').value=document.getElementById('mon_stock_pris').value.concat(
+	    stock_extraction_from_formatted_stock(document.getElementById('grp_resistance3').value)).replace(')(',') (');
+	  document.getElementById('grp_resistance3').value="";
+	  document.getElementById('grp_resistance_val3').value="";
 	}
     </script>
 <!---->
-
 <!--Déchiffrage d'une résistance-->
 <script>
         var my_resistor={};
         var my_resistor_mode;
-  
+	
+	var color_tab_val={"":"resistor_color_None",
+			    0:"resistor_color_Black",
+			    1:"resistor_color_Brown",
+			    4:"resistor_color_Yellow",
+			    7:"resistor_color_Violet",
+			    2:"resistor_color_Red",
+			    5:"resistor_color_Green",
+			    8:"resistor_color_Gray",
+			    3:"resistor_color_Orange",
+			    6:"resistor_color_Blue",
+			    9:"resistor_color_White"};
+			    
+	var color_tab_mult={"":"resistor_color_None",
+			    0.01:"resistor_color_Gold",
+			    0.1:"resistor_color_Silver",
+			    1:"resistor_color_Brown",
+			    10:"resistor_color_Black",
+			    100:"resistor_color_Brown",
+			    1000:"resistor_color_Red",
+			    10000:"resistor_color_Orange",
+			    100000:"resistor_color_Yellow",
+			    1000000:"resistor_color_Green",
+			    10000000:"resistor_color_Blue",
+			    100000000:"resistor_color_Violet"};
+	var color_tab_tolerance={"":"resistor_color_None",
+				  0.20:"resistor_color_None",
+				  0.10:"resistor_color_Silver",
+				  0.05:"resistor_color_Gold",
+				  0.01:"resistor_color_Brown",
+				  0.02:"resistor_color_Red",
+				  0.005:"resistor_color_Green",
+				  0.0025:"resistor_color_Blue",
+				  0.001:"resistor_color_Violet"};
+
 	function use_abbrv(val){
 	  return (val+" ").replace(/(0){6} /g,'m ').replace(/(0){3} /g,'k ').replace(/ $/,'');
 	}
 
-	
-        function update_value(do_store){
-	  var desc;
-	  desc=("[").concat(('val1' in my_resistor) ? my_resistor['val1']:"");
-	  desc=desc.concat(",",('val2' in my_resistor) ? my_resistor['val2']:"");
-	  desc=desc.concat(",",('val3' in my_resistor) ? my_resistor['val3']:"");
-	  desc=desc.concat(",",('mult' in my_resistor) ? use_abbrv(my_resistor['mult']):"");
-	  desc=desc.concat(",",('tolerance' in my_resistor) ? my_resistor['tolerance']:"");
-	  desc=desc.concat("]");
-	  document.getElementById('resistor_desc').value=desc;
+	function get_resistor_desc(){
+	  return (
+	  "[").concat(
+	  ('val1' in my_resistor) ? my_resistor['val1']:"").concat(
+	  ",",('val2' in my_resistor) ? my_resistor['val2']:"").concat(
+	  ",",('val3' in my_resistor) ? my_resistor['val3']:"").concat(
+	  ",",('mult' in my_resistor) ? use_abbrv(my_resistor['mult']):"").concat(
+	  ",",('tolerance' in my_resistor) ? my_resistor['tolerance']:"").concat(
+	  "]");
+	}
+
+	function get_resistor_value(){
+	  var val='';
 	  if ( ('val1' in my_resistor) && ('mult' in my_resistor) &&
                 ((my_resistor_mode==3) || ('val2' in my_resistor)) &&
                 ((my_resistor_mode<5) || ('val3' in my_resistor))  ){
-            //~ console.log("update");
-            var val=my_resistor['val1'];
-
-            if (my_resistor_mode>3) {
-              val=val*10+my_resistor['val2'];
-            }
-            if (my_resistor_mode>4) {
-              val=val*10+my_resistor['val3'];
-            }
-	    val=val*my_resistor['mult'];
-            
-	    if (do_store){
-	       document.getElementById('mon_stock').value=document.getElementById('mon_stock').value.concat(" ",use_abbrv(val),desc);
-	    } else {
-	      if ('tolerance' in my_resistor){
-		var precision=val*my_resistor['tolerance'];
-		val=val+' (+/- '+precision+' )'
+	      val=parseInt(my_resistor['val1']);
+	      if (my_resistor_mode>3) {
+		val=(val*10)+parseInt(my_resistor['val2']);
 	      }
-	      //~ console.log(val);
-	      document.getElementById('resistor_value').value=(val+" ").replace(/(0){6} /g,'m ').replace(/(0){3} /g,'k ');
-	    }
-          }
+	      if (my_resistor_mode>4) {
+		val=val*10+parseInt(my_resistor['val3']);
+	      }
+	      val=val*my_resistor['mult'];
+	  }
+	  return val;
+	}
+	function add_resistor_tolerance_value(val){
+	  if ('tolerance' in my_resistor){
+		val=val + ' (+/- ' + (val*my_resistor['tolerance']) +' )' ;
+	  }
+	  return val;
+	}
+
+	function get_resistor_ref(){
+	  return use_abbrv(get_resistor_value()).concat(get_resistor_desc());
+	}
+	
+        function update_value(do_store){
+	  var desc=get_resistor_desc();
+	  document.getElementById('resistor_desc').value=desc;
+	  var val=get_resistor_value();
+	  if (( val !="" ) && do_store){
+	    var ref=get_resistor_ref();
+	    document.getElementById('mon_stock').value=document.getElementById('mon_stock').value.concat(" ",ref);
+	    update_stock();
+	  } else {
+	    document.getElementById('resistor_value').value=use_abbrv(add_resistor_tolerance_value(val));
+	  }
         }
         function set_mode(val){
           my_resistor_mode=val;
@@ -778,20 +906,21 @@
           document.getElementById('value3').style.display = ((val>4) ? 'inline-block' :'none');
           document.getElementById('value2').style.display = ((val>3) ? 'inline-block' :'none');
          
-	  if (val<6){
-	    document.getElementById('view_ppm').className="resistor_color_None";
+	  //~ if (val<6){
+	    //~ document.getElementById('view_ppm').className="resistor_color_None";
 	    if (val<5){
 	      document.getElementById('view_val3').className="resistor_color_None";
+	      delete my_resistor.val3;
 	      if (val<4){
 		document.getElementById('view_val2').className="resistor_color_None";
+		delete my_resistor.val2;
 	      
 	      }
 	    }
-	  }
+	  //~ }
           update_value();
         }
         function set_my_resistor(key,val){
-          //~ console.log("set my_resistor['"+key+"']="+val);
           my_resistor[key]=val;
           update_value();
         }
@@ -820,62 +949,67 @@
         }
 
 	function store_resistance(){
-	  console.log('store');
+	  //~ console.log('store');
 	  update_value(true);
 	}
 
-	var color_tab_val={0:"resistor_color_Black",
-			    1:"resistor_color_Brown",
-			    4:"resistor_color_Yellow",
-			    7:"resistor_color_Violet",
-			    2:"resistor_color_Red",
-			    5:"resistor_color_Green",
-			    8:"resistor_color_Gray",
-			    3:"resistor_color_Orange",
-			    6:"resistor_color_Blue",
-			    9:"resistor_color_White"};
-			    
-	var color_tab_mult={0.01:"resistor_color_Gold",
-			    0.1:"resistor_color_Silver",
-			    1:"resistor_color_Brown",
-			    10:"resistor_color_Black",
-			    100:"resistor_color_Brown",
-			    1000:"resistor_color_Red",
-			    10000:"resistor_color_Orange",
-			    100000:"resistor_color_Yellow",
-			    1000000:"resistor_color_Green",
-			    10000000:"resistor_color_Blue",
-			    100000000:"resistor_color_Violet"};
-	var color_tab_tolerance={0.20:"resistor_color_None",
-				  0.10:"resistor_color_Silver",
-				  0.05:"resistor_color_Gold",
-				  0.01:"resistor_color_Brown",
-				  0.02:"resistor_color_Red",
-				  0.005:"resistor_color_Green",
-				  0.0025:"resistor_color_Blue",
-				  0.001:"resistor_color_Violet"};
-
+	function get_values_in_desc(desc){
+	  var pos1=desc.indexOf('[');
+	  var pos2=desc.indexOf(']',pos1);
+	  if ((pos1 > -1) && (pos2 > -1)){
+	    desc=desc.substring(pos1+1,pos2);
+	  }
+	  var tab_desc=desc.split(',');
+	  if (tab_desc.length<2){
+	      tab_desc[1]="";
+	  }
+	  if (tab_desc.length<3){
+	      tab_desc[2]="";
+	  }
+	  if (tab_desc.length<4){
+	      tab_desc[3]="";
+	  }
+	  if (tab_desc.length<5){
+	      tab_desc[4]=0.01;
+	  }
+	  
+	  if (tab_desc[0].length>1){
+	    pos1=tab_desc[0].search(/(k|m)/);
+	    pos1=((pos1==-1) && (tab_desc[0].length>3))? 3 : pos1;
+	    tab_desc[1]=(pos1>1)? tab_desc[0].charAt(1):"";
+	    tab_desc[2]=(pos1>2)? tab_desc[0].charAt(2):"";
+	    if ((tab_desc[3]=="")||(pos1>0)){
+	      tab_desc[3]="1".concat(tab_desc[0].substr(pos1));
+	    }
+	    tab_desc[0]=tab_desc[0].charAt(0);
+	  }
+	  tab_desc[3]=tab_desc[3].replace('k','000').replace('m','000000');
+	  return tab_desc;
+	}
+	function get_resistor_color_tab(desc){
+	  var color_tab=['resistor_color_None',
+			  'resistor_color_None',
+			  'resistor_color_None',
+			  'resistor_color_None',
+			  'resistor_color_None'];
+	  
+	  var tab_desc=get_values_in_desc(desc);
+	  color_tab[0]=color_tab_val[tab_desc[0]];
+	  color_tab[1]=color_tab_val[tab_desc[1]];
+	  color_tab[2]=color_tab_val[tab_desc[2]];
+	  color_tab[3]=color_tab_mult[tab_desc[3]];
+	  color_tab[4]=color_tab_tolerance[tab_desc[4]];
+	  return color_tab;
+	}
 	function get_resistance(){
 	  var desc=document.getElementById('resistor_desc').value;
-	  var pos1=desc.indexOf('[');
-	  var pos2=desc.indexOf(']');
-	  desc=desc.substring(pos1+1,pos2);
-	  var tab_desc=desc.split(',');
-	  if ((pos1>-1)&&(pos2>-1)&&(tab_desc.length==5)){
+	  var tab_desc=get_values_in_desc(desc);
+	  //~ console.log(tab_desc);
+	  if (tab_desc.length==5){
 	    if (tab_desc[0]=='') {
 	      delete my_resistor.val1;
 	    }else{
-	      my_resistor_mode=3;
-	    }
-	    if (tab_desc[1]=='') {
-	      delete my_resistor.val2;
-	    }else{
-	      my_resistor_mode=4;
-	    }
-	    if (tab_desc[2]=='') {
-	      delete my_resistor.val3;
-	    }else{
-	      my_resistor_mode=5;
+	      my_resistor_mode=((tab_desc[2]!='')&&(tab_desc[1]!=''))?5:((tab_desc[1]!='')?4:3);
 	    }
 	    if (tab_desc[3]=='') {
 	      delete my_resistor.mult;
@@ -883,7 +1017,7 @@
 	    if (tab_desc[4]=='') {
 	      delete my_resistor.tolerance;
 	    }
-	    set_mode(my_resistor_mode);//imply update value
+	    set_mode(my_resistor_mode);//imply update value and delete useless values
 	  
 	    if (!tab_desc[0]=='') {
 	      val1_set(tab_desc[0]);
@@ -895,12 +1029,11 @@
 	      val3_set(tab_desc[2]);
 	    }
 	    if (!tab_desc[3]=='') {
-	      mult_set(tab_desc[3].replace('k','000').replace('m','000000'));
+	      mult_set(tab_desc[3]);
 	    }
 	    if (!tab_desc[4]=='') {
 	      tolerance_set(tab_desc[4]);
 	    }
-	    
 	    
 	  } else {
 	    alert("Format de référence non reconnu");
@@ -913,8 +1046,69 @@
 	  }
 	  return true;
 	}
+	
         set_mode(4);
 
       </script>
+<!---->
+<!--Drag and drop et deplacement des vues de résistance-->
+      <script>
+	function resitor_drag(ev) {
+	    if (get_resistor_value()!=""){
+	      ev.dataTransfer.setData("text", get_resistor_ref());
+	    }
+	}
+	function allowDrop(ev) {
+	    ev.preventDefault();
+	}
+	function update_stock(){
+	  reformat_input_stock();
+	  make_view_from_formatted_input_stock();
+	}
+	function drop_on_stock(ev) {
+	    ev.preventDefault();
+	    var data = ev.dataTransfer.getData("text");
+	    document.getElementById('mon_stock').value=document.getElementById('mon_stock').value.concat(" ",data);
+	    update_stock();
+	}
+	function make_view_from_formatted_input_stock(){
+	  var stock_parse_tab=document.getElementById('mon_stock').value.split(" ");
+	  var i;
+	  var k;
+	  var qte;
+	  var node=document.getElementById('stock_view');
+	  while (node.hasChildNodes()) {
+	    node.removeChild(node.lastChild);
+	  }
+	  for (i=0; (i <stock_parse_tab.length); i++){
+	      k=stock_parse_tab[i];
+	      qte=parseInt(k.replace(/(.*\{)/,'').replace(/(\})/,''));
+	      k=k.replace(/(\{.*)/,'');
+	      add_to_stock_view(k,qte);
+	  }
+	 
+	}
+	function add_to_stock_view(data,qte){
+	    //~ document.getElementById('stock_view').appendChild(document.getElementById('resistor_view'));
+	    var div = document.createElement('tmp_div');
+	    var span_base=["<span class='","'>&nbsp;&nbsp;</span> "];
+	    var resistor_coloration=get_resistor_color_tab(data);
+	    //~ div.innerHTML = document.getElementById('stock_view').innerHTML;
+	    div.innerHTML = "<figure id='".concat(data,
+	    "'  class='resistor_view_canvas rotate_item'>&mdash;",
+	    "<span class='resistor_view resistor_color_Beige'>",
+	    span_base[0],resistor_coloration[0],span_base[1],
+	    span_base[0],resistor_coloration[1],span_base[1],
+	    span_base[0],resistor_coloration[2],span_base[1],
+	    span_base[0],resistor_coloration[3],span_base[1],
+	    span_base[0],resistor_coloration[4],span_base[1],
+	    "</span>&mdash;<figcaption>",data," X ",qte,"</figcaption></figure>");
+	    document.getElementById('stock_view').appendChild(div);
+	}
+	function remove_from_stock_view(data){
+	    document.getElementById('stock_view').removeChild(document.getElementById(data));
+	}
+	update_stock();
+	</script>
     </body>
 </html>

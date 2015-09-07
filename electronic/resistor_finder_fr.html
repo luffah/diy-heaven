@@ -270,7 +270,8 @@
 	    </div>
 	    <div class='resistor_value_title'>
 	      <label for='resistor_desc'>Ref.[v,v,v,m,t]:</label>
-	      <input type='text' id='resistor_desc' onblur='get_resistance();' onKeyDown='run_get_resistance(event);'></input>
+	      <input type='text' id='resistor_desc' ondragover="document.getElementById('resistor_desc').value='';" onClick='get_resistance();' onblur='get_resistance();' onKeyDown='run_get_resistance(event);'></input>
+	      <button onClick='get_resistance();'>></button>
 	    </div>
 	  </section>
 	  <section  class='resistor'>

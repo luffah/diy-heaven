@@ -106,11 +106,23 @@
 	    button{
 	      border: 1.5px solid black;
 	      background-color:white;
+	      cursor:default;
+	    }
+	    .button_waiting{
+	      cursor:wait !important;
+	      background-color:gray;
+	    }
+	    .button_hidden{
+	      display:none;
+	    }
+	    .button_waiting:hover{
+	      cursor:wait !important;
+	      background-color:gray;
 	    }
 	    button:hover{
 	      background-color:#40FF40;
+	      cursor:pointer;
 	    }
-
 	   /* Block de déchiffrage d'une résistance */
 	    .resistor {
 	      display:inline-block;
@@ -381,33 +393,34 @@
 	    <div class='block_stock'>
 	      <label for="mon_stock">Stock de resistances <small>(en ohm, séparé par des espaces)</small>:<br></label>
 	    </div>
-	    <input onblur="update_stock();" ondrop="drop_on_stock(event);" ondragover="allowDrop(event);" type="string" value="21k 21k 1k 10k 20k 7k 9k" class="stock" name="mon_stock" id="mon_stock" title="Aide : les notations k=*1000 m=*1000000 sont authorisées"></input>
+	    <input onblur="update_stock();" ondrop="drop_on_stock(event);" ondragover="allowDrop(event);" type="string" value="21k[2,1,,1k,0.01]{2} 1k[1,,,1k,0.01] 10k[10,,,1k,0.01] 20k[20,,,1k,0.01] 7k[7,,,1k,0.01] 9k[9,,,1k,0.01]" class="stock" name="mon_stock" id="mon_stock" title="Aide : les notations k=*1000 m=*1000000 sont authorisées"></input>
 	    
 	    <br>
 	    <br>
 	    <div id='block_form1'>
 	      <label for="resistance">Résistance souhaitée <small>(en ohm)</small></label><input type="number" value="10500" name="resistance" id="resistance"></input>
 	      <br>
-	      <label for="ecart">Écart maximum <small>(en %)</small></label><input type="float" value="0.2" name="ecart" id="ecart"></input>
+	      <label for="ecart">Tolérance approximative <small>(en %)</small></label><input type="number" value="2" name="ecart" id="ecart" min="0.5" step="0.5" max="25"></input>
 	      <br>
 	      <label for="nbresistances">Nombre maximum de resistances utilisées </label><input type="number" value="4" min=1 max=10 name="nbresistances" id="nbresistances"></input>
 	      <br>
-	      <button OnClick="calcul_combinaisons()">Calculer</button>
+	      <button OnClick="start_calcul_combinaisons();" id="button_chercher">Chercher !</button>
+	      <button class="button_hidden" id="button_chercher_loading"></button>
 	      <br>
 	    </div>
 	    <br>
 	    <div id='block_form2'>
 	      <label for="grp_resistance1">Solution 1 : </label><input class="formule" type="text" name="grp_resistance1" id="grp_resistance1" disabled></input>
-	      <label for="grp_resistance_val1"> vaut </label><input class="valeur" type="text" name="grp_resistance_val1" id="grp_resistance_val1" disabled></input>
+	      <span class="valeur" type="text" name="grp_resistance_val1" id="grp_resistance_val1"></span>
 	      <button OnClick="prendre_grp1()">Prendre</button>
 	      <br>
 	      <label for="grp_resistance2">Solution 2 : </label><input class="formule" type="text" name="grp_resistance2" id="grp_resistance2" disabled></input>
-	      <label for="grp_resistance_val2"> vaut </label><input class="valeur" type="text" name="grp_resistance_val2" id="grp_resistance_val2" disabled></input>
+	      <span class="valeur" type="text" name="grp_resistance_val2" id="grp_resistance_val2"></span>
 	      <button OnClick="prendre_grp2()">Prendre</button>
 	      
 	      <br>
 	      <label for="grp_resistance3">Solution 3 : </label><input class="formule" type="text" name="grp_resistance3" id="grp_resistance3" disabled></input>
-	      <label for="grp_resistance_val3"> vaut </label><input class="valeur" type="text" name="grp_resistance_val3" id="grp_resistance_val3" disabled></input>
+	      <span class="valeur" type="text" name="grp_resistance_val3" id="grp_resistance_val3"></span>
 	      <button OnClick="prendre_grp3()">Prendre</button>
 	      <br>
 	    </div>
@@ -581,18 +594,87 @@
 	    }
 	    return res;
 	}
+	function parse_and_recompute_formula(formule,f_stock){
+	  return parseFloat(formule.replace(/\([\s]*([^()\s]*)[\s]*\/\/[\s]*([^()\s]*)[\s]*\)/g,
+	      function(x,y,z){
+				  return resistances_en_parallele(f_stock[y],f_stock[z]);
+			      }
+	      ).replace(/\([\s]*([^()\s]*)[\s]*\+[\s]*([^()\s]*)[\s]*\)/g,
+	      function(x,y,z){
+				  return resistances_en_serie(f_stock[y],f_stock[z]);
+			      }
+	      ).replace(/\([\s]*([^()\s]*)[\s]*\/\/[\s]*([^()\s]*)[\s]*\)/g,
+	      function(x,y,z){
+				  return resistances_en_parallele(
+				  ((y.indexOf("[")>0)?f_stock[y]:y),
+				  ((z.indexOf("[")>0)?f_stock[z]:z)
+				  );
+			      }
+	      )
+	    );
+	}
 	<!-- functions to find bests results of combinations -->
 	function search_group(v_resistance,v_ecart,stock){
 	  var res=[];
 	  var i=0;
 	  var diff;
+	  var min_val_stock={};
+	  var max_val_stock={};
+	  var min_val;
+	  var max_val;
+	  var val;
+	  var tab_desc;
+	  var tol;
 	  for (var k in stock) {
 	      //~ console.log(k,stock[k],v_ecart);
 	      var diff=Math.abs(k - v_resistance );
 	      if ( diff <= v_ecart ){
-		for (var l in stock[k]){
-		  res[i]=[Math.round(k),l,diff];
-		  i++;
+		for (var formula in stock[k]){
+		  
+		  if (formula.indexOf("[")>0) {
+		    for (c in stock[k][formula]){
+			if (c=="_nb_"){
+			    continue;
+			}
+			if (!(c in min_val_stock)) {
+			  tol='';
+			  if (c.indexOf("[")>0){ 
+			    tab_desc=get_values_in_desc(c);
+			    val=parseInt(tab_desc[0]);
+			    if (tab_desc[1]!='') {
+			      val=(val*10)+parseInt(tab_desc[1]);
+			      if (tab_desc[2]!='') {
+				val=val*10+parseInt(tab_desc[2]);
+			      }
+			    }
+			    if (my_resistor_mode>4) {
+			      val=val*10+parseInt(tab_desc[2]);
+			    }
+			    val=val*tab_desc[3];
+			    tol=tab_desc[4];
+			  } 
+			  if (tol==''){
+			    min_val_stock[c]=Math.round(k);
+			    max_val_stock[c]=Math.round(k);
+			  } else {
+			    //~ console.log(c,tab_desc,val,tol);
+			    min_val_stock[c]=val-(parseFloat(tol)*val);
+			    max_val_stock[c]=val+(parseFloat(tol)*val);
+			  }
+			}
+		    }
+		    min_val=parse_and_recompute_formula(formula,min_val_stock);
+		    max_val=parse_and_recompute_formula(formula,max_val_stock);
+		    diff=Math.abs(min_val - v_resistance );
+		    var diff_max=Math.abs(max_val - v_resistance );
+		    if(diff<diff_max){
+			diff=diff_max;
+		    }
+		  }
+		  if ( diff <= v_ecart ){ 
+		    res[i]=[Math.round(k),formula,Math.round(diff)];
+		    i++;
+		  }
 		}
 	      }
 	  }
@@ -630,7 +712,6 @@
 	}
 	function stock_extraction_from_formatted_stock(formule){
 	  var grp_parse_tab=formule.replace(/[(+)]/g,function(x){return ' '+x+' '}).replace(/(\s)+/g," ").split(" ");
-	  //~ console.log(formule.replace(/[(+)]/g,function(x){return ' '+x+' '}).replace(/(\s)+/g," ").replace(/(^\s|\s$)/g,""));
 	  var i;
 	  var new_stock=document.getElementById('mon_stock').value.replace(/(^|$)/g," ");
 	  var pos, pos2, pos3;
@@ -641,12 +722,12 @@
 	    if ((grp_parse_tab[i]=='')||(grp_parse_tab[i]=='(')||(grp_parse_tab[i]==')')||(grp_parse_tab[i]=='+')||(grp_parse_tab[i]=='//')){
 	      taken_stock=taken_stock.concat(grp_parse_tab[i]);
 	    } else {
-	      //~ console.log(grp_parse_tab[i]);
+	      //~ console.log("|"+grp_parse_tab[i]+"|","|"+new_stock+"|");
 	      //check if stock still avaible
-	      pos=new_stock.search(" "+grp_parse_tab[i]+"{");
-	      if (pos<0){//alternative checking
-		pos=new_stock.search(" "+grp_parse_tab[i]+"\\[");
-		if (pos<0){
+	      pos=new_stock.indexOf(" "+grp_parse_tab[i]+"{");
+	      if (pos<0){//obsolete : alternative checking : usefull if the formula doesn't contains details
+		pos=new_stock.indexOf(" "+grp_parse_tab[i]+"\\[");
+		if (pos<0){//if not found, exit
 		  return "";
 		}
 		pos2=new_stock.indexOf("]",pos);
@@ -705,7 +786,22 @@
 	  document.getElementById('mon_stock').value=v_stock.replace(/(^\s|\s$)/g,"");
 	}
 	<!-- functions in gui -->
+	function start_calcul_combinaisons(){
+	    setTimeout(function(){
+		document.getElementById('button_chercher').className='button_hidden';
+		document.getElementById('button_chercher_loading').innerHTML='Recherche en cours...';
+		document.getElementById('button_chercher_loading').className='button_waiting';
+		},0);
+	    setTimeout(function(){
+	      calcul_combinaisons();
+	      setTimeout(function(){
+		document.getElementById('button_chercher').className='';
+		document.getElementById('button_chercher_loading').className='button_hidden';
+		},100);
+	    },100);
+	}
 	function calcul_combinaisons(){
+	  //~ var myVar=setInterval(function(){timer()},100);
 	  // stocks representation
 	  var stock={'_nb_':0};//all components avaible with their quantity
 	  var init_set={'_nb_':0};//representation all components avaible without their quantity
@@ -723,19 +819,19 @@
 	  // reinitialization of the output
 	  reformat_input_stock();// include quantification between { }
 	  document.getElementById('grp_resistance1').value="";
-	  document.getElementById('grp_resistance_val1').value="";
+	  document.getElementById('grp_resistance_val1').innerHTML="";
 	  document.getElementById('grp_resistance2').value="";
-	  document.getElementById('grp_resistance_val2').value="";
+	  document.getElementById('grp_resistance_val2').innerHTML="";
 	  document.getElementById('grp_resistance3').value="";
-	  document.getElementById('grp_resistance_val3').value="";
+	  document.getElementById('grp_resistance_val3').innerHTML="";
 	  // build stocks
 	  var stock_parse_tab=document.getElementById('mon_stock').value.split(" ");
 	  for (i=0; (i <stock_parse_tab.length) && (init_set['_nb_'] < 10); i++){// for best perfomance
 	      //~ console.log(stock_parse_tab[i]);
 	      k=stock_parse_tab[i];
 	      qte=parseInt(k.replace(/(.*\{)/,'').replace(/(\})/,''));
-	      k=k.replace(/(\{.*)/,'').replace(/(\[.*)/,'');
-	      v_k=parse_input(k);
+	      k=k.replace(/(\{.*)/,'');
+	      v_k=parse_input(k.replace(/(\[.*)/,''));
 	      if ((v_k in stock) && (k in stock[v_k])){
 		v_nb=stock[v_k][k][k]+qte;
 	      } else {
@@ -753,8 +849,6 @@
 	      stock[v_k][k]['_nb_']=v_nb;
 	      stock[v_k][k][k]=v_nb;
 	  }
-
-	  
 	  //~ console.log(stock);
 	  //~ console.log(init_set);
 	  // build combinations
@@ -773,17 +867,16 @@
 	  // search the nearests
 	  //~ console.log(comb_final_set);
 	  var v_solution=search_group(v_resistance,v_tolerance,comb_final_set);
-
 	  // displaying results
 	  if (v_solution.length>0){
 	    document.getElementById('grp_resistance1').value=v_solution[0][1];
-	    document.getElementById('grp_resistance_val1').value=v_solution[0][0];
+	    document.getElementById('grp_resistance_val1').innerHTML='='.concat(v_solution[0][0],' (+/- ',v_solution[0][2]/100,"%)") ;
 	    if (v_solution.length>1){
 	      document.getElementById('grp_resistance2').value=v_solution[1][1];
-	      document.getElementById('grp_resistance_val2').value=v_solution[1][0];
+	      document.getElementById('grp_resistance_val2').innerHTML='='.concat(v_solution[1][0],' (+/- ',v_solution[1][2]/100,"%)") ;
 	      if (v_solution.length>2){
 		document.getElementById('grp_resistance3').value=v_solution[2][1];
-		document.getElementById('grp_resistance_val3').value=v_solution[2][0];
+		document.getElementById('grp_resistance_val3').innerHTML='='.concat(v_solution[2][0],' (+/- ',v_solution[2][2]/100,"%)") ;
 	      }
 	    }
 	  }
@@ -792,19 +885,19 @@
 	  document.getElementById('mon_stock_pris').value=document.getElementById('mon_stock_pris').value.concat(
 	    stock_extraction_from_formatted_stock(document.getElementById('grp_resistance1').value)).replace(')(',') (');
 	  document.getElementById('grp_resistance1').value="";
-	  document.getElementById('grp_resistance_val1').value="";
+	  document.getElementById('grp_resistance_val1').innerHTML="";
 	}
 	function prendre_grp2(){
 	  document.getElementById('mon_stock_pris').value=document.getElementById('mon_stock_pris').value.concat(
 	    stock_extraction_from_formatted_stock(document.getElementById('grp_resistance2').value)).replace(')(',') (');
 	  document.getElementById('grp_resistance2').value="";
-	  document.getElementById('grp_resistance_val2').value="";
+	  document.getElementById('grp_resistance_val2').innerHTML="";
 	}
 	function prendre_grp3(){
 	  document.getElementById('mon_stock_pris').value=document.getElementById('mon_stock_pris').value.concat(
 	    stock_extraction_from_formatted_stock(document.getElementById('grp_resistance3').value)).replace(')(',') (');
 	  document.getElementById('grp_resistance3').value="";
-	  document.getElementById('grp_resistance_val3').value="";
+	  document.getElementById('grp_resistance_val3').innerHTML="";
 	}
     </script>
 <!---->

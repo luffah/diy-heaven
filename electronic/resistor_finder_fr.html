@@ -7,7 +7,7 @@
 	  <style>
 	    body{
 		background-color:#E5E8D4;
-		font-familly:sans-serif;
+		font-family:sans-serif;
 	    }
 	    article{
 	      display:inline-block;
@@ -68,12 +68,6 @@
 		background-color:black;
 		width:100%;
 		text-align:center;
-	    }
-	    label {
-		
-	    }
-	    #legende {
-		font-size: small;
 	    }
 	    #ecart,#resistance,#nbresistances{
 	      position:absolute;
@@ -164,7 +158,6 @@
 	    .resistor_prop_list li{
 	      list-style-type: none; 
 	      border : 1px solid black;
-	      background-color:white;
 	      border-radius: 0.5em;
 	      display:inline-block;
 	      min-width:1em;
@@ -182,7 +175,6 @@
 	      float:left;}
 	    .resistor_color_list li {
 	      list-style-type: none;
-	      display:inline_block;
 	      border : 1px solid black;
 	      margin: 2px;
 	      min-width:1.5em;
@@ -207,24 +199,24 @@
 	      font-size:small;
 	      text-align:center;
 	    }
-	    .resistor_color_Black{  background-color: black ; color: white; border:  1px solid black;user-select: none;}
-	    .resistor_color_Brown{  background-color: brown ; border:  1px solid black;user-select: none;}
-	    .resistor_color_Red{  background-color: red; border:  1px solid black;user-select: none;}
-	    .resistor_color_Orange{ background-color: orange; border:  1px solid black; user-select: none;}
-	    .resistor_color_Yellow{  background-color: yellow; border:  1px solid black;user-select: none;}
-	    .resistor_color_Green{ background-color: green; color: white;border:  1px solid black;user-select: none;}
-	    .resistor_color_Blue{ background-color: blue; color: white;border:  1px solid black;user-select: none;}
-	    .resistor_color_Violet{  background-color:  violet; border:  1px solid black;user-select: none;}
-	    .resistor_color_Gray{  background-color: gray; border:  1px solid black;user-select: none;}
-	    .resistor_color_White{  background-color: white; border:  1px solid black;user-select: none;}
-	    .resistor_color_Gold{  background-color: gold; border:  1px solid black;user-select: none;}
-	    .resistor_color_Silver{  background-color: silver; border:  1px solid black; user-select: none;}
-	    .resistor_color_None{  background-color: rgba(255,255,255,0.25); border:  1px solid rgba(255,255,255,0.1) ;user-select: none; }
-	    .resistor_color_Beige{  background-color:  #FFFFAD ;user-select: none;}
-	    .resistor_color_Cyan{  background-color:  #ADD8E6 ;user-select: none;}
+	    .resistor_color_Black{  background-color: black ; color: white; border:  1px solid black; -moz-user-select: none;}
+	    .resistor_color_Brown{  background-color: brown ; border:  1px solid black;-moz-user-select: none;}
+	    .resistor_color_Red{  background-color: red; border:  1px solid black;-moz-user-select: none;}
+	    .resistor_color_Orange{ background-color: orange; border:  1px solid black; -moz-user-select: none;}
+	    .resistor_color_Yellow{  background-color: yellow; border:  1px solid black; -moz-user-select: none;}
+	    .resistor_color_Green{ background-color: green; color: white;border:  1px solid black; -moz-user-select: none;}
+	    .resistor_color_Blue{ background-color: blue; color: white;border:  1px solid black; -moz-user-select: none;}
+	    .resistor_color_Violet{  background-color:  violet; border:  1px solid black; -moz-user-select: none;}
+	    .resistor_color_Gray{  background-color: gray; border:  1px solid black; -moz-user-select: none;}
+	    .resistor_color_White{  background-color: white; border:  1px solid black; -moz-user-select: none;}
+	    .resistor_color_Gold{  background-color: gold; border:  1px solid black; -moz-user-select: none;}
+	    .resistor_color_Silver{  background-color: silver; border:  1px solid black;  -moz-user-select: none;}
+	    .resistor_color_None{  background-color: rgba(175,175,175,0.2); border:  1px solid rgba(175,175,175,0.1) ; -moz-user-select: none; }
+	    .resistor_color_Beige{  background-color:  #FFFFAD ; -moz-user-select: none;}
+	    .resistor_color_Cyan{  background-color: #1E90FF; -moz-user-select: none;}
 
-	    .resistor_blink_val{ display:inline-block;border: 5px solid rgba(0,255,0,0.9) ;user-select: none; }
-	    .resistor_blink_val_hidden{ display:inline-block;border: 5px solid rgba(255,255,0,0) ;user-select: none; }
+	    .resistor_blink_val{ display:inline-block;border: 5px solid rgba(0,255,0,0.9) ; -moz-user-select: none; }
+	    .resistor_blink_val_hidden{ display:inline-block;border: 5px solid rgba(255,255,0,0) ; -moz-user-select: none; }
 	    
 
 	    .resistor_value_title{
@@ -321,6 +313,10 @@
 		opacity:0.9;
 		font-size:2em;
 	    }
+	    .info{
+	      font-size:small;
+	    }
+
 	  </style>
 	 </head>
     <body>
@@ -345,7 +341,7 @@
 	      <br>Résistance carbone 0,5W
 -->
 	      <br>
-	      <div class='resistor_big' id='resistor_img' >&mdash;<span class='resistor_view resistor_color_Beige'>
+	      <div class='resistor_big' id='resistor_img' >&mdash;<span class='resistor_view resistor_color_Beige' id='resistor_body'>
 		<span id='border_view_val1' class='resistor_blink_val_hidden'
 		onmouseover="document.getElementById('value1').className='resistor_value_selector_hightlight';"
 		onmouseout="document.getElementById('value1').className='resistor_value_selector';">
@@ -479,13 +475,24 @@
 	      <li class='resistor_color_Violet' onClick='tolerance_set(0.001)'>~0.1%</li>
 	    </ul>
 	    </div>
-	    <ul class='resistor_prop_list resistor_value_selector'>
+	    <div class='resistor_value_selector'>
+	    <ul class='resistor_prop_list '>
 	    <div class='resistor_prop_title'><small>Nombre<br>d'anneaux</small></div>
 	    <li onClick='set_mode(3)'>3</li>
 	    <li onClick='set_mode(4)'>4</li>
 	    <li onClick='set_mode(5)'>5</li>
 	    <li onClick='set_mode(6)'>6</li>
 	    </ul>
+	    <ul class='resistor_color_list'>
+	    
+	    <div class='resistor_prop_title'><small>Corps</small></div>
+	    <li onClick="corps_set('c');" class='resistor_color_Beige  resistor_body_color'><small>Carbone 0,5W</small></li>
+	    <li onClick="corps_set('m');" class='resistor_color_Cyan resistor_body_color'><small>Metal 0,4W</small></li>
+	    <li onClick="corps_set('mv');" class='resistor_color_Green resistor_body_color'><small>Metal 0,4W</small></li>
+	    <li onClick="corps_set('mr');" class='resistor_color_Red resistor_body_color'><small>Metal 1W</small></li>
+
+	    </ul>
+	    </div>
 	    <ul class='resistor_color_list font-small resistor_value_selector' id='coef-temp'>
 	      <div class='resistor_prop_title'>Coef.temp.</div>
 	      <li class='resistor_color_Black' onClick='ppm_set(200,"resistor_color_Black")'>200ppm</li>
@@ -496,19 +503,19 @@
 	    </ul>
 
 	  </section>
-	  <p id="legende">Note : si la tolérance est élevée ou si vous ne voyez pas clairement les couleurs, utilisez un multimètre.</p>
+	  <p class="info" id="legende">Note : si la tolérance est élevée ou si vous ne voyez pas clairement les couleurs, utilisez un multimètre.</p>
 	</article>
 	<article class="cadre" id="calcul_resistance" >
 	    <header><h3>Recherche de combinaisons</h3></header>
 	    <div class='block_stock'>
-	      <label for="mon_stock">Stock de resistances <small>(en ohm, séparé par des espaces)</small>:<br></label>
+	      <label for="mon_stock">Stock de resistances <small>(en Ohm, séparées par des espaces)</small>:<br></label>
 	    </div>
 	    <input onblur="update_stock();" ondrop="drop_on_stock(event);" ondragover="allowDrop(event);" type="string" value="21k[2,1,,1k,0.01]{2} 1k[1,,,1k,0.01] 10k[1,0,,1k,0.01] 20k[2,0,,1k,0.01] 7k[7,,,1k,0.01] 9k[9,,,1k,0.01]" class="stock" name="mon_stock" id="mon_stock" title="Aide : les notations k=*1000 m=*1000000 sont authorisées"></input>
 	    
 	    <br>
 	    <br>
 	    <div id='block_form1'>
-	      <label for="resistance">Résistance souhaitée <small>(en ohm)</small></label><input type="number" value="10500" name="resistance" id="resistance"></input>
+	      <label for="resistance">Résistance souhaitée <small>(en Ohm)</small></label><input type="number" value="10500" name="resistance" id="resistance"></input>
 	      <br>
 	      <label for="ecart">Tolérance approximative <small>(en %)</small></label><input type="number" value="2" name="ecart" id="ecart" min="0.5" step="0.5" max="25"></input>
 	      <br>
@@ -542,6 +549,18 @@
 	    
 	    <p id="legende">Légende :  ( R1 <strong>+</strong> R2 ) &rarr; résistances en série; ( R1 <strong>//</strong> R2 ) &rarr; résistances en parallèle.  </p>
 	        
+      </article>
+      <article class="cadre" id="calcul_puissance">
+	<header><h3>Vérification de puissance</h3></header>
+	  <div id='block_form1'>
+	  <label for="tension">Tension aux bornes<small>(en Volt)</small></label><input type="number" value="9" name="tension" id="tension"></input>
+	  <br>
+	  <label for="puissance">Puissance à dissiper<small>(en Watt)</small></label><input type="number" value="" name="puissance" id="puissance" disabled></input>
+	  <br>
+	  <button OnClick="calcul_puissance();">Vérifier la puissance</button>
+	  <br>
+	  <span class="info" id="indication_puissance"> </span>
+	  </div>
       </article>
       <article class="cadre-right" id="diviseur_tension">
 	    <header><h3>Faire un pont diviseur de tension</h3></header>
@@ -992,6 +1011,23 @@
 	  document.getElementById('grp_resistance_val'+n).innerHTML="";
 	  document.getElementById('prendre_grp'+n+'_btn').className="button_hidden";
 	}
+	function calcul_puissance(){
+	  var v_U=parseFloat(document.getElementById('tension').value);
+	  var v_R=parseFloat(document.getElementById('resistance').value);
+	  var v_P=(v_U*v_U)/v_R;
+	  var msg="ndef";
+	  
+	  if (v_P>=1){
+	    msg="Attention : seul des resistances de puissance".concat(((v_P>=3)?" bobinées ":" "),"peuvent supporter plus de ",((v_P>=3)?3:1), "W !");
+	  } else if (v_P>=0.5){
+	    msg="Attention : il faut utiliser des résistances haute tension ou des résistances de puissance pour supporter plus de 0,5W !";
+	  } else {
+	    msg="Note : les résistances métalliques (bleu ou vert) génèrent moins de bruit que des résistances carbone (marron).";
+	  }
+	  document.getElementById('puissance').value=Math.round(v_P*1000)/1000;
+	  document.getElementById('indication_puissance').innerHTML=msg;
+	  
+	}
 	
     </script>
 <!---->
@@ -1032,9 +1068,14 @@
 				  0.005:"resistor_color_Green",
 				  0.0025:"resistor_color_Blue",
 				  0.001:"resistor_color_Violet"};
+	var color_tab_corps={"":"resistor_color_None",
+				  "c":"resistor_color_Beige",
+				  "m":"resistor_color_Cyan",
+				  "mv":"resistor_color_Green",
+				  "mr":"resistor_color_Red"};
 
 	function use_abbrv(val){
-	  return (val+" ").replace(/(0){6} /g,'m ').replace(/(0){3} /g,'k ').replace(/ $/,'');
+	  return (val+" ").replace(/(0){6} /g,'m ').replace(/(0){3} /g,'k ').replace(/(0){6}\)/g,'m)').replace(/(0){3}\)/g,'k)').replace(/ $/,'');
 	}
 
 	function get_resistor_desc(){
@@ -1045,6 +1086,7 @@
 	  ",",('val3' in my_resistor) ? my_resistor['val3']:"").concat(
 	  ",",('mult' in my_resistor) ? use_abbrv(my_resistor['mult']):"").concat(
 	  ",",('tolerance' in my_resistor) ? my_resistor['tolerance']:"").concat(
+	  ",",('corps' in my_resistor) ? my_resistor['corps']:"c").concat(
 	  "]");
 	}
 
@@ -1134,6 +1176,10 @@
           document.getElementById('view_tol').className=color_tab_tolerance[val];
           set_my_resistor('tolerance',val);
         }
+        function corps_set(val,view_class){
+          document.getElementById('resistor_body').className="resistor_view "+color_tab_corps[val];
+          set_my_resistor('corps',val);
+        }
         function ppm_set(val,view_class){
           document.getElementById('view_ppm').className=view_class;
         }
@@ -1168,8 +1214,8 @@
 	    desc=desc.substring(pos1+1,pos2);
 	  }
 	  var tab_desc=desc.split(',');
-	  var def=["","","","1","0.01"];
-	  for (var i=1; i<5;i++){//set default if not defined
+	  var def=["","","","1","0.01","c"];
+	  for (var i=1; i<6;i++){//set default if not defined
 	    if (tab_desc.length<i+1){
 		tab_desc[i]=def[i];
 	    }
@@ -1192,6 +1238,7 @@
 			  'resistor_color_None',
 			  'resistor_color_None',
 			  'resistor_color_None',
+			  'resistor_color_None',
 			  'resistor_color_None'];
 	  
 	  var tab_desc=get_values_in_desc(desc);
@@ -1200,13 +1247,14 @@
 	  color_tab[2]=color_tab_val[tab_desc[2]];
 	  color_tab[3]=color_tab_mult[tab_desc[3]];
 	  color_tab[4]=color_tab_tolerance[tab_desc[4]];
+	  color_tab[5]=color_tab_corps[tab_desc[5]];
 	  return color_tab;
 	}
 	function get_resistance(){
 	  var desc=document.getElementById('resistor_desc').value;
 	  var tab_desc=get_values_in_desc(desc);
 	  //~ console.log(tab_desc);
-	  if (tab_desc.length==5){
+	  if (tab_desc.length>=5){
 	    if (tab_desc[0]=='') {
 	      delete my_resistor.val1;
 	    }else{
@@ -1234,6 +1282,9 @@
 	    }
 	    if (!tab_desc[4]=='') {
 	      tolerance_set(tab_desc[4]);
+	    }
+	    if (!tab_desc[5]=='') {
+	      corps_set(tab_desc[5]);
 	    }
 	    
 	  } else {
@@ -1303,7 +1354,7 @@
 	    }
 	    var elem=document.getElementById(elem_id);
 	    var orig_class=elem.className;
-	    console.log(orig_class);
+	    //~ console.log(orig_class);
 	    current_interval=setInterval(function (){
 			  setTimeout(function(){
 				elem.className=orig_class+((class1.length>0)?("( "+class1):"");
@@ -1323,13 +1374,13 @@
 	    var span_base=["<span class='","'>&nbsp;&nbsp;</span> "];
 	    var resistor_coloration=get_resistor_color_tab(data);
 	    //~ div.innerHTML = document.getElementById('stock_view').innerHTML;
-	    console.log("-"+data+"-");
+	    //~ console.log("-"+data+"-");
 	    div.innerHTML = "<article ><figure id='".concat(data,"'",
 	    " class='resistor_view_canvas rotate_item'",
 	    " draggable='true'",
 	    " ondragstart=\"event.dataTransfer.setData('text','",data,"');\"",
 	    ">",
-	    "&mdash;<span class='resistor_view resistor_color_Beige'> ",
+	    "&mdash;<span class='resistor_view ",resistor_coloration[5],"'> ",
 	    span_base[0],resistor_coloration[0],span_base[1],
 	    span_base[0],resistor_coloration[1],span_base[1],
 	    span_base[0],resistor_coloration[2],span_base[1],

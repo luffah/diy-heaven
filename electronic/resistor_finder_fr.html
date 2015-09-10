@@ -7,6 +7,7 @@
 	  <style>
 	    body{
 		background-color:#E5E8D4;
+		font-familly:sans-serif;
 	    }
 	    article{
 	      display:inline-block;
@@ -17,18 +18,14 @@
 		width:100%;
 	    }
 	    .cadre{
-		/*border: 3px solid black;
-		border-radius:0.1em;
+		border-left: 2px solid #B2B5A6;
+		/*border-radius:5em;
 		box-shadow: 10px 10px 5px #888888;
 		background-color:#E6E6FA;*/
 		display:inline-block;
 		width:50%;
 	    }
 	    .cadre-left{
-		/*border: 3px solid black;
-		border-radius:0.1em;
-		box-shadow: 10px 10px 5px #888888;
-		background-color:#E6E6FA;*/
 		display:inline-block;
 		width:40%;
 		float:left;
@@ -103,10 +100,20 @@
 	      position:absolute;
 	      left:60%;
 	    }
+	    /*Les boutons */
 	    button{
-	      border: 1.5px solid black;
+	      border: 1.5px solid gray;
 	      background-color:white;
 	      cursor:default;
+	      min-width:1.75em;
+	    }
+	    button:active{
+	      transform: rotate(-20deg);
+	    }
+	    button:hover{
+	      border: 1.5px solid black;
+	      background-color:#40FF40;
+	      cursor:pointer;
 	    }
 	    .button_waiting{
 	      cursor:wait !important;
@@ -115,21 +122,57 @@
 	    .button_hidden{
 	      display:none;
 	    }
+	    .button_deprecated{
+	      background-color:gray;
+	      border: 1.5px solid black;
+	      color:white;
+	    }
+	    .button_deprecated:hover{
+	      border: 1.5px solid black;
+	      background-color:red;
+	      cursor:pointer;
+	    }
+	    .button_disabled{
+	      background-color:gray;
+	      border: 1.5px solid gray;
+	      opacity:0.1;
+	    }
+	    .button_disabled:hover{
+	      background-color:gray;
+	    }
 	    .button_waiting:hover{
 	      cursor:wait !important;
 	      background-color:gray;
 	    }
-	    button:hover{
-	      background-color:#40FF40;
-	      cursor:pointer;
-	    }
 	   /* Block de déchiffrage d'une résistance */
-	    .resistor {
+	    #resistor {
 	      display:inline-block;
 	      border : 1px solid black;
 	      border-radius: 0.5em;
 	      padding:0.2em;
+	      max-width:21em;
+	      text-align:center;
 	    } 
+	    .resistor_prop_list {
+	      border : 1px solid black;
+	      display: inline-block;
+	      margin: 0;
+	      padding: 0.2em;
+	      border-radius: 0.2em;
+	      float:left;
+	      }
+	    .resistor_prop_list li{
+	      list-style-type: none; 
+	      border : 1px solid black;
+	      background-color:white;
+	      border-radius: 0.5em;
+	      display:inline-block;
+	      min-width:1em;
+	      opacity:0.7;
+	      }
+	    .resistor_prop_list li:hover {
+	      opacity:1;
+	    }
 	    .resistor_color_list {  
 	      border : 1px solid black;
 	      display: inline-block;
@@ -137,28 +180,20 @@
 	      padding: 0;
 	      border-radius: 0.2em;
 	      float:left;}
-	    .resistor_prop_list {  
-	      border : 1px solid black;
-	      margin: 0;
-	      padding: 0.2em;
-	      border-radius: 0.2em;
-	      display:inline-block;
-	      text-align:center;}
-	    .resistor_prop_list li{
-	      list-style-type: none; 
-	      border : 1px solid black;
-	      border-radius: 0.5em;
-	      display:inline-block;
-	      min-width:1em;
-	      }
 	    .resistor_color_list li {
 	      list-style-type: none;
+	      display:inline_block;
 	      border : 1px solid black;
 	      margin: 2px;
-	      min-width:2em;
+	      min-width:1.5em;
 	      text-align:center;
 	      font-size:small;
-	      border-radius: 0.2em
+	      border-radius: 0.2em;
+	      cursor:pointer;
+	      opacity:0.7;
+	    }
+	    .resistor_color_list li:hover {
+	      opacity:1;
 	    }
 	    .font-small li{
 	      font-size:x-small;
@@ -172,44 +207,67 @@
 	      font-size:small;
 	      text-align:center;
 	    }
-	    .resistor_color_Black{  background-color: black ; color: white; border:  1px solid black;}
-	    .resistor_color_Brown{  background-color: brown ; border:  1px solid black;}
-	    .resistor_color_Red{  background-color: red; border:  1px solid black;}
-	    .resistor_color_Orange{ background-color: orange; border:  1px solid black; }
-	    .resistor_color_Yellow{  background-color: yellow; border:  1px solid black;}
-	    .resistor_color_Green{ background-color: green; color: white;border:  1px solid black;}
-	    .resistor_color_Blue{ background-color: blue; color: white;border:  1px solid black;}
-	    .resistor_color_Violet{  background-color:  violet; border:  1px solid black;}
-	    .resistor_color_Gray{  background-color: gray; border:  1px solid black;}
-	    .resistor_color_White{  background-color: white; border:  1px solid black;}
-	    .resistor_color_Gold{  background-color: gold; border:  1px solid black;}
-	    .resistor_color_Silver{  background-color: silver; border:  1px solid black; }
-	    .resistor_color_None{  background-color: rgba(255,255,255,0.25); border:  1px solid rgba(255,255,255,0.1) ; }
-	    .resistor_color_Beige{  background-color:  #FFFFAD ;}
-	    .resistor_color_Cyan{  background-color:  #ADD8E6 ;}
+	    .resistor_color_Black{  background-color: black ; color: white; border:  1px solid black;user-select: none;}
+	    .resistor_color_Brown{  background-color: brown ; border:  1px solid black;user-select: none;}
+	    .resistor_color_Red{  background-color: red; border:  1px solid black;user-select: none;}
+	    .resistor_color_Orange{ background-color: orange; border:  1px solid black; user-select: none;}
+	    .resistor_color_Yellow{  background-color: yellow; border:  1px solid black;user-select: none;}
+	    .resistor_color_Green{ background-color: green; color: white;border:  1px solid black;user-select: none;}
+	    .resistor_color_Blue{ background-color: blue; color: white;border:  1px solid black;user-select: none;}
+	    .resistor_color_Violet{  background-color:  violet; border:  1px solid black;user-select: none;}
+	    .resistor_color_Gray{  background-color: gray; border:  1px solid black;user-select: none;}
+	    .resistor_color_White{  background-color: white; border:  1px solid black;user-select: none;}
+	    .resistor_color_Gold{  background-color: gold; border:  1px solid black;user-select: none;}
+	    .resistor_color_Silver{  background-color: silver; border:  1px solid black; user-select: none;}
+	    .resistor_color_None{  background-color: rgba(255,255,255,0.25); border:  1px solid rgba(255,255,255,0.1) ;user-select: none; }
+	    .resistor_color_Beige{  background-color:  #FFFFAD ;user-select: none;}
+	    .resistor_color_Cyan{  background-color:  #ADD8E6 ;user-select: none;}
+
+	    .resistor_blink_val{ display:inline-block;border: 5px solid rgba(0,255,0,0.9) ;user-select: none; }
+	    .resistor_blink_val_hidden{ display:inline-block;border: 5px solid rgba(255,255,0,0) ;user-select: none; }
+	    
 
 	    .resistor_value_title{
 	      padding:0.5em;
-
+	    }
+	    .resistor_value_selector{
+	      opacity:0.7;
+	      display:inline-block;
+	      float:left;
+	    }
+	    
+	    .resistor_value_selector:hover{
+	      opacity:1;
+	    }
+	    .resistor_value_selector_hightlight{
+	      opacity:1;
+	      display:inline-block;
+	      float:left;
+	    }
+	    #value1,#value2,#value3{
+	      display:inline-block;
+	    }
+	    /*Image/aperçue de la résistance*/
+	    #resistor_value{
+	      min-width:4em;
+	      max-width:10em;
 	    }
 	    .resistor_view_canvas{
 	      display:inline-block;
 	      text-align:center;
 	      min-height:3em;
+	      border: 1px dashed gray;
+	      background-color:rgba(255,255,255,0.25);
 	    }
-	    
 	    .resistor_view{
 	      border:3px solid black;
 	      box-shadow: 2px 2px 5px #888888;
 	    }
+	    .resistor_big{
+	      display:inline-block;
+	      font-size:2em;
+	    }
 	    
-	    #resistor_value{
-	      min-width:4em;
-	      max-width:10em;
-	    }
-	    #value2,#value3{
-	      display:block;
-	    }
 	    /* Block de visualisation du stock*/
 	    .cadre-view{
 		border: 3px solid black;
@@ -235,14 +293,33 @@
 	      padding-bottom:2em;
 	      background: linear-gradient(to bottom, #feffe8 0%,#d6dbbf 100%);
 	    }
-	    .rotate_item {
-	      transform: rotate(-20deg);
-	    }
 	    .draggable{
 	      cursor:move;
 	    }
 	    .droppable{
 	      cursor:cell;
+	    }
+	    .rotate_item {
+	      transform: rotate(-20deg);
+	    }
+	    .rotate_item:active {
+	      transform: rotate(0);
+	    }
+	    .rotate_item_shake {
+	      transform: rotate(-10deg);
+	    }
+	    /*Element d'aide*/
+	    .hidden_data{
+		opacity:0;
+		font-size:2em;
+	    }
+	    .blink_data{
+		opacity:0.25;
+		font-size:2em;
+	    }
+	    .shown_data{
+		opacity:0.9;
+		font-size:2em;
 	    }
 	  </style>
 	 </head>
@@ -255,62 +332,76 @@
 	<article class='cadre-left'>
 	  <header><h3>Déchiffrage</h3></header>
 	  <section >
-	    <ul class='resistor_prop_list'>
-	    <div class='resistor_prop_title'>Nombre <br> d'anneaux</div>
-	    <li onClick='set_mode(3)'>3</li>
-	    <li onClick='set_mode(4)'>4</li>
-	    <li onClick='set_mode(5)'>5</li>
-	    <li onClick='set_mode(6)'>6</li>
-	    </ul>
-	    <figure id='resistor_view' class='resistor_view_canvas draggable' draggable='true' ondragstart="resitor_drag(event)">
-	      <figcaption>Résistance carbone 0,5W</figcaption>
-	      &mdash;<span class='resistor_view resistor_color_Beige'>
-		<span class='resistor_color_None' id='view_val1'>&nbsp;&nbsp;</span>
-		<span class='resistor_color_None' id='view_val2'>&nbsp;&nbsp;</span>
-		<span class='resistor_color_None' id='view_val3'>&nbsp;&nbsp;</span>
-		<span class='resistor_color_None' id='view_mult'>&nbsp;&nbsp;</span>
-		<span class='resistor_color_None' id='view_tol'>&nbsp;&nbsp;</span>
-<!--
-		<span class='resistor_color_None' id='view_ppm'>&nbsp;&nbsp;</span>
--->
-		</span>&mdash;
-	    </figure>
-	    <div class='resistor_value_title'>
-	      <label for='resistor_value'>Valeur <small>(en Ohm) :</small></label>
-	      <input type='text' id='resistor_value' disabled></input>
-	      <button onClick='store_resistance()'>Ajouter au stock</button>
-	    </div>
 	    <div class='resistor_value_title'>
 	      <label for='resistor_desc'>Ref.[v,v,v,m,t]:</label>
 	      <input type='text' id='resistor_desc' ondragover="document.getElementById('resistor_desc').value='';" onClick='get_resistance();' onblur='get_resistance();' onKeyDown='run_get_resistance(event);'></input>
-	      <button onClick='get_resistance();'>></button>
+	      <button onClick='get_resistance();'>&radic;</button>
+	      <button onClick='store_resistance()' id='stock_add_btn' class='button_disabled' title="Ajouter au stock" disabled>+</button>
 	    </div>
+	  
+	   <figure class='resistor_view_canvas draggable'  draggable='true' ondragstart="resitor_drag(event)" >
+	      
+<!--
+	      <br>Résistance carbone 0,5W
+-->
+	      <br>
+	      <div class='resistor_big' id='resistor_img' >&mdash;<span class='resistor_view resistor_color_Beige'>
+		<span id='border_view_val1' class='resistor_blink_val_hidden'
+		onmouseover="document.getElementById('value1').className='resistor_value_selector_hightlight';"
+		onmouseout="document.getElementById('value1').className='resistor_value_selector';">
+		  <span class='resistor_color_None' id='view_val1'>&nbsp;&nbsp;</span></span>
+		<span id='border_view_val2' class='resistor_blink_val_hidden'
+		onmouseover="document.getElementById('value2').className='resistor_value_selector_hightlight';"
+		onmouseout="document.getElementById('value2').className='resistor_value_selector';">
+		  <span class='resistor_color_None' id='view_val2'>&nbsp;&nbsp;</span></span>
+		<span id='border_view_val3' class='resistor_blink_val_hidden'
+		onmouseover=" document.getElementById('value3').className='resistor_value_selector_hightlight';"
+		onmouseout="document.getElementById('value3').className='resistor_value_selector';">
+		  <span class='resistor_color_None' id='view_val3'>&nbsp;&nbsp;</span></span>
+		<span id='border_view_mult' class='resistor_blink_val_hidden'
+		onmouseover="document.getElementById('mult').className='resistor_value_selector_hightlight';"
+		onmouseout="document.getElementById('mult').className='resistor_value_selector';">
+		  <span class='resistor_color_None' id='view_mult'>&nbsp;&nbsp;</span></span>
+		<span id='border_view_tol' class='resistor_blink_val_hidden'
+		onmouseover="document.getElementById('tol').className='resistor_value_selector_hightlight';"
+		onmouseout="document.getElementById('tol').className='resistor_value_selector';">
+		  <span class='resistor_color_None' id='view_tol'>&nbsp;&nbsp;</span></span>
+		<!--<span class='resistor_color_None' id='view_ppm'>&nbsp;&nbsp;</span>-->
+		</span>&mdash;</div>
+		<figcaption><span type='text' id='resistor_value'>?</span></figcaption>
+	    </figure>
+	      
 	  </section>
-	  <section  class='resistor'>
+	  <section  id='resistor'>
 	    <div class='resistor_color_list'>
-	      <div class='resistor_prop_title'>Valeur</div>
-	      <div id='value1'>
-	      <ul class='resistor_color_list'>
-		<li class='resistor_color_Black'    onClick='val1_set(0)'>0</li>
-	      </ul>
-	      <ul class='resistor_color_list'>
-		<li class='resistor_color_Brown'    onClick='val1_set(1)'>1</li>
-		<li class='resistor_color_Yellow'   onClick='val1_set(4)'>4</li>
-		<li class='resistor_color_Violet'   onClick='val1_set(7)'>7</li>
-	      </ul>
-	      <ul class='resistor_color_list'>
-		<li class='resistor_color_Red'      onClick='val1_set(2)'>2</li>
-		<li class='resistor_color_Green'    onClick='val1_set(5)'>5</li>
-		<li class='resistor_color_Gray'     onClick='val1_set(8)'>8</li>
-	      </ul>
-	      <ul class='resistor_color_list'>
-		<li class='resistor_color_Orange '  onClick='val1_set(3)'>3</li>
-		<li class='resistor_color_Blue'     onClick='val1_set(6)'>6</li>
-		<li class='resistor_color_White'    onClick='val1_set(9)'>9</li>
-	      </ul>
+	      <div class='resistor_prop_title '>Valeur</div>
+	      <div class="resistor_value_selector" id="value1"
+		    onmouseover="document.getElementById('border_view_val1').className='resistor_blink_val';"
+		    onmouseout="document.getElementById('border_view_val1').className='resistor_blink_val_hidden';">
+		<ul class='resistor_color_list'>
+		  <li class='resistor_color_Black'    onClick='val1_set(0)'>0</li>
+		</ul>
+		<ul class='resistor_color_list'>
+		  <li class='resistor_color_Brown'    onClick='val1_set(1)'>1</li>
+		  <li class='resistor_color_Yellow'   onClick='val1_set(4)'>4</li>
+		  <li class='resistor_color_Violet'   onClick='val1_set(7)'>7</li>
+		</ul>
+		<ul class='resistor_color_list'>
+		  <li class='resistor_color_Red'      onClick='val1_set(2)'>2</li>
+		  <li class='resistor_color_Green'    onClick='val1_set(5)'>5</li>
+		  <li class='resistor_color_Gray'     onClick='val1_set(8)'>8</li>
+		</ul>
+		<ul class='resistor_color_list'>
+		  <li class='resistor_color_Orange '  onClick='val1_set(3)'>3</li>
+		  <li class='resistor_color_Blue'     onClick='val1_set(6)'>6</li>
+		  <li class='resistor_color_White'    onClick='val1_set(9)'>9</li>
+		</ul>
 	      </div>
 	      <br>
-	      <div id='value2'>
+	      <div id='value2' class='resistor_value_selector'
+		    onmouseover="document.getElementById('border_view_val2').className='resistor_blink_val';"
+		    onmouseout="document.getElementById('border_view_val2').className='resistor_blink_val_hidden';"
+		    >
 	      <ul class='resistor_color_list' id='value2'>
 		<li class='resistor_color_Black'    onClick='val2_set(0)'>0</li>
 	      </ul>
@@ -332,8 +423,11 @@
 	      </ul>
 	      </div>
 	      <br>
-	      <div id='value3'>
-	      <ul class='resistor_color_list' >
+	      <div class="resistor_value_selector" id='value3' 
+		    onmouseover="document.getElementById('border_view_val3').className='resistor_blink_val';"
+		    onmouseout="document.getElementById('border_view_val3').className='resistor_blink_val_hidden';"
+		    >
+	      <ul class='resistor_color_list' id='value3'>
 		<li class='resistor_color_Black'    onClick='val3_set(0)'>0</li>
 	      </ul>
 	      <ul class='resistor_color_list'>
@@ -353,6 +447,9 @@
 	      </ul>
 	      </div>
 	    </div>
+	    <div id='mult' class='resistor_value_selector'
+		onmouseover="document.getElementById('border_view_mult').className='resistor_blink_val';"
+		onmouseout="document.getElementById('border_view_mult').className='resistor_blink_val_hidden';">
 	    <ul class='resistor_color_list'>
 	      <div class='resistor_prop_title'>Multiple</div>
 	      <li class='resistor_color_Gold'   onClick='mult_set(0.01)'>x0.01</li>
@@ -366,7 +463,11 @@
 	      <li class='resistor_color_Blue'   onClick='mult_set(1000000)'>x1m</li>
 	      <li class='resistor_color_Violet' onClick='mult_set(10000000)'>x10m</li>
 	    </ul>
-	    <ul class='resistor_color_list font-small'>
+	    </div>
+	    <div id='tol' class='resistor_value_selector'
+		onmouseover="document.getElementById('border_view_tol').className='resistor_blink_val';"
+		onmouseout="document.getElementById('border_view_tol').className='resistor_blink_val_hidden';">
+	    <ul class='resistor_color_list'>
 	      <div class='resistor_prop_title'>Tolérance</div>
 	      <li class='resistor_color_None'  onClick='tolerance_set(0.20)'>~20%</li>
 	      <li class='resistor_color_Silver' onClick='tolerance_set(0.10)'>~10%</li>
@@ -377,7 +478,15 @@
 	      <li class='resistor_color_Blue' onClick='tolerance_set(0.0025)'>~0.25%</li>
 	      <li class='resistor_color_Violet' onClick='tolerance_set(0.001)'>~0.1%</li>
 	    </ul>
-	    <ul class='resistor_color_list font-small' id='coef-temp'>
+	    </div>
+	    <ul class='resistor_prop_list resistor_value_selector'>
+	    <div class='resistor_prop_title'><small>Nombre<br>d'anneaux</small></div>
+	    <li onClick='set_mode(3)'>3</li>
+	    <li onClick='set_mode(4)'>4</li>
+	    <li onClick='set_mode(5)'>5</li>
+	    <li onClick='set_mode(6)'>6</li>
+	    </ul>
+	    <ul class='resistor_color_list font-small resistor_value_selector' id='coef-temp'>
 	      <div class='resistor_prop_title'>Coef.temp.</div>
 	      <li class='resistor_color_Black' onClick='ppm_set(200,"resistor_color_Black")'>200ppm</li>
 	      <li class='resistor_color_Brown' onClick='ppm_set(100,"resistor_color_Brown")'>100ppm</li>
@@ -385,6 +494,7 @@
 	      <li class='resistor_color_Orange' onClick='ppm_set(15,"resistor_color_Orange")'>15ppm</li>
 	      <li class='resistor_color_Yellow' onClick='ppm_set(25,"resistor_color_Yellow")'>25ppm</li>
 	    </ul>
+
 	  </section>
 	  <p id="legende">Note : si la tolérance est élevée ou si vous ne voyez pas clairement les couleurs, utilisez un multimètre.</p>
 	</article>
@@ -393,7 +503,7 @@
 	    <div class='block_stock'>
 	      <label for="mon_stock">Stock de resistances <small>(en ohm, séparé par des espaces)</small>:<br></label>
 	    </div>
-	    <input onblur="update_stock();" ondrop="drop_on_stock(event);" ondragover="allowDrop(event);" type="string" value="21k[2,1,,1k,0.01]{2} 1k[1,,,1k,0.01] 10k[10,,,1k,0.01] 20k[20,,,1k,0.01] 7k[7,,,1k,0.01] 9k[9,,,1k,0.01]" class="stock" name="mon_stock" id="mon_stock" title="Aide : les notations k=*1000 m=*1000000 sont authorisées"></input>
+	    <input onblur="update_stock();" ondrop="drop_on_stock(event);" ondragover="allowDrop(event);" type="string" value="21k[2,1,,1k,0.01]{2} 1k[1,,,1k,0.01] 10k[1,0,,1k,0.01] 20k[2,0,,1k,0.01] 7k[7,,,1k,0.01] 9k[9,,,1k,0.01]" class="stock" name="mon_stock" id="mon_stock" title="Aide : les notations k=*1000 m=*1000000 sont authorisées"></input>
 	    
 	    <br>
 	    <br>
@@ -410,18 +520,18 @@
 	    </div>
 	    <br>
 	    <div id='block_form2'>
-	      <label for="grp_resistance1">Solution 1 : </label><input class="formule" type="text" name="grp_resistance1" id="grp_resistance1" disabled></input>
+	      <label for="grp_resistance1">Solution 1 : </label><input text='' class="formule" type="text" name="grp_resistance1" id="grp_resistance1" disabled></input>
 	      <span class="valeur" type="text" name="grp_resistance_val1" id="grp_resistance_val1"></span>
-	      <button OnClick="prendre_grp1()">Prendre</button>
+	      <button OnClick="prendre_grp(1)" id='prendre_grp1_btn' class="button_hidden">Mettre de coté</button>
 	      <br>
-	      <label for="grp_resistance2">Solution 2 : </label><input class="formule" type="text" name="grp_resistance2" id="grp_resistance2" disabled></input>
+	      <label for="grp_resistance2">Solution 2 : </label><input text='' class="formule" type="text" name="grp_resistance2" id="grp_resistance2" disabled></input>
 	      <span class="valeur" type="text" name="grp_resistance_val2" id="grp_resistance_val2"></span>
-	      <button OnClick="prendre_grp2()">Prendre</button>
+	      <button OnClick="prendre_grp(2)" id='prendre_grp2_btn' class="button_hidden">Mettre de coté</button>
 	      
 	      <br>
-	      <label for="grp_resistance3">Solution 3 : </label><input class="formule" type="text" name="grp_resistance3" id="grp_resistance3" disabled></input>
+	      <label for="grp_resistance3">Solution 3 : </label><input text='' class="formule" type="text" name="grp_resistance3" id="grp_resistance3" disabled></input>
 	      <span class="valeur" type="text" name="grp_resistance_val3" id="grp_resistance_val3"></span>
-	      <button OnClick="prendre_grp3()">Prendre</button>
+	      <button OnClick="prendre_grp(3)" id='prendre_grp3_btn' class="button_hidden">Mettre de coté</button>
 	      <br>
 	    </div>
 	    <div class='block_stock'>
@@ -595,15 +705,15 @@
 	    return res;
 	}
 	function parse_and_recompute_formula(formule,f_stock){
-	  return parseFloat(formule.replace(/\([\s]*([^()\s]*)[\s]*\/\/[\s]*([^()\s]*)[\s]*\)/g,
+	  return parseFloat(formule.replace(/\([\s]*([^()\s]+)[\s]*\/\/[\s]*([^()\s]+)[\s]*\)/g,
 	      function(x,y,z){
 				  return resistances_en_parallele(f_stock[y],f_stock[z]);
 			      }
-	      ).replace(/\([\s]*([^()\s]*)[\s]*\+[\s]*([^()\s]*)[\s]*\)/g,
+	      ).replace(/\([\s]*([^()\s]+)[\s]*\+[\s]*([^()\s]+)[\s]*\)/g,
 	      function(x,y,z){
 				  return resistances_en_serie(f_stock[y],f_stock[z]);
 			      }
-	      ).replace(/\([\s]*([^()\s]*)[\s]*\/\/[\s]*([^()\s]*)[\s]*\)/g,
+	      ).replace(/\([\s]*([^()\s]+)[\s]*\/\/[\s]*([^()\s]+)[\s]*\)/g,
 	      function(x,y,z){
 				  return resistances_en_parallele(
 				  ((y.indexOf("[")>0)?f_stock[y]:y),
@@ -632,7 +742,7 @@
 		for (var formula in stock[k]){
 		  
 		  if (formula.indexOf("[")>0) {
-		    for (c in stock[k][formula]){
+		    for (var c in stock[k][formula]){
 			if (c=="_nb_"){
 			    continue;
 			}
@@ -780,6 +890,7 @@
 	      }
 	  }
 	  v_stock="";
+	  delete v_stock_hash[''];
 	  for (k in v_stock_hash){
 	    v_stock=v_stock.concat(k,"{",v_stock_hash[k],"} ");
 	  }
@@ -818,12 +929,11 @@
 	  var v_tolerance=(parseFloat(document.getElementById('ecart').value)*v_resistance)/100;
 	  // reinitialization of the output
 	  reformat_input_stock();// include quantification between { }
-	  document.getElementById('grp_resistance1').value="";
-	  document.getElementById('grp_resistance_val1').innerHTML="";
-	  document.getElementById('grp_resistance2').value="";
-	  document.getElementById('grp_resistance_val2').innerHTML="";
-	  document.getElementById('grp_resistance3').value="";
-	  document.getElementById('grp_resistance_val3').innerHTML="";
+	  for (i=1; i<(3+1);i++){
+	    document.getElementById('grp_resistance'+i).value="";
+	    document.getElementById('grp_resistance_val'+i).innerHTML="";
+	    document.getElementById('prendre_grp'+i+'_btn').className="button_hidden";
+	  }
 	  // build stocks
 	  var stock_parse_tab=document.getElementById('mon_stock').value.split(" ");
 	  for (i=0; (i <stock_parse_tab.length) && (init_set['_nb_'] < 10); i++){// for best perfomance
@@ -867,38 +977,22 @@
 	  // search the nearests
 	  //~ console.log(comb_final_set);
 	  var v_solution=search_group(v_resistance,v_tolerance,comb_final_set);
+	  //~ console.log(v_solution);
 	  // displaying results
-	  if (v_solution.length>0){
-	    document.getElementById('grp_resistance1').value=v_solution[0][1];
-	    document.getElementById('grp_resistance_val1').innerHTML='='.concat(v_solution[0][0],' (+/- ',v_solution[0][2]/100,"%)") ;
-	    if (v_solution.length>1){
-	      document.getElementById('grp_resistance2').value=v_solution[1][1];
-	      document.getElementById('grp_resistance_val2').innerHTML='='.concat(v_solution[1][0],' (+/- ',v_solution[1][2]/100,"%)") ;
-	      if (v_solution.length>2){
-		document.getElementById('grp_resistance3').value=v_solution[2][1];
-		document.getElementById('grp_resistance_val3').innerHTML='='.concat(v_solution[2][0],' (+/- ',v_solution[2][2]/100,"%)") ;
-	      }
-	    }
+	  for (i=0; i<((v_solution.length<3)?v_solution.length:3);i++){
+	    document.getElementById('prendre_grp'+(i+1)+'_btn').className="";
+	    document.getElementById('grp_resistance'+(i+1)).value=v_solution[i][1];
+	    document.getElementById('grp_resistance_val'+(i+1)).innerHTML='='.concat(v_solution[i][0],' (+/- ',v_solution[i][2]/100,"%)") ;
 	  }
 	}
-	function prendre_grp1(){
+	function prendre_grp(n){
 	  document.getElementById('mon_stock_pris').value=document.getElementById('mon_stock_pris').value.concat(
-	    stock_extraction_from_formatted_stock(document.getElementById('grp_resistance1').value)).replace(')(',') (');
-	  document.getElementById('grp_resistance1').value="";
-	  document.getElementById('grp_resistance_val1').innerHTML="";
+	    stock_extraction_from_formatted_stock(document.getElementById('grp_resistance'+n).value)).replace(')(',') (');
+	  document.getElementById('grp_resistance'+n).value="";
+	  document.getElementById('grp_resistance_val'+n).innerHTML="";
+	  document.getElementById('prendre_grp'+n+'_btn').className="button_hidden";
 	}
-	function prendre_grp2(){
-	  document.getElementById('mon_stock_pris').value=document.getElementById('mon_stock_pris').value.concat(
-	    stock_extraction_from_formatted_stock(document.getElementById('grp_resistance2').value)).replace(')(',') (');
-	  document.getElementById('grp_resistance2').value="";
-	  document.getElementById('grp_resistance_val2').innerHTML="";
-	}
-	function prendre_grp3(){
-	  document.getElementById('mon_stock_pris').value=document.getElementById('mon_stock_pris').value.concat(
-	    stock_extraction_from_formatted_stock(document.getElementById('grp_resistance3').value)).replace(')(',') (');
-	  document.getElementById('grp_resistance3').value="";
-	  document.getElementById('grp_resistance_val3').innerHTML="";
-	}
+	
     </script>
 <!---->
 <!--Déchiffrage d'une résistance-->
@@ -921,15 +1015,14 @@
 	var color_tab_mult={"":"resistor_color_None",
 			    0.01:"resistor_color_Gold",
 			    0.1:"resistor_color_Silver",
-			    1:"resistor_color_Brown",
-			    10:"resistor_color_Black",
-			    100:"resistor_color_Brown",
-			    1000:"resistor_color_Red",
-			    10000:"resistor_color_Orange",
-			    100000:"resistor_color_Yellow",
-			    1000000:"resistor_color_Green",
-			    10000000:"resistor_color_Blue",
-			    100000000:"resistor_color_Violet"};
+			    1:"resistor_color_Black",
+			    10:"resistor_color_Brown",
+			    100:"resistor_color_Red",
+			    1000:"resistor_color_Orange",
+			    10000:"resistor_color_Yellow",
+			    100000:"resistor_color_Green",
+			    1000000:"resistor_color_Blue",
+			    10000000:"resistor_color_Violet"};
 	var color_tab_tolerance={"":"resistor_color_None",
 				  0.20:"resistor_color_None",
 				  0.10:"resistor_color_Silver",
@@ -973,7 +1066,7 @@
 	}
 	function add_resistor_tolerance_value(val){
 	  if ('tolerance' in my_resistor){
-		val=val + ' (+/- ' + (val*my_resistor['tolerance']) +' )' ;
+		val=val + ' (+/- ' + (val*my_resistor['tolerance']) +')' ;
 	  }
 	  return val;
 	}
@@ -989,9 +1082,11 @@
 	  if (( val !="" ) && do_store){
 	    var ref=get_resistor_ref();
 	    document.getElementById('mon_stock').value=document.getElementById('mon_stock').value.concat(" ",ref);
-	    update_stock();
 	  } else {
-	    document.getElementById('resistor_value').value=use_abbrv(add_resistor_tolerance_value(val));
+	    document.getElementById('resistor_value').innerHTML=( val !="" )?(
+		  "R="+use_abbrv(add_resistor_tolerance_value(val))+" <small>Ohm</small>"):"?";
+	    document.getElementById('stock_add_btn').disabled=( val =="" );
+	    document.getElementById('stock_add_btn').className=( val !="" )?'':'button_disabled';
 	  }
         }
         function set_mode(val){
@@ -1015,6 +1110,7 @@
           update_value();
         }
         function set_my_resistor(key,val){
+	  unblink();
           my_resistor[key]=val;
           update_value();
         }
@@ -1041,10 +1137,28 @@
         function ppm_set(val,view_class){
           document.getElementById('view_ppm').className=view_class;
         }
-
+	function shake(elem_id){
+	  var elem=document.getElementById(elem_id);
+	  var orig_class=elem.className;
+	  setTimeout(function(){
+	      elem.className=orig_class+" rotate_item_shake";
+	    },0);
+	  setTimeout(function(){
+	      elem.className=orig_class;
+	    },100);
+	  setTimeout(function(){
+	      elem.className=orig_class+" rotate_item_shake";
+	    },200);
+	  setTimeout(function(){
+	      elem.className=orig_class;
+	    },300);
+	}
 	function store_resistance(){
 	  //~ console.log('store');
+	  shake('resistor_img');
 	  update_value(true);
+	  update_stock();
+	  shake(get_resistor_ref());
 	}
 
 	function get_values_in_desc(desc){
@@ -1054,19 +1168,12 @@
 	    desc=desc.substring(pos1+1,pos2);
 	  }
 	  var tab_desc=desc.split(',');
-	  if (tab_desc.length<2){
-	      tab_desc[1]="";
+	  var def=["","","","1","0.01"];
+	  for (var i=1; i<5;i++){//set default if not defined
+	    if (tab_desc.length<i+1){
+		tab_desc[i]=def[i];
+	    }
 	  }
-	  if (tab_desc.length<3){
-	      tab_desc[2]="";
-	  }
-	  if (tab_desc.length<4){
-	      tab_desc[3]="";
-	  }
-	  if (tab_desc.length<5){
-	      tab_desc[4]=0.01;
-	  }
-	  
 	  if (tab_desc[0].length>1){
 	    pos1=tab_desc[0].search(/(k|m)/);
 	    pos1=((pos1==-1) && (tab_desc[0].length>3))? 3 : pos1;
@@ -1147,6 +1254,7 @@
 <!---->
 <!--Drag and drop et deplacement des vues de résistance-->
       <script>
+	var current_interval=0;
 	function resitor_drag(ev) {
 	    if (get_resistor_value()!=""){
 	      ev.dataTransfer.setData("text", get_resistor_ref());
@@ -1156,12 +1264,17 @@
 	    ev.preventDefault();
 	}
 	function update_stock(){
-	  reformat_input_stock();
-	  make_view_from_formatted_input_stock();
+	    reformat_input_stock();
+	    make_view_from_formatted_input_stock();
 	}
 	function drop_on_stock(ev) {
 	    ev.preventDefault();
 	    var data = ev.dataTransfer.getData("text");
+	    //~ shake('resistor_img');
+	    add_to_stock(data);
+	    shake(data);
+	}
+	function add_to_stock(data) {
 	    document.getElementById('mon_stock').value=document.getElementById('mon_stock').value.concat(" ",data);
 	    update_stock();
 	}
@@ -1178,9 +1291,31 @@
 	      k=stock_parse_tab[i];
 	      qte=parseInt(k.replace(/(.*\{)/,'').replace(/(\})/,''));
 	      k=k.replace(/(\{.*)/,'');
-	      add_to_stock_view(k,qte);
+	      if (k!=""){
+		add_to_stock_view(k,qte);
+	      }
 	  }
 	 
+	}
+	function blink_data(elem_id,time1,class1,time2,class2,timeinterval){
+	    if(current_interval>0){
+	      unblink();
+	    }
+	    var elem=document.getElementById(elem_id);
+	    var orig_class=elem.className;
+	    console.log(orig_class);
+	    current_interval=setInterval(function (){
+			  setTimeout(function(){
+				elem.className=orig_class+((class1.length>0)?("( "+class1):"");
+			    },time1);
+			  setTimeout(function(){
+				elem.className=orig_class+((class2.length>0)?("( "+class2):"");
+			    },time2);
+			},timeinterval);
+	}
+	function unblink(){
+	    clearInterval(current_interval);
+	    current_interval=0;
 	}
 	function add_to_stock_view(data,qte){
 	    //~ document.getElementById('stock_view').appendChild(document.getElementById('resistor_view'));
@@ -1188,19 +1323,31 @@
 	    var span_base=["<span class='","'>&nbsp;&nbsp;</span> "];
 	    var resistor_coloration=get_resistor_color_tab(data);
 	    //~ div.innerHTML = document.getElementById('stock_view').innerHTML;
-	    div.innerHTML = "<figure id='".concat(data,
-	    "'  class='resistor_view_canvas rotate_item'>&mdash;",
-	    "<span class='resistor_view resistor_color_Beige'>",
+	    console.log("-"+data+"-");
+	    div.innerHTML = "<article ><figure id='".concat(data,"'",
+	    " class='resistor_view_canvas rotate_item'",
+	    " draggable='true'",
+	    " ondragstart=\"event.dataTransfer.setData('text','",data,"');\"",
+	    ">",
+	    "&mdash;<span class='resistor_view resistor_color_Beige'> ",
 	    span_base[0],resistor_coloration[0],span_base[1],
 	    span_base[0],resistor_coloration[1],span_base[1],
 	    span_base[0],resistor_coloration[2],span_base[1],
 	    span_base[0],resistor_coloration[3],span_base[1],
 	    span_base[0],resistor_coloration[4],span_base[1],
-	    "</span>&mdash;<figcaption>",data," X ",qte,"</figcaption></figure>");
+	    "</span>&mdash;",
+	    "<figcaption>",data,"<span class='shown_data' id='qte",data,"'> &times; ",qte,"</span>","</figcaption>",
+	    
+	    "</figure>",
+	    "<span onmouseover=\"blink_data('qte",data,"',0,'blink_data',200,'shown_data',500);\" onmouseout=\"unblink();\" >",
+	    "<button  onclick=\"unblink();add_to_stock('",data,"');\">+</button>",
+	    "<button  onclick=\"unblink();stock_extraction_from_formatted_stock('"+data+"');\"",
+	    ((qte>1)? (">-"):("class='button_deprecated'>X")),
+	    "</button>",
+	    "</span>",
+	    "</article>"
+	    );
 	    document.getElementById('stock_view').appendChild(div);
-	}
-	function remove_from_stock_view(data){
-	    document.getElementById('stock_view').removeChild(document.getElementById(data));
 	}
 	update_stock();
 	</script>

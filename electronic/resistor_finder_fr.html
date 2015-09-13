@@ -633,7 +633,7 @@
 		onmouseover="document.getElementById('tol').className='resistor_value_selector_hightlight';"
 		onmouseout="document.getElementById('tol').className='resistor_value_selector';">
 		  <span class='resistor_color_None' id='view_tol'>&nbsp;&nbsp;</span></span>
-		<!--<span class='resistor_color_None' id='view_ppm'>&nbsp;&nbsp;</span>-->
+		<span class='resistor_color_None' id='view_ppm'>&nbsp;&nbsp;</span>
 		</span>&mdash;</div>
 		<figcaption><span type='text' id='resistor_value'>?</span></figcaption>
 	    </span>
@@ -2080,6 +2080,7 @@
 	      span_base[0],resistor_coloration[2],span_base[1],
 	      span_base[0],resistor_coloration[3],span_base[1],
 	      span_base[0],resistor_coloration[4],span_base[1],
+	      span_base[0],'resistor_color_None',span_base[1],
 	      "</span>&mdash;</div>");
 	    } else if (is_power_resistor(data)){
 	      tmp_html = tmp_html.concat("<div ",item_prop," >&mdash;",

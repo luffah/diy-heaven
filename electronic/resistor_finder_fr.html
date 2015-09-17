@@ -383,90 +383,85 @@
 			border-radius:0.1em;
 			box-shadow: 10px 10px 5px #888888;
 	    }
-		#stock_view {
-			top:0;
-			border-top:none; 
-			opacity:0.20;
-			overflow:auto;
-			position:absolute;
-			text-align:left;
-			padding-top:0.25em;
-			padding-bottom:0.25em;
-			height:15%;
-		}
-		#stock_view:hover{
-			opacity:0.9;
-		}	
-		#stock_view .div_button{
-			opacity:0;
-			display:inline-block;
-		}
-		#stock_view .div_article:hover{
-			background-color:white;
-		}
-		#stock_view .div_article:hover .div_button{
-			display:inline-block;
-			padding-top:0;
-			margin-left:0;
-			margin-right:0;
-			opacity:1;
-			float:right;
-		}
-		#stock_view .div_article .div_button button{
-			margin:0px;
-			padding:0px;
-			display:block;
-			opacity:0.7;
-			position:relative;
-		}
-		#stock_view .div_article .div_button button:hover{
-			opacity:1;
-		}
-		#stock_view .rotate_item{
-				transform: rotate(-0deg);
-		}
-	  @media screen and (min-width: 1320px) {
-		   #stock_view .resistor_view_canvas{
-				font-size:small;
-			}
-			#stock_view {
-			left:5%;
-			width:90%;
-			}
-			#stock_view:hover{
-			  height:40%;
-			}
-			#stock_view .rotate_item:hover .div_item{
-				transform: rotate(-10deg);
-			}
-			#stock_view .resistor_view_canvas{
-				margin-left:0.5em;
-				margin-right:0.5em;
-				margin-bottom:5px;
-			}
-	   }
-	   @media screen and (max-width: 1320px) {
-			#stock_view .resistor_view_canvas{
-				font-size:x-small;
-			}
-			#stock_view .div_article .shown_data {
-				font-size:0.7em;
-			}
-			#stock_view {
-			  border-left:none;
-			  left:0;
-			  width:95%;
-			  height:15%;
-			}
-			#stock_view:hover{
-			  height:40%;
-			}
-			#stock_view .resistor_view_canvas{
-				margin-left:0.2em;
-				margin-right:0.2em;
-				margin-bottom:0.2em;
-			}
+	    #stock_view {
+		    top:0;
+		    border-top:none; 
+		    opacity:0.20;
+		    overflow:auto;
+		    position:absolute;
+		    text-align:left;
+		    padding-top:0.25em;
+		    padding-bottom:0.25em;
+		    height:15%;
 	    }
+	    #stock_view:hover{
+		opacity:0.9;
+		height:40%;
+	    }	
+	    #stock_view .div_button{
+		    opacity:0;
+		    display:inline-block;
+	    }
+	    #stock_view .div_article:hover{
+		    background-color:white;
+	    }
+	    #stock_view .div_article:hover .div_button{
+		    display:inline-block;
+		    padding-top:0;
+		    margin-left:0;
+		    margin-right:0;
+		    opacity:1;
+		    float:right;
+	    }
+	    #stock_view .div_article .div_button button{
+		    margin:0px;
+		    padding:0px;
+		    display:block;
+		    opacity:0.7;
+		    position:relative;
+	    }
+	    #stock_view .div_article .div_button button:hover{
+		    opacity:1;
+	    }
+	    #stock_view .rotate_item{
+			    transform: rotate(-0deg);
+	    }
+	    @media screen and (min-width: 1320px) {
+	       #stock_view .resistor_view_canvas{
+		    font-size:small;
+		}
+		#stock_view {
+		    left:5%;
+		    width:90%;
+		}
+		#stock_view .rotate_item:hover .div_item{
+		    transform: rotate(-10deg);
+		}
+		#stock_view .resistor_view_canvas{
+		    margin-left:0.5em;
+		    margin-right:0.5em;
+		    margin-bottom:5px;
+		}
+	     }
+	     @media screen and (max-width: 1320px) {
+		  #stock_view .resistor_view_canvas{
+		    font-size:x-small;
+		  }
+		  #stock_view .div_article .shown_data {
+		    font-size:0.7em;
+		  }
+		  #stock_view {
+		    border-left:none;
+		    left:0;
+		    width:95%;
+		    height:15%;
+		  }
+		  #stock_view .resistor_view_canvas{
+		    margin-left:0.2em;
+		    margin-right:0.2em;
+		    margin-bottom:0.2em;
+		  }
+	      }
 	    
 	    #taken_stock_view {
 	      padding-top:1em;
@@ -556,6 +551,9 @@
 	    nav ul li a{
 	       background-color:rgba(255,255,255,0.5);
 	    }
+	    nav ul li{
+	       margin:0.5em;
+	    }
 	    nav ul ul {
 		display: none;
 	    }
@@ -593,10 +591,10 @@
        </header>
        <nav id="help">
 	 <ul>
-	  
 	  <li><a  href="#">...</a>
 	    <ul>
 	    <li><a  href="https://github.com/luffah/diy-heaven/issues">Report a bug !</a></li>
+	    <li><a  onClick="if (confirm('Download lastest version?')){window.location='https://github.com/luffah/diy-heaven/archive/master.zip';};">Download lastest version</a></li>
 	    <li><a  href="http://www.sonelec-musique.com/electronique_theorie_resistance.html">Infos sur les résistances</a></li>
 	    <li><a  href="http://www.sonelec-musique.com/electronique_theorie_resistance_codes_valeur.html">Infos sur les codes valeurs</a></li>
 	    </ul>

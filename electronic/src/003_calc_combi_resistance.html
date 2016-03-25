@@ -1,0 +1,61 @@
+<article class='app' id="calc_combi_resistance">
+  <header>
+    <h3>Recherche de combinaisons</h3>
+  </header>
+  <section class="cadre">
+    <section class='block_form1'>
+      <form>
+        <label for="resistance">Résistance souhaitée <small>(en
+        Ohm)</small></label><input type="number" value="10500"
+        name="resistance" id="resistance" onchange=
+        "document.getElementById('resistance_link').value=this.value;"><br>
+
+        <label for="ecart">Tolérance approximative <small>(en
+        %)</small></label><input type="number" value="2" name=
+        "ecart" id="ecart" min="0.5" step="0.5" max="25" onchange=
+        "document.getElementById('ecart_link').value=this.value;"><br>
+
+        <label for="nbresistances">Nombre maximum de
+        resistances</label><input type="number" value="4" min="1"
+        max="8" name="nbresistances" id="nbresistances" onchange=
+        "document.getElementById('nbresistances_link').value=this.value;"><br>
+        </form><button onclick="start_calcul_combinaisons();" id=
+        "button_chercher">Chercher !</button> <button class=
+        "button_hidden" id="button_chercher_loading"></button><br>
+    </section>
+    <section class='block_form2'>
+      <label for="grp_resistance1">Solution 1 :</label>
+      <input class="formule" type="text" name="grp_resistance1" id=
+      "grp_resistance1" disabled> <span class="valeur" type="text"
+      name="grp_resistance_val1" id="grp_resistance_val1"></span>
+      <button onclick="prendre_grp(1)" id='prendre_grp1_btn' class=
+      "button_hidden">Mettre de coté</button><br>
+      <label for="grp_resistance2">Solution 2 :</label>
+      <input class="formule" type="text" name="grp_resistance2" id=
+      "grp_resistance2" disabled> <span class="valeur" type="text"
+      name="grp_resistance_val2" id="grp_resistance_val2"></span>
+      <button onclick="prendre_grp(2)" id='prendre_grp2_btn' class=
+      "button_hidden">Mettre de coté</button><br>
+      <label for="grp_resistance3">Solution 3 :</label>
+      <input class="formule" type="text" name="grp_resistance3" id=
+      "grp_resistance3" disabled> <span class="valeur" type="text"
+      name="grp_resistance_val3" id="grp_resistance_val3"></span>
+      <button onclick="prendre_grp(3)" id='prendre_grp3_btn' class=
+      "button_hidden">Mettre de coté</button><br>
+    </section>
+    <section class='block_stock' id=
+    'cadre_taken_stock_view_resistor'>
+      <label for="taken_stock_view_resistor">Resistances mises de
+      coté :<br></label>
+      <section id='taken_stock_view_resistor'></section>
+      <form>
+        <input type="string" value="" class="stock" name=
+        "my_stock_resistor_pris" id="my_stock_resistor_pris"
+        onclick="makeViewFromFormattedTakenStock();">
+      </form><br>
+    </section>
+  </section>
+  <p class="info">Légende : ( R1 <strong>+</strong> R2 ) &rarr;
+  résistances en série; ( R1 <strong>//</strong> R2 ) &rarr;
+  résistances en parallèle.</p>
+</article>

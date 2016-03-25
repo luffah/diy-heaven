@@ -1,0 +1,675 @@
+body{
+	background-color:#FCF8EA;
+	font-family:sans-serif;
+}
+article{
+	display:inline-block;
+}
+#corps{
+	display:inline-block;
+	text-align:center;
+	width:100%;
+}
+.app{
+	display:none;
+	width:80%;
+	position:absolute;
+	left:2%;
+}
+.app ul{
+	text-align:left;
+}
+app header h3{
+	text-align:center;
+	background-color:rgba(173,173,173,0.25);
+	font-size:small;
+	margin:0;
+}
+#titre{
+	position : relative;
+	top:0;
+	left:0;
+	width:100%;
+}
+.cadre{
+	display:inline-block;
+	text-align:center;
+}
+/* Block de calcul des combinaisons de resistance */
+.stock{
+}
+.formule{
+	width: 40%;
+}
+.valeur{
+	width: 10%;
+}
+footer {
+	position:fixed;
+	top:97%;
+	bottom:auto;
+	font-size: small;
+	color: #7F7F7F;
+	background-color:black;
+	width:100%;
+}
+footer:hover {
+	bottom:0;
+	top:auto;
+}
+footer div{
+	display:inline-block;
+	margin-left:2vw;
+	width:47%;
+}
+footer a{
+	font-size: 1em;
+	color:green;
+	padding:0.5em;
+	margin:0.5em;
+	border:2px solid green;
+}
+footer a:hover{
+	color:#90EE90;
+	border:2px solid #90EE90;
+}
+footer ul{
+	list-style:none;text-align:right;
+}
+footer ul li {
+	margin-top:1.5em;
+}
+.block_stock {
+	position:relative;
+	display:inline-block;
+}
+.block_stock .title{
+	left:20%;
+}
+.block_stock input{
+	width:99%;
+}
+.block_form0 .title{
+	left:10%;
+	text-align:left;
+}
+.block_form0 .view{
+	position:relative;
+	left:20%;
+}
+.block_form0 input{
+	margin:0;
+	padding:0;
+}
+.block_form1 {
+	position:relative;
+	text-align:left;
+}
+.block_form1 button{
+	position:absolute;
+	left:60%;
+}
+.block_form1 input{
+	position:absolute;
+	left:60%;
+	width:10em;
+}
+.block_form2 {
+	position:relative;
+	left:10%;
+	text-align:left;
+	color:#2D2D2D;
+}
+.block_form2 input{
+	position:relative;
+	width:16em;
+}
+/*Les boutons */
+button{
+	border: 1.5px solid gray;
+	background-color:white;
+	cursor:default;
+	min-width:1.75em;
+}
+button:active{
+	transform: translate(-5px,0px);
+	-webkit-transform: translate(-5px,0px);
+	-ms-transform: translate(-5px,0px);
+}
+button:hover{
+	border: 1.5px solid black;
+	background-color:#40FF40;
+	cursor:pointer;
+}
+.button_waiting{
+	cursor:wait !important;
+	background-color:gray;
+}
+.button_hidden{
+	display:none;
+}
+.button_deprecated{
+	background-color:gray;
+	border: 1.5px solid black;
+	color:white;
+}
+.button_deprecated:hover{
+	border: 1.5px solid black;
+	background-color:red;
+	cursor:pointer;
+}
+.button_disabled{
+	background-color:gray;
+	border: 1.5px solid gray;
+	opacity:0.1;
+}
+.button_disabled:hover{
+	background-color:gray;
+}
+.button_waiting:hover{
+	cursor:wait !important;
+	background-color:gray;
+}
+/* Block de déchiffrage d'une résistance */
+.resistor_block {
+	display:inline;
+	border-bottom:1px solid black;
+	text-align:left;
+	width:100%;
+	display:none;
+}
+#resistor_settings {
+	display:inline-block;
+	padding:0.2em;
+	max-width:40em;
+	text-align:left;
+}
+#resistor_settings .cei_color_list{
+	text-align:center;
+}
+.resistor_prop_title .info{
+	font-weight:normal;
+}
+.resistor_prop_title{
+	list-style-type: none;
+	padding-left:0.5em;
+	padding-right:0.5em;
+	border: none;
+	font-weight:bold;
+	font-size:small;
+	text-align:center;
+}
+.cei_color_block { 
+display: block;
+margin: 0;
+padding: 0;
+float:left;
+}
+.cei_color_block ul{
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	float:left;
+}
+.cei_color_block li{ 
+list-style-type: none;
+border : 1px solid black;
+margin: 1.5px;
+min-width:1.2em;
+text-align:center;
+font-size:small;
+cursor:pointer;
+opacity:0.7;}
+.cei_color_block li:hover {
+	opacity:1;
+}
+.cei_color_list { 
+display: inline-block;
+margin: 0;
+padding: 0;
+float:left;}
+.cei_color_list li {
+	list-style-type: none;
+	border : 1px solid black;
+	margin: 2px;
+	min-width:1.5em;
+	text-align:center;
+	font-size:small;
+	border-radius: 0.2em;
+	cursor:pointer;
+	opacity:0.7;
+}
+.cei_color_list li:hover {
+	opacity:1;
+}
+.font-small li{
+	font-size:x-small;
+	padding:0.1em;
+}
+.resistor_mode_list { 
+	border-bottom : 1px solid black;
+	display: inline;
+	margin: 0;
+	padding: 0;
+	float:left;
+	list-style-type: none;
+	text-align:left;
+	width:100%;}
+.resistor_mode_list li {
+	list-style-type: none;
+	display: inline-block;
+	padding-left:0.25em;
+	padding-right:0.25em;
+	text-align:center;
+	font-size:small;
+	border : 1px solid grey;
+	cursor:pointer;
+	min-width:1em;
+	opacity:0.7;
+}
+
+.resistor_mode_list li:hover {
+	opacity:1;
+}
+.resistor_mode_list .active,#pow .active{
+	opacity:1;
+	font-weight:bold;
+	border : 3px solid #4D4D4D;
+}
+.resistor_value_selector .active,.resistor_value_selector_highlight .active{
+	opacity:1;
+	font-weight:bold;
+	border : 2px solid #000000;
+	border-radius : 0.5em ;
+}
+.resistor_value_selector_fixed li{
+	width:18px;
+	font-size:0.6em;
+	margin:0.05em;
+	border:1px solid #000000;
+}
+.resistor_mode_list .title{
+	border : none;
+}
+.resistor_value_title{
+	padding:0.5em;
+}
+.resistor_value_selector li{
+	margin:0.5px;
+}
+.resistor_value_selector{
+	opacity:0.7;
+	display:inline-block;
+	float:left;
+	border: 1px solid #DCDFCC;
+	margin:0.01em;
+}
+.resistor_value_selector:hover{
+	opacity:1;
+	border: 2px solid black;
+}
+.resistor_value_selector_highlight{
+	opacity:1;
+	display:inline-block;
+	float:left;
+}
+
+.cei_color_Black{ background-color: black ; color: white; border: 1px solid black; -moz-user-select: none;}
+.cei_color_Brown{ background-color: brown ; border: 1px solid black;-moz-user-select: none;}
+.cei_color_Red{ background-color: red; border: 1px solid black;-moz-user-select: none;}
+.cei_color_Orange{ background-color: #FF7000; border: 1px solid black; -moz-user-select: none;}
+.cei_color_Yellow{ background-color: yellow; border: 1px solid black; -moz-user-select: none;}
+.cei_color_Green{ background-color: green; color: white;border: 1px solid black; -moz-user-select: none;}
+.cei_color_Blue{ background-color: blue; color: white;border: 1px solid black; -moz-user-select: none;}
+.cei_color_Violet{ background-color: violet; border: 1px solid black; -moz-user-select: none;}
+.cei_color_Gray{ background-color: gray; border: 1px solid black; -moz-user-select: none;}
+.cei_color_White{ background-color: white; border: 1px solid black; -moz-user-select: none;}
+.cei_color_Gold{ background-color: gold; border: 1px solid black; -moz-user-select: none;}
+.cei_color_Silver{ background-color: silver; border: 1px solid black; -moz-user-select: none;}
+.cei_color_None{ background-color: rgba(0,0,0,0.0); border: 1px solid rgba(0,0,0,0); -moz-user-select: none; }
+.cei_color_Transparent{ background-color: rgba(175,175,175,0.2); border: 1px solid rgba(175,175,175,0.1) ; -moz-user-select: none; }
+.cei_color_Beige{ background-color: #FFFFAD ; -moz-user-select: none;}
+.cei_color_Cyan{ background-color: #1E90FF; -moz-user-select: none;}
+.cei_color_Pink{ background-color: #FF778F ; -moz-user-select: none;}
+.cei_color_CapGreen{ background-color: #90EE90 ; -moz-user-select: none;}
+.ceramic_color_Brown{ background-color: #FFA500; -moz-user-select: none; }
+.resistor_blink_val{ display:inline-block;border: 2px solid rgba(0,255,0,0.9) ; -moz-user-select: none; }
+.resistor_blink_val_hidden{ display:inline-block;border: 2px solid rgba(255,255,0,0) ; -moz-user-select: none; }
+#value1,#value2,#value3,#pow{
+	display:inline-block;
+}
+#pow{
+	max-width:6em;
+	display: inline;
+	float:left;
+}
+#pow li{
+/*
+	padding:0;
+	margin:0;
+	list-style-type: none;
+	border-color:white;
+	border-bottom:1px solid black;
+	background-color:white;
+	display: inline-block;
+	text-align:center;
+	font-size:small;
+	cursor:pointer;
+	opacity:0.7;
+*/
+}
+/*Image/aperçue de la résistance*/
+#resistor_value,#_cms_resistor_value,#bobine_resistor_value{
+	min-width:4em;
+	max-width:10em;
+}
+.resistor_view_canvas{
+	display:inline-block;
+	text-align:center;
+	border: 1px dashed gray;
+	background-color:rgba(255,255,255,0.25);
+}
+.resistor_view_canvas_resistor_small{
+	border: 1px dashed gray;
+	background-color:rgba(255,255,255,0.25);
+	margin:0.5em;
+	padding:0em;
+}
+.resistor_view_canvas_item{
+	margin-top:0.5em;
+	margin-bottom:0.5em;
+	padding:0;
+	margin-left:0;
+	margin-right:0;
+	display:inline-block;
+}
+.resistor_view_canvas_resistor_small .resistor_view{
+	color:red;
+	margin-top:1em;
+}
+.resistor_view_canvas input{
+	background-color:rgba(255,255,255,0);
+	border:none;
+}
+.resistor_view{
+	border:2px solid black;
+	box-shadow: 2px 2px 5px #888888;
+	border-radius:0.25em;
+}
+.power_resistor_view{
+	border:2px solid yellow;
+	background-color: gold;
+	box-shadow: 2px 2px 5px #888888;
+}
+.eletrolytic_pkg_view_round{
+	border-radius:10em;
+	margin:0;
+	padding:0;
+}
+.eletrolytic_pkg_view_cylinder input {
+	font-size:0.5em;
+	margin-top:1em;
+	margin-bottom:1em;
+	padding:0;
+	border:none;
+}
+.eletrolytic_pkg_view_cylinder{
+	border-radius:10em;
+	margin:0;
+	padding:0;
+	box-shadow: 5px 1px 5px rgba(136,136,136,0.5);
+}
+.cms_pkg_view{
+	box-shadow: 2px 2px 5px rgba(136,136,136,0.5);
+}
+.plastic_pkg_view{
+	box-shadow: 2px 2px 5px #888888;
+}
+.cms_pkg_view .relief_right{
+	border-bottom:3px solid #4D4D4D;
+	border-top:2px solid #E5E5E5;
+	border-right:2px solid #E5E5E5;
+}
+.cms_pkg_view .relief_left{
+	border-bottom:3px solid #4D4D4D;
+	border-top:2px solid #E5E5E5;
+	border-left:2px solid #E5E5E5;
+}
+.cms_pkg_view .relief{
+	border-top:3px solid black;
+	box-shadow: 2px 2px 5px #888888;
+}
+.cms_pkg_view input{
+	font-size:0.5em;
+}
+.resistor_small{
+	font-size:x-small;
+}
+.resistor_inline{
+	display:inline-block;
+}
+/* Block de visualisation du stock*/
+#stock_view_resistor, #stock_view_capacitor {
+	left:0;
+	overflow:auto;
+	text-align:left;
+	padding-top:0.25em;
+	padding-bottom:0.25em;
+}
+#stock_view_resistor .div_button , #stock_view_capacitor.div_button{
+	opacity:0;
+	display:block;
+}
+#stock_view_resistor .div_article:hover, #stock_view_capacitor .div_article:hover{
+	background-color:white;
+}
+#stock_view_resistor .div_article:hover .div_button,
+#stock_view_capacitor .div_article:hover .div_button {
+	opacity:1;
+}
+#stock_view_resistor .div_article .div_button button
+#stock_view_capacitor .div_article .div_button button{
+	margin:0px;
+	padding:0px;
+	display:inline;
+	opacity:0.7;
+	position:relative;
+}
+#stock_view_resistor .div_article .div_button button:hover,
+#stock_view_capacitor .div_article .div_button button{
+	opacity:1;
+}
+@media screen and (min-width: 1320px) {
+	#stock_view_resistor .resistor_view_canvas{
+		font-size:small;
+	}
+	#stock_view_resistor .resistor_view_canvas{
+		margin-left:0.5em;
+		margin-right:0.5em;
+		margin-bottom:5px;
+	}
+}
+@media screen and (max-width: 1320px) {
+	#stock_view_resistor .resistor_view_canvas{
+		font-size:x-small;
+	}
+	#stock_view_resistor .div_article .shown_data {
+		font-size:0.7em;
+	}
+	#stock_view_resistor .div_article .blink_data {
+		font-size:0.7em;
+	}
+	#stock_view_resistor .resistor_view_canvas{
+		margin-left:0.2em;
+		margin-right:0.2em;
+		margin-bottom:0.2em;
+	}
+}
+#stock_view_resistor .div_button{
+	display:none;
+}
+#stock_view_resistor:hover .div_button{
+	display:block;
+}
+#taken_stock_view_resistor {
+	padding-top:1em;
+	padding-bottom:1em;
+	width:100%;
+	height:10em;
+	overflow:auto;
+}
+.draggable{
+	cursor:move;
+}
+.droppable{
+	cursor:cell;
+}
+.border_round{
+	border-radius:1em;
+}
+.rotate_item_unvertical {
+	transform: rotate(90deg);
+	-webkit-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	display:inline-block;
+}
+.up_big_item{
+	position:relative;
+	bottom:0.5em;
+}
+.up_small_item{
+	position:relative;
+	bottom:0.25em;
+}
+.down_small_item{
+	position:relative;
+	bottom:-0.25em;
+}
+.rotate_item_vertical {
+	transform: rotate(-90deg);
+	-webkit-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	display:inline-block;
+}
+.rotate_item_shake {
+	transform: rotate(-10deg);
+	-webkit-transform: rotate(-10deg);
+	-ms-transform: rotate(-10deg);
+}
+.rotate_item_hurt1 {
+	transform: rotate(-45deg);
+	-webkit-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+}
+.rotate_item_hurt2 {
+	transform: rotate(-120deg);
+	-webkit-transform: rotate(-120deg);
+	-ms-transform: rotate(-120deg);
+}
+.rotate_item_hurt3 {
+	transform: rotate(180deg);
+	-webkit-transform: rotate(180deg);
+	-ms-transform: rotate(180deg);
+}
+.rotate_item_hurt4 {
+	transform: rotate(120deg);
+	-webkit-transform: rotate(120deg);
+	-ms-transform: rotate(120deg);
+}
+.rotate_item_hurt5 {
+	transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+}
+/*Element d'aide*/
+.hidden_data{
+	opacity:0;
+}
+.blink_data{
+	opacity:0.25;
+}
+.shown_data{
+	opacity:0.9;
+}
+big{
+	font-size:2em;
+}
+.info{
+	font-size:small;
+	text-align:left;
+	margin-left:10%;
+}
+.info li{
+	font-size:small;
+	text-align:left;
+}
+#menu{
+	position: fixed;
+	right:0;
+	top:0;
+	text-align:center;
+	width:15em;
+	font-size:small;
+}
+#menu .active{
+	background-color:yellow;
+}
+#menu li{
+	padding:0.5vw;
+	margin-top:0.2vw;
+	border:1px solid green;
+}
+nav ul ul {
+	display: none;
+}
+nav ul li > ul:hover {
+	display: none;
+}
+nav ul li:hover > ul {
+	display: block;
+}
+nav ul {
+	list-style: none;
+	margin:0;
+}
+nav ul:after {
+	content: ""; clear: both; display: block;
+}
+a{
+	font-size:1.2vw;
+	padding:0.1vw;
+	margin:0.1vw;
+	text-decoration:none;
+}
+#notes {
+	display:none;
+}
+#mini_calc div{
+	text-align:left;
+}
+.radio_redzone{
+	border-top:2px dashed red;
+}
+.radio_orangezone{
+	border-top:2px dashed orange;
+}
+.radio_greenzone{
+	border-top:2px dashed green;
+}
+.deprecated{
+	background-color:gray;
+}
+.todo{
+	color:red;
+	border:2px dashed red;
+	background-color:white;
+	font-weight:bold;
+	font-size:small;
+	position:relative;
+	left:-4em;
+	top:0.8em;
+	transform: rotate(-18deg);
+	-webkit-transform: rotate(-18deg);
+	-ms-transform: rotate(-18deg);
+	max-width:4em;
+}

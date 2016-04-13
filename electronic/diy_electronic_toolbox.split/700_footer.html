@@ -1,0 +1,51 @@
+<footer>
+  <div>
+    <h3>DIY. Die what ?</h3>
+    <p>Ceci est une série d'outils visant à faciliter de la récup'
+    de composants électroniques.</p>
+    <p>2015 Copyleft :<br>
+    Sébastien Gillot</p>
+    <p>Tests navigateurs :<br>
+    Chromium : Ok;<br>
+    Mozilla : Ok;<br>
+    Webkit:à vérifier.</p>
+    <ul>
+		<li><div class='todo'><h4>À faire</h4></div></li>
+		<li>Permettre de charger un fichier de conf. cf test_buttons.js</li>
+		<li>Compléter les tests unitaires</li>
+		<li>Rendre plus agréable l'ergonomie</li>
+  </div>
+  <div>
+	<p>Sources : https://github.com/luffah/diy-heaven/</p>
+	<p>Pour modifier ce programme il est conseiller de modifier les fichiers dans le dossier 'src',
+	puis de lancer 'sh ./tool/hypertool.sh -c'.<br>
+	Ce dernier va mettre à jouer le code HTML 'complete.html' regroupant tous les fichiers HTML
+	dont le nom commence par une série de 3 chiffres (de 000_ à 999_ ).</p>
+	<p>Afin de regrouper toutes les ressovurces dans un fichier HTML 'src.html', utiliser l'option de commande '-i'
+	'sh ./tool/hypertool.sh -i src'.</p>
+	<p>Le script hypertool à été créer à la va-vite pour restructurer ce projet.
+	La première fonction était de séparer les blocks 'article' les uns des autres. <br>
+	Pour cela l'option de commande est '-s' : 'sh ./tool/hypertool.sh -s %fichier%.html'.<br>
+	Pour modifier au passage la mise en fome des balises, il suffit d'ajouter un 'b' (pour beautify) :
+	 'sh ./tool/hypertool.sh -sb %fichier%.html'.</p>
+	<ul>
+	  <li><h3>Liens :::::::::::::::::::::::::</h3></li>
+      <li><a href=
+      "http://www.sonelec-musique.com/electronique_theorie_resistance.html">
+      Infos sur les résistances</a></li>
+      <li><a href="https://fr.wikipedia.org/wiki/CEI_60757">Infos
+      sur les codes valeurs</a></li>
+      <li><a onclick=
+      "if (confirm('Download lastest version?')){window.location='https://github.com/luffah/diy-heaven/archive/master.zip';};">
+      Download lastest version</a></li>
+      <li><a href=
+      "https://github.com/luffah/diy-heaven/issues">Report a bug
+      !</a><br></li>
+    </ul>
+  </div>
+</footer><!--Javascript-->
+<!-- Fonctions de calcul --><!--Effets graphique et animations-->
+<!---->
+<!--Déchiffrage d'une résistance-->
+<!--Pour la gestion du stock-->
+<!-- Drag and drop et deplacement des vues de résistance-->

@@ -1,0 +1,20 @@
+<article class="app" id='block_stock_resistor'>
+  <section class="droppable" id='stock_view_resistor' ondrop=
+  "dropOnStock(event)" ondragover="allowDrop(event)"></section>
+  <section class='block_stock'>
+    <div class='title'>
+      <label for="my_stock_resistor">Stock de resistances
+      <small>(en Ohm, séparées par des
+      espaces)</small>:<br></label>
+    </div>
+    <form>
+      <textarea ondrop=
+      "add_to_stock(event.dataTransfer.getData('text'));"
+      ondragover="allowDrop(event);" id="my_stock_resistor" title=
+      "Aide : les notations k=*1000 M=*1000000 sont authorisées"
+      onmouseout="updateStock(); is_valid_stock(this);" onblur=
+      "updateStock(); is_valid_stock(this);" rows="4" cols=
+      "50"></textarea>
+    </form>
+  </section>
+</article>

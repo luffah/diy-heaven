@@ -1,0 +1,20 @@
+<article class="app" id='block_stock_capacitor'>
+  <section class="droppable" id='stock_view_capacitor' ondrop=
+  "dropOnStock(event)" ondragover="allowDrop(event)"></section>
+  <section class='block_stock'>
+    <div class='title'>
+      <label for="my_stock_capacitor">Stock de condensateurs
+      <small>(en Farad, séparées par des
+      espaces)</small>:<br></label>
+    </div>
+    <form>
+      <textarea ondrop=
+      "add_to_stock(event.dataTransfer.getData('text'));"
+      ondragover="allowDrop(event);" id="my_stock_capacitor" title=
+      "Aide : les notations u=e-6 n=e-9 p=e-12  sont authorisées"
+      onmouseout="updateStock(); is_valid_stock(this);" onblur=
+      "updateStock(); is_valid_stock(this);" rows="4" cols=
+      "50"></textarea>
+    </form>
+  </section>
+</article>

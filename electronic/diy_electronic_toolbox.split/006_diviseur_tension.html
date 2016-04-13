@@ -1,0 +1,66 @@
+<article class='app' id="diviseur_tension">
+  <header>
+    <h3>Calcul des résistances d'un pont diviseur de tension</h3>
+  </header>
+  <section class='block_form0 cadre'>
+    <form>
+      <label for="ecart_link">Tolérance approximative <small>(en
+      %)</small></label><input size="4" id="ecart_link" disabled>
+      <label for="nbresistances_link">Nb. max. de resistances par
+      R</label><input size="4" id="nbresistances_link" disabled
+      ><br>
+      <label for="t_in">Ue <small>(en V)</small></label>
+      <input type="text" size="4" value="9" name="t_in" id="t_in">
+      <label for="t_out">Us <small>(en V)</small></label>
+      <input type="text" size="4" value="0.2" name="t_out" id=
+      "t_out"><br>
+      <label for="charge_in">Re <small>(en Ohm)</small></label>
+      <input type="text" size="4" value="0" name="charge_in" id=
+      "charge_in"> <label for="charge_out">Rs <small>(en
+      Ohm)</small></label> <input type="text" size="4" value="20k"
+      name="charge_out" id="charge_out"><br>
+      <small><label for="influence_percent">Faible influence de
+      Rs</label> <span class='radio_redzone'><input type="radio"
+      value="1" name="influence_percent" title="1%"></span>
+      <input type="radio" value="2" name="influence_percent" title=
+      "2%"></small> <input type="radio" value="3" name=
+      "influence_percent" title="3%"> <input type="radio" value="4"
+      name="influence_percent" title="4%"> <span class=
+      'radio_orangezone'><input type="radio" value="5" name=
+      "influence_percent" title="5%"></span> <input type="radio"
+      value="10" name="influence_percent" title="10%"> <input type=
+      "radio" value="15" name="influence_percent" title="15%">
+      <input type="radio" value="20" name="influence_percent"
+      title="20%"> <span class='radio_greenzone'><input type=
+      "radio" value="25" name="influence_percent" title=
+      "25%"></span> <input type="radio" value="30" name=
+      "influence_percent" title="30%" checked="checked">
+      <input type="radio" value="35" name="influence_percent"
+      title="35%"> <input type="radio" value="40" name=
+      "influence_percent" title="40%"> <input type="radio" value=
+      "45" name="influence_percent" title="45%"> <input type=
+      "radio" value="50" name="influence_percent" title="50%">
+      <span class='radio_orangezone'><input type="radio" value="60"
+      name="influence_percent" title="60%"></span> <input type=
+      "radio" value="70" name="influence_percent" title="70%">
+      <span class='radio_redzone'><input type="radio" value="90"
+      name="influence_percent" title="90%"></span> <input type=
+      "radio" value="100" name="influence_percent" title="100%">
+      <label for="influence_percent">Faible
+      consommation</label><br>
+    </form><button onclick="cherche_div_tension();"
+      id='btn_cherche_div_tension'>Chercher!</button><button class=
+        "button_hidden" id="btn_cherche_div_tension_loading"></button><button onclick="cherche_div_tension_stock();" 
+      id='btn_cherche_div_tension_stock'>Chercher dans le stock!</button><button class=
+        "button_hidden" id="btn_cherche_div_tension_stock_loading">
+  </section>
+  <section>
+    <p id="formule_div_tension">Us=Ue*( R'2 / (R'1+R'2) ) avec
+    R'1=R1+Re et R'2=R2//Rs</p>
+    <p id="solution_div_tension"></p><br>
+    <canvas id="monCanvas" width="200" height="150" style=
+    "border:1px solid #c3c3c3;">
+      Votre navigateur ne supporte pas l'élément &lt;canvas&gt;.
+    </canvas>
+  </section>
+</article>

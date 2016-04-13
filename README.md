@@ -14,7 +14,8 @@ A simple resistor and capacitor manager and a tool to compute combinations.
 An arduino code to measure resistor, capacitor & diod for these moments you don't have an operationnal multimeter with you...
 
 ####./html_tool/hypertool.sh
-A simple tool to split and restructure html file. conf/tidy* : configuration files for tidy hypertool.sh: script to restructure html. Note you can use the tool without options (it will seeks into local directory).
+A simple tool to split and restructure html file.
+Note you can use the tool without options (it will seeks into local directory).
 Anyway, the options are :
 ```
 "split"|"-s") split file <name> and write splitted html in <name>.split 

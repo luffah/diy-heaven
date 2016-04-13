@@ -1,5 +1,6 @@
 #!/bin/sh
-conf_dir="conf/"
+[ -n "${TEST}" ] && echo "TEST_MODE"
+conf_dir="`dirname $0`/conf/"
 conf_tidy_beautify="${conf_dir}/tidy-beautify.conf"
 conf_tidy_concat="${conf_dir}/tidy-completion.conf"
 
@@ -126,7 +127,7 @@ set_out_file()
 
 write_to_out_file()
 {
-	/bin/echo -E "$1" >> "${out_dir}/${out_file}"
+	[ -z "${TEST}" ] && /bin/echo -E "$1" >> "${out_dir}/${out_file}"
 }
 
 split_html()
@@ -146,9 +147,9 @@ fi
 
 if [ -f "$1" ]
 then
-	mkdir "${out_dir}"
+	[ -z "${TEST}" ] && mkdir "${out_dir}"
 	cat $1 |\
-	sed 's/^[ ]*</</' |\
+	sed 's/^[ ]*</</;s/\(<[\]*\(script\|style\|footer\)\([ ]*[^>]*\)>\)\(..*\)/\1\n\4/g' |\
 	{
 	while read -r line
 	do
@@ -168,7 +169,9 @@ then
 			set_out_file "`html_fname $idx $article_id`" quiet
 			line=""
 		;;
-		'<script>')
+		'<script src'*)
+		;;
+		'<script'*)
 			out_file_ref="`js_fname $idx $article_id`"
 			ls_scripts="${ls_scripts% ${out_file_ref}} ${out_file_ref}"
 			#~ write_to_out_file "<!-- see ${out_file_ref}  for functions -->"

@@ -15,7 +15,8 @@ An arduino code to measure resistor, capacitor & diod for these moments you don'
 
 ####./html_tool/hypertool.sh
 A simple tool to split and restructure html file.
-Note you can use the tool without options (it will seeks into local directory).
+
+You can use the tool without options (it will seeks into local directory).
 Anyway, the options are :
 ```
 "split"|"-s") split file <name> and write splitted html in <name>.split 

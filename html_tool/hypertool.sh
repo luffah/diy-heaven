@@ -1,8 +1,8 @@
 #!/bin/sh
 [ -n "${TEST}" ] && echo "TEST_MODE"
 conf_dir="`dirname $0`/conf/"
-conf_tidy_beautify="${conf_dir}/tidy-beautify.conf"
-conf_tidy_concat="${conf_dir}/tidy-completion.conf"
+#~ conf_tidy_beautify="${conf_dir}/tidy-beautify.conf"
+#~ conf_tidy_concat="${conf_dir}/tidy-completion.conf"
 
 errors_files=""
 
@@ -72,7 +72,7 @@ my_beautifier()
 		mv $1.tmp $1
 		;;
 		*.html)
-			tidy_wrapper $1 beautify
+			#~ tidy_wrapper $1 beautify
 		;;
 	esac
 }
@@ -217,7 +217,7 @@ concat_html_files() {
 	if [ -d "${split_dir}" ]
 	then
 		cat ${split_dir}/[0-9][0-9][0-9]_*.html >  ${all_html_fname}
-		tidy_wrapper ${all_html_fname} concat
+		#~ tidy_wrapper ${all_html_fname} concat
 	fi
 }	
 insert_deps() {

@@ -5,14 +5,17 @@ Contains :
 
 ####./electronic/diy_electronic_toolbox.html
 A simple resistor and capacitor manager and a tool to compute combinations.
-! the source of this tool is currently in restructuration to respect MVC!
+
+*! the source of this tool is currently in restructuration to respect MVC pattern !*
 
 ####./electronic/arduino/multimeter.ino
 An arduino code to measure resistor, capacitor & diod for these moments you don't have an operationnal multimeter with you...
 
 ####./html_tool/hypertool.sh
 A simple tool to split and restructure html file.
-! this could become obsolete !
+
+*! this could become obsolete !*
+
 You can use the tool without options (it will seeks into local directory).
 Anyway, the options are :
 ```

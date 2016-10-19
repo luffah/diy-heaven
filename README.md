@@ -4,24 +4,11 @@ A set of little programs usefull for DIY and for avoiding waste
 Contains :
 
 ####./electronic/diy_electronic_toolbox.html
-A simple resistor and capacitor manager and a tool to compute combinations.
+A simple resistor ~and capacitor~ manager and a tool to compute combinations.
+(/w capacitor manager put in unstable)
 
-*! the source of this tool is currently in restructuration to respect MVC pattern !*
+Currently in preparation : MVC compilable version - this version is planned for 2017
+- tryed to restructure it with Cake PHP // but the framework is not really adapted
 
 ####./electronic/arduino/multimeter.ino
 An arduino code to measure resistor, capacitor & diod for these moments you don't have an operationnal multimeter with you...
-
-####./html_tool/hypertool.sh
-A simple tool to split and restructure html file.
-
-*! this could become obsolete !*
-
-You can use the tool without options (it will seeks into local directory).
-Anyway, the options are :
-```
-"split"|"-s") split file <name> and write splitted html in <name>.split 
-"concat"|"-c") concat html files in <name>.split to <name>.split/complete.html
-"insert_deps"|"-i") putback <name>.split/complete.html to <name>.html while inserting every "<(script|style) src=".
-"beautify"|"-b") pretty print / process files with tidy 
-"-sb") split and beautify
-```

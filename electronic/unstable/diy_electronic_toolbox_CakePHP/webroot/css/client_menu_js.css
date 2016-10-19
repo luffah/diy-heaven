@@ -1,0 +1,16 @@
+nav ul ul {
+	display: none;
+}
+nav ul li > ul:hover {
+	display: none;
+}
+nav ul li:hover > ul {
+	display: block;
+}
+nav ul {
+	list-style: none;
+	margin:0;
+}
+nav ul:after {
+	content: ""; clear: both; display: block;
+}

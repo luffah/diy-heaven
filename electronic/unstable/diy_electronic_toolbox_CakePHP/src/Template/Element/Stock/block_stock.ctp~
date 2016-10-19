@@ -1,0 +1,45 @@
+<?php
+/* Block stock : allow to view and define component in text format
+ * 	How to call this file ?
+ *  
+ * <?php echo $this->element('jsmenu_css',
+ *		array(context_id=>"id of the element which trigger this part")); ?>
+ * 
+ * context_id is typically 'block_stock_resistor' or 'block_stock_capacitor'
+ * context_id is splitted with '_' in order to get the component type at the end.
+ */
+ $component_def=explode($context_id);
+ $component=$component_def[count($component_def)-1];
+ $help_text='';
+ $label_text='';
+ switch ($component){
+	case 'resistor':
+		$help_text="Aide : les notations m=e-3 k=e3 M=e6 sont reconnues par ce programme";
+		$label_text="Stock de résistances <small>(en Ohm, séparées par des espaces)</small>:";
+		break;
+	case 'capacitor':
+		$help_text="Aide : les notations u=e-6 n=e-9 p=e-12  sont reconnues par ce programme";
+		$label_text="Stock de condensateurs <small>(en Farad, séparées par des espaces)</small>:";
+		break;
+}
+?>
+
+		<section class="droppable" id='stock_view_<?= $component ?>' 
+		ondrop="dropOnStock(event)" ondragover="allowDrop(event)"></section>
+		<section class='block_stock'>
+			<div class='title'>
+			  <label for="my_stock_<?= $component ?>"><?= $label_text?><br></label>
+			</div>
+			<form>
+			  <textarea  id="my_stock_<?= $component ?>"
+			  title="<?= $help_text?>"
+			   rows="4" cols=
+			  "50"></textarea>
+			</form>
+		</section>
+
+		<!-- ondrop="add_to_stock(event.dataTransfer.getData('text'));"
+			  ondragover="allowDrop(event);"
+			  
+			  onmouseout="updateStock(); is_valid_stock(this);" onblur=
+			  "updateStock(); is_valid_stock(this);" -->

@@ -1,0 +1,46 @@
+/*Les boutons */
+button{
+	border: 1.5px solid gray;
+	background-color:white;
+	cursor:default;
+	min-width:1.75em;
+}
+button:active{
+	transform: translate(-5px,0px);
+	-webkit-transform: translate(-5px,0px);
+	-ms-transform: translate(-5px,0px);
+}
+button:hover{
+	border: 1.5px solid black;
+	background-color:#40FF40;
+	cursor:pointer;
+}
+.button_waiting{
+	cursor:wait !important;
+	background-color:gray;
+}
+.button_hidden{
+	display:none;
+}
+.button_deprecated{
+	background-color:gray;
+	border: 1.5px solid black;
+	color:white;
+}
+.button_deprecated:hover{
+	border: 1.5px solid black;
+	background-color:red;
+	cursor:pointer;
+}
+.button_disabled{
+	background-color:gray;
+	border: 1.5px solid gray;
+	opacity:0.1;
+}
+.button_disabled:hover{
+	background-color:gray;
+}
+.button_waiting:hover{
+	cursor:wait !important;
+	background-color:gray;
+}

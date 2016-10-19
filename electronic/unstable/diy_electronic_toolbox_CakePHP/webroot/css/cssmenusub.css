@@ -1,0 +1,22 @@
+.csssubmenu, .csssubmenu li {
+margin:0px; padding:0px; 
+display:inline-block;
+} 
+.csssubmenu.menu_lvl1 {left:-1px;top:100%;}
+.csssubmenu li {
+	width:100%; 
+	border-left:none; border-right:none;
+}
+li > ul.csssubmenu {
+	display:none; border:3px rgba(0,0,0,0.75) solid;}
+li:hover > ul.csssubmenu {
+	display:inline-block;
+	position:absolute;
+	width:inherit;
+	top:100vw;
+	left:inherit; z-index:1000;
+ } 
+li:hover > ul.csssubmenu li a {
+	background:white;color:gray;
+	display:inline-block;
+ }

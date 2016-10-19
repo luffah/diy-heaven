@@ -1,0 +1,43 @@
+# Titre 
+msgid "Electronic DIY toolbox"
+msgstr "Electronic DIY toolbox fr"
+
+msgid "Set of tools for electronic waste reuse and DIYers"
+msgstr "Boite à outil pour la récupération de composants électroniques"
+
+# Menu
+msgid "Déchiffrage"
+msgstr "Déchiffrage"
+msgid "Déchiffrage..."
+msgstr "Lecture/déchiffrage "
+
+msgid "Mini calc"
+msgstr "Mini calc"
+msgid "Mini calc..."
+msgstr "Mini calculatrice"
+
+msgid "Combinaisons"
+msgstr "Combinaisons"
+msgid "Combinaisons..."
+msgstr "Combinaisons"
+
+msgid "Puissance"
+msgstr "Puissance"
+msgid "Puissance..."
+msgstr "Puissance"
+
+msgid "Div.tension"
+msgstr "Div.tension"
+msgid "Div.tension..."
+msgstr "Diviseur de<br>tension"
+
+msgid "Résistances"
+msgstr "Résistances"
+msgid "Résistances..."
+msgstr "Mes résistances"
+
+msgid "Condensateurs"
+msgstr "Condensateurs"
+msgid "Condensateurs..."
+msgstr "Mes condensateurs"
+

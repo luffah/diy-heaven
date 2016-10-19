@@ -1,0 +1,10 @@
+<div id='PACKAGE_RING_TEMPLATE' >
+<small>&mdash;<span id='resistor_body' class='template_field color cbody'
+><span class='template_field color val1'> </span></span
+><span><span class='template_field color val2'> </span></span
+><span><span class='template_field color val3'> </span></span
+><span><span class='template_field color mult'> </span></span
+><span><span class='template_field color tol'> </span></span
+><span><span class='template_field color ppm'> </span></span
+></span>&mdash;</small>
+</div>

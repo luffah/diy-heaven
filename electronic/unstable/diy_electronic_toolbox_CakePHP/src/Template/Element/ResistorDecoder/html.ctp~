@@ -1,0 +1,154 @@
+<?php
+
+?>
+<article class='app' id='resistor_decoder'>
+  <header>
+    <h3>Lecture/déchiffrage</h3>
+  </header>
+  <section class='cadre'>
+	 <section>
+      <div class='resistor_desc' ondrop="dropText(event,get_resistance)"
+      ondragover="allowDrop(event);">
+      <label for='component_value' class='title'>Valeur :</label>
+      <span type='text' id='component_value'>?</span>
+      <button onclick='store_resistance()' id='stock_add_btn'
+      class='button_disabled' title="Ajouter au stock" disabled
+      >+</button>
+      <p></p>
+      <p><label for='component_desc_'>Desc.:</label> <span class=
+      'view mixed_input'  id='component_desc'   onblur='get_resistance();' onkeydown=
+      'run_get_resistance(event);'>
+      [
+      <input ondrop='event.preventDefault()' id='desc_v0' type='number' size=1 min=0 max=9/>,
+      <input ondrop='event.preventDefault()' id='desc_v1' type='number' size=1 min=0 max=9/>,
+      <input ondrop='event.preventDefault()' id='desc_v2' type='number' size=1 min=0 max=9/>,
+      <input ondrop='event.preventDefault()' id='desc_mult' type='string' size=3/>,
+      <input ondrop='event.preventDefault()' id='desc_tol' type='string' size=3/>,
+      <input ondrop='event.preventDefault()' id='desc_pkg' type='string' size=4/>]
+      
+      </span></p>
+    </div>
+    </section>
+    <section id='resistor_settings'>
+      <article>
+        <div class='resistor_mode_list'>
+          <ul class='underlined'>
+            <li class='title'>Package</li>
+            <li id='PACKAGE_RING' name='PACKAGE'>
+              <div class='' >
+                <small>&mdash;<span id='resistor_body' class=
+                'resistor_view cei_color_Beige'>&nbsp;<span
+                id='border_view_value0'><span id='view_value0'></span></span
+                ><span id='border_view_value1'><span id='view_value1'></span></span
+				><span id='border_view_value2'><span id='view_value2'></span></span
+				><span id='border_view_mult'><span id='view_mult'></span></span
+				><span id='border_view_tol'><span id='view_tol'></span></span
+				><span id='border_view_ppm'><span id='view_ppm'></span></span></span>&mdash;</small>
+              </div>
+            </li>
+            <li id='PACKAGE_BOBINE' name='PACKAGE'>
+              <div class='up_small_item'>
+                o-<span class='power_resistor_view'
+                >&nbsp;<span class='template_field text value'
+                >R </span>&Omega; <span class='template_field text txtbody'
+                >P&gt;1W</span>&nbsp;</span
+                >-o
+              </div>
+            </li>
+            <li id='PACKAGE_CERAMIC' name='PACKAGE'>
+              <div class=
+              'eletrolytic_pkg_view_cylinder ceramic_color_Brown down_small_item'>
+              &nbsp;...&nbsp;
+              </div>
+              <div class=''>
+                |&nbsp;|
+              </div>
+            </li>
+            <li id='PACKAGE_PLASTIC' name='PACKAGE'>
+              <div class='up_small_item'>
+                <small class='plastic_pkg_view cei_color_Blue' 
+                ondragover="event.preventDefault();"> &mu;....</small>
+              </div>
+            </li><!--
+electrolytic capacitor
+-->
+            <li id='PACKAGE_ELECTROLYTIC' name='PACKAGE'>
+              <div class='up_big_item'>
+                <div class='rotate_item_unvertical'>
+                  <span><span><span class=
+                  'eletrolytic_pkg_view_cylinder cei_color_Black'><small>
+                  <span class=
+                  'eletrolytic_pkg_view_round cei_color_Silver'>&nbsp;&nbsp;&nbsp;</span><strong>===</strong></small></span></span></span>
+                </div>
+              </div>
+              <div class=''>
+                ||
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div id='pkg_color' class='resistor_mode_list'>
+          <ul>
+            <li class='title'>Couleur</li>
+            <li id="RESISTOR_CARBON" name='PKG_COLOR'>R 0,5W</li>
+            <li id="RESISTOR_METAL_BLUE" name='PKG_COLOR'>R
+            0,4W</li>
+            <li id="RESISTOR_METAL_GREEN" name='PKG_COLOR'>R
+            0,4W</li>
+            <li id="RESISTOR_METAL_RED" name='PKG_COLOR'>R 1W</li>
+            <li id="CAPACITOR_PINK" name='PKG_COLOR'>C</li>
+            <li id="CAPACITOR_GREEN" name='PKG_COLOR'>C</li>
+          </ul>
+        </div>
+        <div id='nb_ring' class='resistor_mode_list' title="Nombre d'anneaux"></div>
+      </article>
+     <article>
+     <div class='cei_color_block'>
+        <div class='resistor_prop_title'>
+          Valeur
+        </div>
+        <div id='value0' class='resistor_value_selector'></div>
+        <div id='value1' class='resistor_value_selector'></div>
+        <div id='value2' class='resistor_value_selector'></div>
+     </div>
+     <div class='cei_color_block'>
+      	  <div class='resistor_prop_title'>
+              Multiple
+          </div>
+          <div id='mult' class='resistor_value_selector'></div>
+      </div>
+      <div class='cei_color_block'>
+          <div class='resistor_prop_title'>
+              Tolérance<br><span class='info'>(en %)</span>
+          </div>
+          <div id='tol' class='resistor_value_selector'>
+          </div>
+      </div>
+      <div class='cei_color_block'>
+         <div class='resistor_prop_title'>
+				Charge<br>admissible<br><span class='info'>(en W)</span>
+		 </div>
+         <div id='pow' class='resistor_value_selector'>
+         </div>
+      </div>
+      
+      <ul class='cei_color_list font-small resistor_value_selector'
+      id='ppm'>
+        <li >
+          <div class='resistor_prop_title'>Coef.temp.</div>
+        </li>
+        <li class='cei_color_Black' onclick=
+        'ppm_set(200,"cei_color_Black")'>200ppm</li>
+        <li class='cei_color_Brown' onclick=
+        'ppm_set(100,"cei_color_Brown")'>100ppm</li>
+        <li class='cei_color_Red' onclick=
+        'ppm_set(50,"cei_color_Red")'>50ppm</li>
+        <li class='cei_color_Orange' onclick=
+        'ppm_set(15,"cei_color_Orange")'>15ppm</li>
+        <li class='cei_color_Yellow' onclick=
+        'ppm_set(25,"cei_color_Yellow")'>25ppm</li>
+      </ul>
+      </article>
+    </section>
+  </section>
+</article>

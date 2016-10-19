@@ -1,0 +1,61 @@
+<?php
+namespace App\Utilities\DependencyChecker;
+use Cake\Core\Exception\Exception;
+use Cake\ORM\Entity;
+
+class JSdeps extends Entity {
+	public static function get_deps($dep_list,$caller_name="",$root=true,$orig_script=""){
+		$ret=array();
+		foreach ($dep_list as $script){
+			try {
+				$file_path=WWW_ROOT . DIRECTORY_SEPARATOR . 'js'  . DIRECTORY_SEPARATOR . $script. '.js';
+				$ignore_this_file=false;
+				if ( $root == true ) { $orig_script = $script; }
+				
+				if ( file_exists($file_path) ) {
+					$file = fopen($file_path,'r') or die("Unable to open file!");
+					// Loop until we reach the end of the file.
+					while (!feof($file)) {
+						$l=fgets($file);
+						// if $line starts with
+						if ( strrpos($l, "//%Require", -strlen($l)) !== false ) {
+							if ( strrpos($l, "ments done", 9) !== false ) {
+								if ( strrpos($l, "this file will not be shown",19) !== false ) {
+									$ignore_this_file=true;
+								}
+								break;
+							} else {
+								preg_match_all("#[ ]+(([^ ]+).js)+#",
+									$l,
+									$out, PREG_PATTERN_ORDER);
+								foreach ( JSdeps::get_deps($out[2],$caller_name,false,$script) as $script_dep){
+									if (! in_array($script_dep,$ret)) {
+										array_push($ret,$script_dep);
+									}
+								}
+							}
+						}
+					}
+					fclose($file);
+					if (! $ignore_this_file ){
+						array_push($ret,$script);
+						if ( $root == true ) {
+							file_put_contents('php://stderr', print_r("> ". $script . " requires ", TRUE));
+							file_put_contents('php://stderr', print_r($ret, TRUE));
+							file_put_contents('php://stderr', print_r("\n", TRUE));
+						} 
+					} else {
+						file_put_contents('php://stderr', print_r("! ". $script . " ignored\n", TRUE));
+					}
+				} else {
+					throw new Exception("file not exists" . $file_path);
+				}
+			} catch (Exception $e) {
+				echo "The exception was created on line: " . $e->getLine();
+				file_put_contents('php://stderr', print_r("! :". $e->getLine() . ": in JSdeps::get_deps('".$orig_script."') : file not exists : ". $file_path . " [ ". $e->getTraceAsString()." ]\n", TRUE));
+			}	
+	}		
+		return $ret;
+	}
+}
+?>

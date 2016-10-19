@@ -1,0 +1,5 @@
+[1452:1452:0423/074725:ERROR:sandbox_linux.cc(334)] InitializeSandbox() called with multiple threads in process gpu-process
+[1410:1410:0423/074725:ERROR:logging.h(813)] Failed to call method: org.freedesktop.DBus.ObjectManager.GetManagedObjects: object_path= /: org.freedesktop.DBus.Error.ServiceUnknown: The name org.bluez was not provided by any .service files
+[1410:1410:0423/074725:ERROR:logging.h(813)] Failed to call method: org.freedesktop.DBus.ObjectManager.GetManagedObjects: object_path= /: org.freedesktop.DBus.Error.ServiceUnknown: The name org.bluez was not provided by any .service files
+getrlimit(RLIMIT_NOFILE) failed
+[1410:1410:0423/074735:ERROR:zygote_host_impl_linux.cc(552)] Failed to send GetTerminationStatus message to zygote
